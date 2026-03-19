@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>ForraTech</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<h1 class="titulo">ForraTech</h1>
+
+<h2>Recomendador de especies forrajeras</h2>
+
+<form method="post">
+
+<label>Altura de la zona (msnm)</label><br>
+<input type="number" name="altura" required>
+
+<br><br>
+
+<label>Clima</label><br>
+
+<select name="clima">
+
+<option value="frio">Frío</option>
+<option value="templado">Templado</option>
+<option value="calido">Cálido</option>
+
+</select>
+
+<br><br>
+
+<button type="submit">Recomendar forraje</button>
+
+</form>
+
+{% if forrajes %}
+
+<h2>Especies recomendadas</h2>
+
+<div class="contenedor">
+
+{% for f in forrajes %}
+
+<div class="tarjeta">
+
+<h3>{{f.nombre}}</h3>
+
+<img src="{{ url_for('static', filename='images/' + f.img) }}">
+
+<p>{{f.desc}}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
