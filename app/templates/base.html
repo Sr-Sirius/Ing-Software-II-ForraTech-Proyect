@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>ForraTech</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-    {% block content %}
-    {% endblock %}
+    <nav>
+        <h2>ForraTech 🌱</h2>
+
+        <ul>
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="{{ url_for('recommendation.recommend') }}">Recommendation</a></li>
+            <li><a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
 </body>
 </html>
