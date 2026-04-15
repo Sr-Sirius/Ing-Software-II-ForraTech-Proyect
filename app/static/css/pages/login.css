@@ -1,6 +1,5 @@
 body {
-    background: #292929;
-    color: #878787;
+    background: transparent;
 }
 
 /* CONTENEDOR */
@@ -9,12 +8,13 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: transparent; 
 }
 
 /* CARD */
 .card {
     display: flex;
-    background: #0f0f0f;
+    background: rgba(15, 15, 15, 0.9);
     border-radius: 30px;
     width: clamp(300px, 85vw, 900px);
     overflow: hidden;
@@ -49,9 +49,14 @@ form {
 }
 
 /* TEXT */
-h2, h3 {
+h2 {
+    color: var(--text-main);
     text-align: center;
-    margin: 0;
+}
+
+h3 {
+    color: var(--text-secondary);
+    text-align: center;
 }
 
 /* INPUTS */
@@ -60,18 +65,23 @@ input {
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.1);
     padding: 0 10px;
-    background: transparent;
-    color: white;
+    background: var(--bg-soft);
+    color: var(--text-main);
+
 }
 
 /* BUTTON */
 button[type="submit"] {
-    background: #564ec0;
+    background: var(--button);
     color: white;
     border: none;
     border-radius: 10px;
     height: 45px;
     font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background: var(--button-hover);
 }
 
 /* SOCIAL */
@@ -90,29 +100,27 @@ button[type="submit"] {
     border: none;
     border-radius: 10px;
     height: 45px;
-    color: white;
+    color: var(--text-main);
 }
 
 /* OR LINE */
 .or {
-    position: relative;
+    display: flex;
+    align-items: center;
     text-align: center;
-    height: 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
-.or::before {
+.or::before,
+.or::after {
     content: "";
-    position: absolute;
-    width: 100%;
+    flex: 1;
     height: 1px;
     background: rgba(255,255,255,0.1);
-    top: 50%;
 }
 
-.or::after {
-    content: "Or";
-    position: relative;
-    background: #0f0f0f;
+.or span {
     padding: 0 10px;
 }
 
@@ -129,15 +137,59 @@ button[type="submit"] {
 .register-link {
     text-align: center;
     font-size: 14px;
-    color: #aaa;
+    color: var(--text-secondary);
 }
 
 .register-link a {
-    color: #6c63ff;
+    color: var(--primary-light);
     text-decoration: none;
     font-weight: bold;
 }
 
 .register-link a:hover {
+    text-decoration: underline;
+}
+
+:root {
+    --primary: #2e7d32;       /* verde principal */
+    --primary-light: #66bb6a; /* verde claro */
+    --accent: #a5d6a7;        /* verde suave */
+
+    --bg-dark: #0f0f0f;       /* fondo card */
+    --bg-soft: #1c1c1c;       /* inputs */
+
+    --text-main: #ffffff;     /* texto principal */
+    --text-secondary: #b0b0b0;
+
+    --button: #4caf50;
+    --button-hover: #388e3c;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.remember input {
+    accent-color: var(--button);
+    cursor: pointer;
+}
+
+.forgot {
+    color: var(--primary-light);
+    text-decoration: none;
+}
+
+.forgot:hover {
     text-decoration: underline;
 }

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block body_class %}auth-bg{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/login.css') }}">
 
@@ -30,10 +32,21 @@
                 </button>
             </div>
 
-            <span class="or"></span>
+            <div class="or">
+                <span>Or</span>
+            </div>
 
             <input type="email" placeholder="Email">
             <input type="password" placeholder="Password">
+
+            <div class="login-options">
+                <label class="remember">
+                    <input type="checkbox">
+                    Remember me
+                </label>
+
+                <a href="#" class="forgot">Forgot password?</a>
+            </div>
 
             <button type="submit">Login</button>
 
