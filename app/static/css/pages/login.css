@@ -1,0 +1,143 @@
+body {
+    background: #292929;
+    color: #878787;
+}
+
+/* CONTENEDOR */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* CARD */
+.card {
+    display: flex;
+    background: #0f0f0f;
+    border-radius: 30px;
+    width: clamp(300px, 85vw, 900px);
+    overflow: hidden;
+}
+
+/* HERO */
+.hero {
+    flex: 1;
+    position: relative;
+}
+
+.bg {
+    width: 100%;
+    height: 100%;
+    background: url("../../images/forage.gif") center/cover no-repeat;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* FORM */
+form {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* TEXT */
+h2, h3 {
+    text-align: center;
+    margin: 0;
+}
+
+/* INPUTS */
+input {
+    height: 45px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0 10px;
+    background: transparent;
+    color: white;
+}
+
+/* BUTTON */
+button[type="submit"] {
+    background: #564ec0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 45px;
+    font-size: 16px;
+}
+
+/* SOCIAL */
+.socials {
+    display: flex;
+    gap: 10px;
+}
+
+.social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #1c1c1c;
+    border: none;
+    border-radius: 10px;
+    height: 45px;
+    color: white;
+}
+
+/* OR LINE */
+.or {
+    position: relative;
+    text-align: center;
+    height: 20px;
+}
+
+.or::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    top: 50%;
+}
+
+.or::after {
+    content: "Or";
+    position: relative;
+    background: #0f0f0f;
+    padding: 0 10px;
+}
+
+.social-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.social-btn {
+    overflow: hidden;
+}
+
+.register-link {
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.register-link a {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

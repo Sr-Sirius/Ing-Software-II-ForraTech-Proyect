@@ -1,11 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Login</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/login.css') }}">
 
-<form>
-    <input type="text" placeholder="Username"><br>
-    <input type="password" placeholder="Password"><br>
-    <button type="submit">Login</button>
-</form>
+<div class="login-container">
+
+    <div class="card">
+
+        <!-- LEFT SIDE -->
+        <div class="hero">
+            <div class="bg"></div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <form>
+
+            <h2>ForraTech 🌱</h2>
+            <h3>Login to your account</h3>
+
+            <div class="socials">
+                <button class="social-btn">
+                    <img src="{{ url_for('static', filename='images/google.svg') }}">
+                    <p><span class="extra-text">Login with</span> Google</p>
+                </button>
+
+                <button class="social-btn">
+                    <img src="{{ url_for('static', filename='images/apple.svg') }}">
+                    <p><span class="extra-text">Login with</span> Apple</p>
+                </button>
+            </div>
+
+            <span class="or"></span>
+
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+
+            <button type="submit">Login</button>
+
+            <p class="register-link">
+                Don't have an account? 
+                <a href="{{ url_for('auth.register') }}">Sign up</a>
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
 {% endblock %}
