@@ -193,3 +193,15 @@ button[type="submit"]:hover {
 .forgot:hover {
     text-decoration: underline;
 }
+
+.info-text {
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+    max-width: 420px;
+    align-self: center;
+}
+
+.hero.forgot .bg {
+    background: url("/static/images/forgot.gif") center/cover no-repeat;
+}

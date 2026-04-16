@@ -45,7 +45,9 @@
                     Remember me
                 </label>
 
-                <a href="#" class="forgot">Forgot password?</a>
+                <a href="{{ url_for('auth.forgot_password') }}" class="forgot">
+                    Forgot password?
+                </a>
             </div>
 
             <button type="submit">Login</button>
