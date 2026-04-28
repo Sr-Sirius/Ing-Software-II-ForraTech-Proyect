@@ -1,24 +1,42 @@
-/* Reutiliza base del login */
+/* 🔥 REUTILIZA LOGIN */
 @import url('./login.css');
 
-/* FORM SCROLL + LAYOUT */
+/* 🔥 FIX NAVBAR */
+.register-page main {
+    padding-top: 0 !important;
+}
+
+/* ❌ ELIMINAMOS padding duplicado */
+/* .register-page .login-container {
+    padding-top: 90px;
+} */
+
+/* 🔥 CARD FLEXIBLE */
+.register-page .card {
+    min-height: auto; /* 🔥 importante */
+}
+
+/* FORM */
 .register-form {
-    overflow-y: auto;
-    max-height: 650px; 
     flex: 1;
 
-    padding: 40px 50px; /* ESPACIADO MEJORADO */
+    padding: 30px 40px;
+
     display: flex;
     flex-direction: column;
-    gap: 10px;
+
+    gap: 14px; /* 🔥 mejor distribución */
+
+    justify-content: flex-start; /* 🔥 CLAVE */
+}
+.register-form h2 {
+    margin-top: 5px;
 }
 
-/* CARD MÁS GRANDE SOLO EN REGISTER */
-body.auth-bg .card {
-    width: clamp(320px, 90vw, 1000px);
+.register-form h3 {
+    margin-bottom: 10px;
 }
-
-/* SCROLLBONITO */
+/* SCROLL */
 .register-form::-webkit-scrollbar {
     width: 6px;
 }
@@ -28,15 +46,9 @@ body.auth-bg .card {
     border-radius: 10px;
 }
 
-/* INPUTS, SELECT Y BOTÓN CENTRADOS */
+/* INPUTS */
 .register-form select,
-.register-form button {
-    width: 100%;
-    max-width: 420px;
-    align-self: center;
-}
-
-/* INPUTS NORMALES */
+.register-form button,
 .register-form > input {
     width: 100%;
     max-width: 420px;
@@ -53,7 +65,7 @@ select {
     padding: 0 10px;
 }
 
-/* CHECKBOX (MEJORADO) */
+/* CHECKBOX */
 .checkbox {
     display: flex;
     align-items: center;
@@ -98,29 +110,38 @@ select {
     transition: 0.3s;
 }
 
-/* HERO GIF */
-.hero .bg {
+/* HERO */
+.register-page .hero .bg {
     background: url("/static/images/register.gif") center/cover no-repeat;
     filter: brightness(0.8) contrast(1.1);
 }
 
-/* TEXTO LOGIN LINK CENTRADO */
+/* LINK */
 .register-link {
     max-width: 420px;
     align-self: center;
     text-align: center;
 }
 
+/* DIVIDER */
 .form-divider {
     width: 100%;
     max-width: 420px;
     height: 1px;
-    background: rgba(255,255,255,0.08);
+
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+    );
+
     align-self: center;
-    margin: 5px 0;
+    margin: 20px 0;
+    opacity: 1;
 }
 
-/* INPUT STATES */
+/* STATES */
 input.valid, select.valid {
     border: 1px solid #4CAF50;
 }
@@ -129,7 +150,7 @@ input.invalid, select.invalid {
     border: 1px solid #ff4d4d;
 }
 
-/* ERROR MESSAGE */
+/* ERROR */
 .error-message {
     font-size: 12px;
     color: #ff4d4d;
@@ -142,82 +163,85 @@ input.invalid, select.invalid {
     display: block;
 }
 
+/* 🔥 PASSWORD RULES (VERSIÓN PERFECTA) */
 .password-rules {
     max-width: 420px;
     align-self: center;
 
-    background: #1c1c1c; 
+    background: #1c1c1c;
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 10px;
 
     padding: 10px;
     font-size: 12px;
+    color: #878787;
 
-    color: #878787; 
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all 0.25s ease;
 
-    display: none;
+    pointer-events: none;
 }
 
 .password-rules.active {
-    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+
+    margin: 8px 0;
 }
 
+/* TEXT RULES */
 .password-rules p {
-    margin: 3px 0;
-    backdrop-filter: blur(6px);
-    transition: all 0.3s ease;
+    margin: 4px 0;
+    line-height: 1.4;
 }
 
-/* cuando cumple */
+/* COLORS */
 .password-rules .valid {
     color: #4CAF50;
 }
 
-/* cuando no cumple */
 .password-rules .invalid {
     color: #878787;
 }
 
+/* PASSWORD WRAPPER */
 .password-wrapper {
     position: relative;
     width: 100%;
     max-width: 420px;
     align-self: center;
-    display: block;
 }
 
-/* IMPORTANTE */
 .password-wrapper input {
     width: 100%;
     height: 45px;
     padding-right: 40px;
-    box-sizing: border-box;
 }
 
+/* TOGGLE */
 .toggle-password {
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
 
-     width: 18px;
+    width: 18px;
     height: 18px;
-    
+
     cursor: pointer;
     opacity: 0.6;
     transition: 0.2s;
-    font-size: 14px;
-    color: #878787;
 
-    user-select: none;
-    filter: invert(1); /* 🔥 magia */
+    filter: invert(1);
 }
 
 .toggle-password:hover {
-    color: white;
     opacity: 1;
 }
 
+/* INPUT */
 input {
     height: 45px;
 }

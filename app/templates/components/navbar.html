@@ -1,0 +1,37 @@
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <!-- LEFT -->
+        <div class="nav-left">
+            <h2 class="logo">ForraTech 🌱</h2>
+        </div>
+
+        <!-- CENTER -->
+        <div class="nav-center">
+
+            <a href="{{ url_for('main.home') }}">Home</a>
+
+            <div class="dropdown">
+                <button>
+                    Features
+                    <span>▾</span>
+                </button>
+
+                <div class="dropdown-menu">
+                    <a href="{{ url_for('recommendation.recommend') }}">Recommendation</a>
+                    <a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="nav-right">
+            <a href="{{ url_for('auth.login') }}" class="btn ghost">Log In</a>
+            <a href="{{ url_for('auth.register') }}" class="btn primary">Sign Up</a>
+        </div>
+
+    </div>
+
+</nav>

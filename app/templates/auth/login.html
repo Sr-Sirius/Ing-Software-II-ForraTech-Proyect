@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
-{% block body_class %}auth-bg{% endblock %}
+{% block body_class %}auth-bg login-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/login.css') }}">
+{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/login.css') }}">
 
 <div class="login-container">
 
@@ -15,18 +18,18 @@
         </div>
 
         <!-- RIGHT SIDE -->
-        <form>
+        <form method="POST" action="">
 
             <h2>ForraTech 🌱</h2>
             <h3>Login to your account</h3>
 
             <div class="socials">
-                <button class="social-btn">
+                <button type="button" class="social-btn">
                     <img src="{{ url_for('static', filename='images/google.svg') }}">
                     <p><span class="extra-text">Login with</span> Google</p>
                 </button>
 
-                <button class="social-btn">
+                <button type="button" class="social-btn">
                     <img src="{{ url_for('static', filename='images/apple.svg') }}">
                     <p><span class="extra-text">Login with</span> Apple</p>
                 </button>
@@ -36,12 +39,12 @@
                 <span>Or</span>
             </div>
 
-            <input type="email" placeholder="Email">
-            <input type="password" placeholder="Password">
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
 
             <div class="login-options">
                 <label class="remember">
-                    <input type="checkbox">
+                    <input type="checkbox" name="remember">
                     Remember me
                 </label>
 
@@ -62,4 +65,5 @@
     </div>
 
 </div>
+
 {% endblock %}

@@ -8,7 +8,7 @@ def recommend():
     result = None
 
     if request.method == "POST":
-        data = request.form
+        data = request.form.to_dict()
         result = get_recommendation(data)
 
     return render_template("recommendation/form.html", result=result)

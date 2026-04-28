@@ -1,3 +1,49 @@
+/* =========================
+   RESET GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   VARIABLES GLOBALES
+========================= */
+:root {
+    --primary: #4CAF50;
+    --primary-hover: #43a047;
+
+    --bg-dark: #0f0f0f;
+    --bg-soft: #1c1c1c;
+
+    --text-main: #ffffff;
+    --text-secondary: #b0b0b0;
+
+    --glass-bg: rgba(20, 30, 40, 0.4);
+}
+
+/* =========================
+   BODY GLOBAL
+========================= */
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: transparent;
+    overflow-x: hidden; /* 🔥 evita scroll lateral */
+    position: relative;
+}
+
+/* =========================
+   MAIN (OFFSET NAVBAR)
+========================= */
+main {
+    padding-top: 110px; /* espacio para navbar */
+}
+
+/* =========================
+   AUTH BACKGROUND (LOGIN / REGISTER)
+========================= */
 .auth-bg::before {
     content: "";
     position: fixed;
@@ -21,46 +67,89 @@
     z-index: -1;
 }
 
-body {
-    position: relative;
-    min-height: 100vh;
-}
-
-/* FLASH MESSAGES */
-
+/* =========================
+   FLASH MESSAGES
+========================= */
 .flash-container {
     position: fixed;
-    top: 80px; /* debajo del navbar */
+    top: 90px;
     right: 20px;
     z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .flash {
     padding: 12px 18px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 14px;
     color: white;
-    min-width: 220px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: fadeIn 0.3s ease;
+    min-width: 240px;
+
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+    animation: flashIn 0.4s ease forwards;
 }
 
+/* TIPOS */
 .flash.success {
-    background: #4CAF50;
+    border-left: 4px solid #4CAF50;
 }
 
 .flash.error {
-    background: #ff4d4d;
+    border-left: 4px solid #ff4d4d;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
+.flash.warning {
+    border-left: 4px solid #ff9800;
+}
+
+/* ANIMACIÓN */
+@keyframes flashIn {
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
+}
+
+/* BOTÓN CERRAR */
+.close-flash {
+    margin-left: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+
+.close-flash:hover {
+    opacity: 1;
+}
+
+/* =========================
+   UTILIDADES (OPCIONAL PRO)
+========================= */
+
+/* centrado rápido */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* contenedor estándar */
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
 }

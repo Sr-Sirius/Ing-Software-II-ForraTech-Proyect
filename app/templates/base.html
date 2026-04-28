@@ -3,38 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>ForraTech</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- 🔥 BASE GLOBAL -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+
+    <!-- 🔥 CSS POR PÁGINA -->
+    {% block page_css %}{% endblock %}
 </head>
+
 <body class="{% block body_class %}{% endblock %}">
 
-    <nav>
-        <h2>ForraTech 🌱</h2>
+    <!-- NAVBAR -->
+    {% include "components/navbar.html" %}
 
-        <ul>
-            <li><a href="{{ url_for('main.home') }}">Home</a></li>
-            <li><a href="{{ url_for('recommendation.recommend') }}">Recommendation</a></li>
-            <li><a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a></li>
-            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-        </ul>
-    </nav>
-
-     <!-- 🔥 FLASH AQUÍ -->
+    <!-- FLASH -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="flash-container">
           {% for category, message in messages %}
-            <div class="flash {{ category }}">{{ message }}</div>
+            <div class="flash {{ category }}">
+              {{ message }}
+              <span class="close-flash">&times;</span>
+            </div>
           {% endfor %}
         </div>
       {% endif %}
     {% endwith %}
 
+    <!-- CONTENT -->
     <main>
         {% block content %}
         {% endblock %}
     </main>
+
+    <!-- JS GLOBAL -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+
+    <!-- JS POR PÁGINA -->
+    {% block page_js %}{% endblock %}
 
 </body>
 </html>

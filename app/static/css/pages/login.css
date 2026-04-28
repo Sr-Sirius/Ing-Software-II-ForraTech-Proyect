@@ -1,3 +1,9 @@
+/* 🔥 EVITA QUE EL NAVBAR ROMPA EL LOGIN */
+.login-page main {
+    padding-top: 0 !important;
+}
+
+/* BODY */
 body {
     background: transparent;
 }
@@ -7,8 +13,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: transparent; 
+
+    min-height: 100vh;
+    width: 100%;
+
+    padding-top: 90px; /* espacio para navbar */
+    background: transparent;
 }
 
 /* CARD */
@@ -16,8 +26,13 @@ body {
     display: flex;
     background: rgba(15, 15, 15, 0.9);
     border-radius: 30px;
-    width: clamp(300px, 85vw, 900px);
+
+    width: clamp(320px, 85vw, 900px);
+    height: 520px; /* 🔥 importante para que no colapse */
+
     overflow: hidden;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
 
 /* HERO */
@@ -26,12 +41,14 @@ body {
     position: relative;
 }
 
+/* 🔥 RUTA CORREGIDA */
 .bg {
     width: 100%;
     height: 100%;
-    background: url("../../images/forage.gif") center/cover no-repeat;
+    background: url("/static/images/forage.gif") center/cover no-repeat;
 }
 
+/* OVERLAY */
 .hero::after {
     content: "";
     position: absolute;
@@ -43,8 +60,10 @@ body {
 form {
     flex: 1;
     padding: 30px;
+
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 12px;
 }
 
@@ -65,9 +84,9 @@ input {
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.1);
     padding: 0 10px;
+
     background: var(--bg-soft);
     color: var(--text-main);
-
 }
 
 /* BUTTON */
@@ -92,15 +111,25 @@ button[type="submit"]:hover {
 
 .social-btn {
     flex: 1;
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+
     background: #1c1c1c;
     border: none;
     border-radius: 10px;
     height: 45px;
+
     color: var(--text-main);
+}
+
+/* 🔥 FIX ICONOS GIGANTES */
+.social-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 }
 
 /* OR LINE */
@@ -108,6 +137,7 @@ button[type="submit"]:hover {
     display: flex;
     align-items: center;
     text-align: center;
+
     color: var(--text-secondary);
     font-size: 14px;
 }
@@ -124,16 +154,7 @@ button[type="submit"]:hover {
     padding: 0 10px;
 }
 
-.social-btn img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-}
-
-.social-btn {
-    overflow: hidden;
-}
-
+/* REGISTER LINK */
 .register-link {
     text-align: center;
     font-size: 14px;
@@ -150,25 +171,28 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
+/* VARIABLES (PUEDES MOVERLAS A BASE SI QUIERES) */
 :root {
-    --primary: #2e7d32;       /* verde principal */
-    --primary-light: #66bb6a; /* verde claro */
-    --accent: #a5d6a7;        /* verde suave */
+    --primary: #2e7d32;
+    --primary-light: #66bb6a;
+    --accent: #a5d6a7;
 
-    --bg-dark: #0f0f0f;       /* fondo card */
-    --bg-soft: #1c1c1c;       /* inputs */
+    --bg-dark: #0f0f0f;
+    --bg-soft: #1c1c1c;
 
-    --text-main: #ffffff;     /* texto principal */
+    --text-main: #ffffff;
     --text-secondary: #b0b0b0;
 
     --button: #4caf50;
     --button-hover: #388e3c;
 }
 
+/* OPTIONS */
 .login-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     font-size: 13px;
     color: var(--text-secondary);
 }
@@ -177,12 +201,10 @@ button[type="submit"]:hover {
     display: flex;
     align-items: center;
     gap: 5px;
-    cursor: pointer;
 }
 
 .remember input {
     accent-color: var(--button);
-    cursor: pointer;
 }
 
 .forgot {
@@ -194,6 +216,7 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
+/* INFO TEXT */
 .info-text {
     text-align: center;
     font-size: 14px;
@@ -202,6 +225,12 @@ button[type="submit"]:hover {
     align-self: center;
 }
 
-.hero.forgot .bg {
+/* 🔐 FORGOT PAGE IMAGE */
+.forgot-page .hero .bg {
     background: url("/static/images/forgot.gif") center/cover no-repeat;
+}
+
+/* 🔐 RESET PAGE IMAGE */
+.reset-page .hero .bg {
+    background: url("/static/images/register.gif") center/cover no-repeat;
 }

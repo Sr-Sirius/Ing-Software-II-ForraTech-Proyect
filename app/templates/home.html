@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block body_class %}auth-bg{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
+
+<div class="home-container">
+
+    <!-- 🔹 HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Smarter feeding,<br>
+                <span>healthier herds.</span>
+            </h1>
+
+            <p>
+                ForraTech uses artificial intelligence to optimize nutrition
+                for sheep and goats, improving productivity and sustainability.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{{ url_for('auth.register') }}" class="btn-primary">Get Started</a>
+                <a href="#features" class="btn-secondary">Learn More</a>
+            </div>
+
+            <div class="hero-tags">
+                <span>🌱 AI Recommendations</span>
+                <span>📊 Data-driven</span>
+                <span>🐑 Livestock focused</span>
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+            <!-- Puedes reemplazar por imagen o slider -->
+            <img src="{{ url_for('static', filename='images/sheep-hero.png') }}" alt="Livestock">
+        </div>
+
+    </section>
+
+    <!-- 🔹 FEATURES -->
+    <section class="features" id="features">
+
+        <h2>Powerful features for modern farmers</h2>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <h3>📊 Smart Recommendations</h3>
+                <p>
+                    Get AI-powered feeding plans tailored to your animals.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>📚 Livestock Encyclopedia</h3>
+                <p>
+                    Access detailed information about sheep, goats and forage.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>🌱 Sustainable Farming</h3>
+                <p>
+                    Improve efficiency while reducing environmental impact.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- 🔹 HOW IT WORKS -->
+    <section class="how-it-works">
+
+        <h2>How it works</h2>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Register</h3>
+                <p>Create your account in seconds.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Enter Data</h3>
+                <p>Provide information about your livestock.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Get Results</h3>
+                <p>Receive optimized feeding plans.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- 🔹 PREVIEW -->
+    <section class="preview">
+
+        <h2>See ForraTech in action</h2>
+
+        <div class="preview-box">
+            <p>Dashboard preview coming soon 🚀</p>
+        </div>
+
+    </section>
+
+    <!-- 🔹 CTA -->
+    <section class="cta">
+
+        <h2>Ready to optimize your farm?</h2>
+        <p>Join ForraTech today and take your livestock management to the next level.</p>
+
+        <a href="{{ url_for('auth.register') }}" class="btn-primary">
+            Start Now
+        </a>
+
+    </section>
+
+</div>
+
+{% endblock %}

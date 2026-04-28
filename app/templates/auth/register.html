@@ -1,34 +1,35 @@
 {% extends "base.html" %}
 
-{% block body_class %}auth-bg{% endblock %}
+{% block body_class %}auth-bg register-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/register.css') }}">
+{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/register.css') }}">
 
 <div class="login-container">
 
     <div class="card">
 
-        <!-- LEFT SIDE (GIF / IMAGE) -->
+        <!-- LEFT SIDE -->
         <div class="hero">
             <div class="bg"></div>
         </div>
 
         <!-- RIGHT SIDE -->
-        <form class="register-form">
+        <form class="register-form" method="POST" action="">
 
             <h2>ForraTech 🌱</h2>
             <h3>Create your account</h3>
 
-            <!-- INPUTS -->
-            <input type="text" id="fullname" placeholder="Full name" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="text" id="username" placeholder="Username" required>
+            <input type="text" id="fullname" name="fullname" placeholder="Full name" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="text" id="username" name="username" placeholder="Username" required>
 
-
+            <!-- PASSWORD -->
             <div class="password-wrapper">
-                <input type="password" id="password" placeholder="Password" required>
-    
+                <input type="password" id="password" name="password" placeholder="Password" required>
                 <img 
                     src="{{ url_for('static', filename='images/eye-open.svg') }}" 
                     class="toggle-password" 
@@ -52,8 +53,9 @@
 
             <div class="form-divider"></div>
 
+            <!-- CONFIRM -->
             <div class="password-wrapper">
-                <input type="password" id="confirm-password" placeholder="Confirm password" required>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
                 <img 
                     src="{{ url_for('static', filename='images/eye-open.svg') }}" 
                     class="toggle-password" 
@@ -64,35 +66,30 @@
                 >
             </div>
 
-            <!-- USER TYPE -->
-            <select id="user-type" required>
+            <select id="user-type" name="user-type" required>
                 <option value="">Select user type</option>
                 <option>Farmer</option>
                 <option>Rancher</option>
                 <option>Researcher</option>
             </select>
 
-            <!-- OPTIONAL -->
-            <input type="tel" id="phone" placeholder="Phone number (optional)">
-            <input type="text" id="location" placeholder="Location (optional)">
+            <input type="tel" id="phone" name="phone" placeholder="Phone number (optional)">
+            <input type="text" id="location" name="location" placeholder="Location (optional)">
 
-            <!-- CHECKBOXES -->
             <div class="checkbox-group">
                 <label class="checkbox">
-                    <input type="checkbox" id="terms" required>
+                    <input type="checkbox" id="terms" name="terms" required>
                     I accept the Terms and Conditions
                 </label>
 
                 <label class="checkbox">
-                    <input type="checkbox" id="updates">
+                    <input type="checkbox" id="updates" name="updates">
                     I want to receive updates
                 </label>
             </div>
 
-            <!-- BUTTON -->
             <button type="submit">Register</button>
 
-            <!-- LOGIN LINK -->
             <p class="register-link">
                 Already have an account?
                 <a href="{{ url_for('auth.login') }}">Login</a>
@@ -103,5 +100,10 @@
     </div>
 
 </div>
-<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+
+{% endblock %}
+
+{% block page_js %}
+<script src="{{ url_for('static', filename='js/auth/password.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth/register.js') }}"></script>
 {% endblock %}
