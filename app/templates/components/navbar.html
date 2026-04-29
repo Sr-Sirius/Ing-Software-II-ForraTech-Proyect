@@ -10,10 +10,15 @@
         <!-- CENTER -->
         <div class="nav-center">
 
-            <a href="{{ url_for('main.home') }}">Home</a>
+            <a href="{{ url_for('main.home') }}"
+               class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}">
+               Home
+            </a>
 
             <div class="dropdown">
-                <button>
+
+                <button class="nav-link
+                    {% if request.endpoint in ['recommendation.recommend', 'encyclopedia.index'] %}active{% endif %}">
                     Features
                     <span>▾</span>
                 </button>
@@ -22,6 +27,7 @@
                     <a href="{{ url_for('recommendation.recommend') }}">Recommendation</a>
                     <a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a>
                 </div>
+
             </div>
 
         </div>

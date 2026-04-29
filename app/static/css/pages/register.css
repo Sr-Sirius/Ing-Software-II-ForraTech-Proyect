@@ -13,29 +13,23 @@
 
 /* 🔥 CARD FLEXIBLE */
 .register-page .card {
-    min-height: auto; /* 🔥 importante */
+    width: clamp(320px, 90vw, 1000px);
+    min-height: 550px; /* 🔥 un poco más balanceado */
 }
 
 /* FORM */
 .register-form {
     flex: 1;
 
-    padding: 30px 40px;
+    padding: 40px 50px;
 
     display: flex;
     flex-direction: column;
+    gap: 12px;
 
-    gap: 14px; /* 🔥 mejor distribución */
-
-    justify-content: flex-start; /* 🔥 CLAVE */
-}
-.register-form h2 {
-    margin-top: 5px;
+    overflow-y: auto; /* ✔ se mantiene */
 }
 
-.register-form h3 {
-    margin-bottom: 10px;
-}
 /* SCROLL */
 .register-form::-webkit-scrollbar {
     width: 6px;
@@ -137,8 +131,8 @@ select {
     );
 
     align-self: center;
-    margin: 20px 0;
-    opacity: 1;
+    margin: 16px 0;
+    opacity: 0.8;
 }
 
 /* STATES */

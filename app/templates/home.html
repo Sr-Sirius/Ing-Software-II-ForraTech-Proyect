@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
-{% block body_class %}auth-bg{% endblock %}
+{% block body_class %}home-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
+{% endblock %}
 
 {% block content %}
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
 
 <div class="home-container">
 
     <!-- 🔹 HERO -->
-    <section class="hero">
+    <section class="hero-section reveal">
 
         <div class="hero-content">
+
+            <span class="badge">🌱 AI-Powered Livestock Nutrition</span>
 
             <h1>
                 Smarter feeding,<br>
@@ -20,12 +24,16 @@
 
             <p>
                 ForraTech uses artificial intelligence to optimize nutrition
-                for sheep and goats, improving productivity and sustainability.
+                for sheep and goats.
             </p>
 
             <div class="hero-buttons">
-                <a href="{{ url_for('auth.register') }}" class="btn-primary">Get Started</a>
-                <a href="#features" class="btn-secondary">Learn More</a>
+                <a href="{{ url_for('auth.register') }}" class="btn primary glow-hover">
+                    Get Started
+                </a>
+                <a href="#features" class="btn ghost glow-hover">
+                    Learn More
+                </a>
             </div>
 
             <div class="hero-tags">
@@ -37,91 +45,101 @@
         </div>
 
         <div class="hero-image">
-            <!-- Puedes reemplazar por imagen o slider -->
-            <img src="{{ url_for('static', filename='images/sheep-hero.png') }}" alt="Livestock">
+            <img src="{{ url_for('static', filename='images/sheep-hero.png') }}">
         </div>
 
     </section>
 
     <!-- 🔹 FEATURES -->
-    <section class="features" id="features">
+    <section class="features-section reveal" id="features">
 
-        <h2>Powerful features for modern farmers</h2>
+        <h2>Powerful features</h2>
 
         <div class="features-grid">
 
-            <div class="feature-card">
+            <div class="feature-card glow-hover">
                 <h3>📊 Smart Recommendations</h3>
-                <p>
-                    Get AI-powered feeding plans tailored to your animals.
-                </p>
+                <p>AI-powered feeding plans tailored to your animals.</p>
             </div>
 
-            <div class="feature-card">
-                <h3>📚 Livestock Encyclopedia</h3>
-                <p>
-                    Access detailed information about sheep, goats and forage.
-                </p>
+            <div class="feature-card glow-hover">
+                <h3>📘 Livestock Encyclopedia</h3>
+                <p>Knowledge about livestock and forage.</p>
             </div>
 
-            <div class="feature-card">
-                <h3>🌱 Sustainable Farming</h3>
-                <p>
-                    Improve efficiency while reducing environmental impact.
-                </p>
+            <div class="feature-card glow-hover">
+                <h3>🌿 Sustainable Farming</h3>
+                <p>Improve efficiency and sustainability.</p>
             </div>
 
         </div>
 
     </section>
 
-    <!-- 🔹 HOW IT WORKS -->
-    <section class="how-it-works">
+    <!-- 🔹 HOW -->
+    <section class="how-section reveal">
 
         <h2>How it works</h2>
 
         <div class="steps">
 
             <div class="step">
-                <div class="step-number">1</div>
-                <h3>Register</h3>
-                <p>Create your account in seconds.</p>
+                <span class="step-number">1</span>
+                <h4>Register</h4>
+                <p>Create your account.</p>
             </div>
 
             <div class="step">
-                <div class="step-number">2</div>
-                <h3>Enter Data</h3>
-                <p>Provide information about your livestock.</p>
+                <span class="step-number">2</span>
+                <h4>Enter Data</h4>
+                <p>Provide livestock info.</p>
             </div>
 
             <div class="step">
-                <div class="step-number">3</div>
-                <h3>Get Results</h3>
-                <p>Receive optimized feeding plans.</p>
+                <span class="step-number">3</span>
+                <h4>Get Results</h4>
+                <p>Receive feeding plans.</p>
             </div>
 
         </div>
 
     </section>
 
-    <!-- 🔹 PREVIEW -->
-    <section class="preview">
+    <!-- 🔹 DASHBOARD -->
+    <section class="dashboard-section reveal">
 
-        <h2>See ForraTech in action</h2>
+        <div class="dashboard-content">
 
-        <div class="preview-box">
-            <p>Dashboard preview coming soon 🚀</p>
+            <div class="dashboard-text">
+                <h2>All your farm data in one place</h2>
+
+                <p>
+                    Monitor performance and analyze results.
+                </p>
+
+                <a href="#" class="btn primary glow-hover">
+                    Explore Dashboard
+                </a>
+            </div>
+
+            <div class="dashboard-image">
+                <div class="mockup reveal">
+                    <p>📊 Coming soon</p>
+                </div>
+            </div>
+
         </div>
 
     </section>
 
     <!-- 🔹 CTA -->
-    <section class="cta">
+    <section class="cta-section reveal">
 
         <h2>Ready to optimize your farm?</h2>
-        <p>Join ForraTech today and take your livestock management to the next level.</p>
 
-        <a href="{{ url_for('auth.register') }}" class="btn-primary">
+        <p>Join ForraTech today.</p>
+
+        <a href="{{ url_for('auth.register') }}" class="btn primary glow-hover">
             Start Now
         </a>
 

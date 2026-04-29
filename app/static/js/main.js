@@ -34,4 +34,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+   // 🔥 GLOW EFFECT
+  document.querySelectorAll(".glow-hover").forEach(el => {
+      el.addEventListener("mousemove", e => {
+          const rect = el.getBoundingClientRect();
+
+          el.style.setProperty("--x", `${e.clientX - rect.left}px`);
+          el.style.setProperty("--y", `${e.clientY - rect.top}px`);
+      });
+  });
+
+  // 🔥 SCROLL REVEAL
+  const reveals = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+          }
+      });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+
 });
+

@@ -37,6 +37,11 @@
         {% endblock %}
     </main>
 
+    <!-- 🔥 FOOTER GLOBAL -->
+    {% if show_footer is not defined or show_footer %}
+        {% include "components/footer.html" %}
+    {% endif %}
+
     <!-- JS GLOBAL -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
