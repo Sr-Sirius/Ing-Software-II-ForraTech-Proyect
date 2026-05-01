@@ -14,7 +14,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    min-height: calc(100vh - 80px); /* 🔥 FIX REAL */
+    min-height: calc(100vh - var(--navbar-height, 110px));  /* 🔥 FIX REAL */
     width: 100%;
 
     padding: 120px 20px 40px; /* 🔥 espacio arriba bien hecho */
@@ -33,6 +33,7 @@ body {
     overflow: hidden;
 
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    
 }
 
 /* HERO */
@@ -238,4 +239,9 @@ button[type="submit"]:hover {
 /* 🔐 RESET PAGE IMAGE */
 .reset-page .hero .bg {
     background: url("/static/images/register.gif") center/cover no-repeat;
+}
+
+.login-page main,
+.register-page main {
+    padding-top: 0 !important;
 }

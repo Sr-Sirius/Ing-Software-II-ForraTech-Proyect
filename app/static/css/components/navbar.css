@@ -1,0 +1,130 @@
+/* =========================
+   NAVBAR WRAPPER
+========================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    padding-top: 15px;
+    background: transparent;
+}
+
+/* =========================
+   NAV CONTAINER (GLASS)
+========================= */
+.nav-container {
+    width: 92%;
+    max-width: 1200px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 28px;
+    border-radius: 20px;
+
+    background: rgba(20, 30, 40, 0.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+
+    transition: all 0.3s ease;
+}
+
+/* =========================
+   LOGO
+========================= */
+.logo {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* =========================
+   NAV CENTER LINKS
+========================= */
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-center a,
+.dropdown button {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.nav-center a:hover,
+.dropdown button:hover {
+    color: white;
+}
+
+/* =========================
+   NAV RIGHT
+========================= */
+.nav-right {
+    display: flex;
+    gap: 12px;
+}
+
+/* =========================
+   NAV ACTIVE LINK SYSTEM
+========================= */
+.nav-link {
+    position: relative;
+    color: rgba(255,255,255,0.75);
+    transition: color 0.25s ease;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.nav-link.active {
+    color: var(--primary);
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0%;
+    height: 2px;
+    background: var(--primary);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.nav-link.active::after,
+.nav-link:hover::after {
+    width: 60%;
+}
+
+/* =========================
+   NAVBAR ON SCROLL
+========================= */
+.navbar.scrolled .nav-container {
+    background: rgba(10, 15, 25, 0.85);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* =========================
+   NAVBAR EXTRA FIX
+========================= */
+.dropdown button.nav-link::after {
+    bottom: -6px;
+}

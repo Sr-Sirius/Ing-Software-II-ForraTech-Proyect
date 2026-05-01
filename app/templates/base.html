@@ -4,18 +4,30 @@
     <meta charset="UTF-8">
     <title>ForraTech</title>
 
+    <!-- 🔥 DEBUG GLOBAL -->
+    <script>
+      window.DEBUG = true;
+    </script>
+
     <!-- 🔥 BASE GLOBAL -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
     <!-- 🔥 CSS POR PÁGINA -->
     {% block page_css %}{% endblock %}
 </head>
 
-<body class="{% block body_class %}{% endblock %}">
+<body class="
+    {% block body_class %}{% endblock %}
+    {% if show_sidebar %}with-sidebar{% endif %}
+">
 
     <!-- NAVBAR -->
     {% include "components/navbar.html" %}
+
+    <!-- 🔥 SIDEBAR -->
+    {% if show_sidebar %}
+        {% include "components/sidebar.html" %}
+    {% endif %}
 
     <!-- FLASH -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -42,9 +54,8 @@
         {% include "components/footer.html" %}
     {% endif %}
 
-    <!-- JS GLOBAL -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+    <!-- 🔥 JS GLOBAL (MODULAR) -->
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     <!-- JS POR PÁGINA -->
     {% block page_js %}{% endblock %}

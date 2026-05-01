@@ -1,10 +1,100 @@
 {% extends "base.html" %}
 
+{% block body_class %}with-sidebar{% endblock %}
+
 {% block content %}
 
-<div style="padding: 100px; text-align: center;">
-    <h1>Dashboard 🚧</h1>
-    <p>En construcción...</p>
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Farm overview & insights</p>
+        </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="dashboard-cards">
+
+        <div class="card">
+            <h3>🌾 Area</h3>
+            <p class="value">12.4 ha</p>
+        </div>
+
+        <div class="card">
+            <h3>🐄 Livestock</h3>
+            <p class="value">45</p>
+        </div>
+
+        <div class="card">
+            <h3>🌱 Crops</h3>
+            <p class="value">6</p>
+        </div>
+
+        <div class="card">
+            <h3>💧 Humidity</h3>
+            <p class="value">78%</p>
+        </div>
+
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="dashboard-grid">
+
+        <!-- PRODUCCIÓN -->
+        <div class="panel large">
+            <h2>Forage Production</h2>
+            <div class="fake-chart"></div>
+        </div>
+
+        <!-- SALUD DEL SUELO -->
+        <div class="panel">
+            <h2>Soil Health</h2>
+            <div class="circle-score">85</div>
+        </div>
+
+        <!-- CLIMA -->
+        <div class="panel">
+            <h2>Weather</h2>
+            <p class="big">24°C</p>
+            <p>Sunny</p>
+        </div>
+
+        <!-- RECOMENDACIONES -->
+        <div class="panel large">
+            <h2>Recommendations</h2>
+
+            <div class="recommendation">
+                <span>🌱 Fertilize crop</span>
+                <span class="tag high">High</span>
+            </div>
+
+            <div class="recommendation">
+                <span>💧 Irrigation needed</span>
+                <span class="tag medium">Medium</span>
+            </div>
+
+        </div>
+
+        <!-- DISTRIBUCIÓN -->
+        <div class="panel">
+            <h2>Crop Distribution</h2>
+            <div class="fake-chart circle"></div>
+        </div>
+
+        <!-- ACTIVIDAD -->
+        <div class="panel">
+            <h2>Recent Activity</h2>
+            <ul>
+                <li>✔ Soil analysis completed</li>
+                <li>💧 Irrigation registered</li>
+                <li>🌱 New recommendation generated</li>
+            </ul>
+        </div>
+
+    </div>
+
 </div>
 
 {% endblock %}

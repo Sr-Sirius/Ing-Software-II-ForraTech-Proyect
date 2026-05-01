@@ -1,0 +1,24 @@
+/* =========================
+   BASE
+========================= */
+@import url("./base/reset.css");
+@import url("./base/variables.css");
+@import url("./base/layout.css");
+@import url("./base/utilities.css");
+
+/* =========================
+   COMPONENTS
+========================= */
+@import url("./components/flash.css");
+@import url("./components/navbar.css");
+@import url("./components/dropdown.css");
+@import url("./components/buttons.css");
+@import url("./components/glow.css");
+@import url("./components/footer.css");
+@import url("./components/sidebar.css");
+
+/* =========================
+   PAGES
+========================= */
+@import url("./pages/dashboard.css");
+/* (login.css, register.css los dejas como page_css dinámico en Flask 👍) */

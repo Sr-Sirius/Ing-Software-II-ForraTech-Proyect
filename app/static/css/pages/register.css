@@ -239,3 +239,8 @@ input.invalid, select.invalid {
 input {
     height: 45px;
 }
+
+.login-page main,
+.register-page main {
+    padding-top: 0 !important;
+}

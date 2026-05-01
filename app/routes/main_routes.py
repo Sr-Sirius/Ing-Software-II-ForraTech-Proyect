@@ -10,4 +10,4 @@ def home():
 #  DASHBOARD (APP INTERNA)
 @main.route("/dashboard")
 def dashboard():
-    return render_template("dashboard/index.html")
+    return render_template("dashboard/index.html",  show_sidebar=True, show_footer=False)
