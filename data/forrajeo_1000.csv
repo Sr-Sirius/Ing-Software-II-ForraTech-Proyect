@@ -1,0 +1,1001 @@
+id,nombre,descripcion,ph_min,ph_max,humedad_min,humedad_max,altitud_min,altitud_max,temp_min,temp_max
+1,Pasto Elefante,Forraje tropical de alta producción,5.63,6.89,62.1,77.2,88,1790,20.3,34.7
+2,Alfalfa,Leguminosa rica en proteína para ganado,5.91,7.48,50.8,72.2,1095,3271,14.9,28.6
+3,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.66,6.31,39.5,73.7,80,2060,21.3,36.5
+4,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.1,6.82,44.1,82.8,39,2104,19.3,34.5
+5,Pasto Guinea,Pasto tropical de rápido crecimiento,5.08,6.87,55.7,78.1,81,1805,22.1,33.6
+6,Pasto Kikuyo,Muy usado en lechería de clima frío,5.31,7.01,66.8,87.7,1741,3279,9.3,22.6
+7,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.64,7.2,65.2,83.4,1757,3205,7.5,20.3
+8,Ray Grass Italiano,Forraje de alta digestibilidad,5.8,6.98,57.1,82.8,1562,2940,10.4,22.0
+9,Maíz Forrajero,Utilizado principalmente para ensilaje,5.37,6.95,56.5,82.5,0,2414,17.9,31.3
+10,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.11,6.88,47.8,72.8,82,2235,20.7,37.6
+11,Avena Forrajera,Excelente producción en clima frío,5.69,7.33,61.6,84.2,1557,3118,8.8,20.4
+12,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.98,7.37,55.7,73.0,1246,2727,11.2,23.1
+13,Trébol Rojo,Forraje de buena calidad nutricional,6.05,7.26,51.6,76.8,1220,2973,9.6,24.2
+14,Canavalia,Leguminosa usada como cobertura y forraje,5.34,7.45,50.7,80.8,97,1828,19.9,31.8
+15,Leucaena,Árbol forrajero rico en proteína,5.53,7.57,43.8,73.8,0,1711,21.0,35.8
+16,Botón de Oro,Forraje arbustivo de alta proteína,4.98,6.93,52.7,83.6,88,2534,18.1,31.0
+17,King Grass,Variedad de pasto de gran rendimiento,5.62,7.06,59.8,86.2,60,1709,22.0,35.4
+18,Pasto Estrella,Pasto tropical resistente al pastoreo,5.04,6.75,50.1,80.0,1,2042,22.5,35.3
+19,Pasto Tanner,Pasto adaptado a suelos húmedos,4.68,6.41,67.2,88.2,0,1558,22.8,34.7
+20,Pasto Pangola,Excelente digestibilidad para bovinos,4.97,7.12,57.0,81.4,29,1839,19.3,34.7
+21,Moringa,Árbol forrajero con alto contenido nutricional,5.01,7.56,38.6,67.8,100,1574,24.0,38.3
+22,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.04,7.03,47.4,74.1,0,2094,19.3,33.9
+23,Pennisetum Purpureum,Pasto tropical para corte,5.67,7.1,61.9,84.0,0,1820,21.0,35.5
+24,Maralfalfa,Pasto híbrido de alta producción,5.47,7.07,58.2,87.7,0,1972,20.5,34.9
+25,Caña Forrajera,Utilizada como suplemento energético,5.06,7.56,56.5,79.9,0,1856,21.6,35.4
+26,Centrosema,Leguminosa tropical rastrera,4.98,6.73,57.0,82.7,0,1850,21.0,33.3
+27,Desmodium,Leguminosa de buena digestibilidad,5.31,7.19,50.6,81.9,87,2134,17.5,31.0
+28,Guandul,Leguminosa arbustiva resistente,4.86,7.46,44.9,76.6,51,1918,19.3,34.8
+29,Caupí Forrajero,Leguminosa anual tropical,5.07,7.02,50.4,77.8,0,1870,21.2,34.2
+30,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.05,7.1,43.6,81.1,0,2108,20.8,35.4
+31,Pasto Alemán,Forraje adaptado a zonas húmedas,4.9,6.46,68.8,97.5,87,1114,21.7,34.6
+32,Pasto Jaragua,Muy resistente a altas temperaturas,4.73,6.81,37.9,72.6,70,1794,24.8,37.6
+33,Pasto Angleton,Forraje tropical para pastoreo,4.88,6.64,42.2,72.8,84,1845,21.1,36.0
+34,Pasto Toledo,Variedad mejorada de brachiaria,4.9,6.65,51.0,77.5,0,2175,19.7,35.4
+35,Pasto Mombasa,Alta producción de biomasa,5.18,6.97,53.8,82.3,0,1730,22.7,35.1
+36,Pasto Tanzania,Excelente calidad nutricional,5.08,7.13,53.3,82.0,0,1809,22.6,34.9
+37,Pasto Mulato II,Híbrido resistente y nutritivo,5.05,6.67,50.6,79.8,29,2237,20.2,36.9
+38,Pasto Humidícola,Ideal para terrenos inundables,4.68,6.39,77.8,92.7,93,1280,22.5,34.4
+39,Pasto Rhodes,Muy usado en sistemas ganaderos,5.01,7.12,42.1,75.0,73,2272,20.8,37.0
+40,Pasto Buffel,Excelente resistencia a sequía,5.14,7.55,35.8,63.1,90,1737,23.2,40.0
+41,Soja Forrajera,Fuente rica en proteína vegetal,5.79,7.15,47.7,73.8,10,1881,20.6,32.0
+42,Vicia,Leguminosa usada en mezcla con gramíneas,6.07,7.4,53.7,78.5,1222,2926,9.5,24.7
+43,Cebada Forrajera,Excelente para climas templados,5.81,7.33,50.4,77.8,1464,3267,7.2,20.8
+44,Festuca,Gramínea perenne para clima frío,5.58,6.86,60.0,85.7,1868,3160,8.6,20.0
+45,Dactylis Glomerata,Pasto resistente al frío,5.49,6.94,57.9,80.4,1710,3289,7.4,20.8
+46,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.58,7.57,49.7,72.4,1406,3201,10.4,24.6
+47,Pasto Sudan,Híbrido de rápido crecimiento,4.89,6.98,46.6,68.8,0,1855,22.1,37.3
+48,Arachis Pintoi,Leguminosa rastrera tropical,4.95,6.77,56.3,87.9,31,1745,19.9,33.2
+49,Calliandra,Arbusto forrajero rico en proteína,5.46,7.47,49.0,80.7,0,2429,17.7,29.2
+50,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.88,6.94,43.9,76.5,0,1807,22.1,36.1
+51,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.04,6.9,52.4,86.6,0,2166,18.0,32.5
+52,Pasto Elefante,Forraje tropical de alta producción,5.58,6.86,61.6,80.1,0,1845,20.2,35.1
+53,Alfalfa,Leguminosa rica en proteína para ganado,5.99,7.66,50.9,72.8,972,3176,15.7,28.3
+54,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.61,6.51,42.5,75.6,4,1942,21.1,35.4
+55,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.12,6.75,45.5,79.7,0,2213,19.1,34.7
+56,Pasto Guinea,Pasto tropical de rápido crecimiento,5.16,7.06,54.9,77.0,0,1716,22.4,34.1
+57,Pasto Kikuyo,Muy usado en lechería de clima frío,5.41,6.87,66.9,91.8,1721,3160,10.6,21.2
+58,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.98,7.14,67.8,84.0,1866,3151,8.1,20.7
+59,Ray Grass Italiano,Forraje de alta digestibilidad,5.82,7.0,57.5,85.4,1503,3026,9.2,22.4
+60,Maíz Forrajero,Utilizado principalmente para ensilaje,5.7,7.09,57.6,78.8,0,2430,17.0,31.4
+61,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.16,7.2,47.1,68.5,0,2175,19.3,37.5
+62,Avena Forrajera,Excelente producción en clima frío,5.72,7.33,63.0,86.8,1576,3193,8.9,20.9
+63,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.13,7.44,52.7,77.6,1227,2834,12.7,23.2
+64,Trébol Rojo,Forraje de buena calidad nutricional,5.94,7.39,50.2,72.8,1272,2925,10.8,24.9
+65,Canavalia,Leguminosa usada como cobertura y forraje,5.31,7.48,50.0,77.3,0,1798,19.4,31.9
+66,Leucaena,Árbol forrajero rico en proteína,5.62,7.43,44.2,72.8,19,1799,22.0,35.8
+67,Botón de Oro,Forraje arbustivo de alta proteína,5.07,7.03,47.2,83.8,17,2518,18.7,30.4
+68,King Grass,Variedad de pasto de gran rendimiento,5.69,7.0,62.5,83.8,0,1850,22.0,35.2
+69,Pasto Estrella,Pasto tropical resistente al pastoreo,4.94,6.99,48.6,77.6,92,2015,21.8,35.7
+70,Pasto Tanner,Pasto adaptado a suelos húmedos,4.82,6.66,71.7,88.1,0,1561,21.6,33.9
+71,Pasto Pangola,Excelente digestibilidad para bovinos,5.05,7.11,55.9,79.3,0,1779,20.4,34.3
+72,Moringa,Árbol forrajero con alto contenido nutricional,5.15,7.41,40.6,68.0,41,1444,23.4,38.1
+73,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.18,7.01,48.1,77.8,0,1938,20.4,34.6
+74,Pennisetum Purpureum,Pasto tropical para corte,5.31,7.07,62.7,86.9,4,1723,21.3,35.1
+75,Maralfalfa,Pasto híbrido de alta producción,5.65,7.03,57.8,83.8,40,1915,19.4,34.4
+76,Caña Forrajera,Utilizada como suplemento energético,5.2,7.39,54.8,78.4,39,1777,22.9,36.9
+77,Centrosema,Leguminosa tropical rastrera,4.98,6.77,52.5,84.8,35,1813,20.2,33.9
+78,Desmodium,Leguminosa de buena digestibilidad,5.39,6.87,49.4,79.1,45,2204,18.7,31.9
+79,Guandul,Leguminosa arbustiva resistente,4.82,7.51,46.7,72.2,0,1938,19.2,34.2
+80,Caupí Forrajero,Leguminosa anual tropical,5.18,6.85,49.0,73.9,0,1758,21.7,33.9
+81,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.84,6.92,47.7,78.8,45,2235,20.1,36.3
+82,Pasto Alemán,Forraje adaptado a zonas húmedas,5.1,6.53,71.4,92.2,0,1271,21.5,33.9
+83,Pasto Jaragua,Muy resistente a altas temperaturas,4.71,6.67,39.8,72.4,45,1875,24.2,37.5
+84,Pasto Angleton,Forraje tropical para pastoreo,5.07,6.94,46.7,73.0,75,1847,21.4,35.0
+85,Pasto Toledo,Variedad mejorada de brachiaria,5.12,6.68,51.6,79.0,15,2198,20.6,34.7
+86,Pasto Mombasa,Alta producción de biomasa,4.97,6.9,56.7,77.7,44,1875,22.8,36.0
+87,Pasto Tanzania,Excelente calidad nutricional,4.8,7.0,57.7,80.1,22,1722,21.8,35.9
+88,Pasto Mulato II,Híbrido resistente y nutritivo,5.09,6.63,51.5,79.1,74,2132,19.9,36.3
+89,Pasto Humidícola,Ideal para terrenos inundables,4.42,6.66,73.1,97.2,25,1172,21.3,34.7
+90,Pasto Rhodes,Muy usado en sistemas ganaderos,5.13,6.98,44.7,77.5,32,2120,19.7,36.5
+91,Pasto Buffel,Excelente resistencia a sequía,4.9,7.3,36.4,63.8,0,1707,23.4,39.8
+92,Soja Forrajera,Fuente rica en proteína vegetal,5.85,7.16,47.5,72.4,71,1848,19.8,31.2
+93,Vicia,Leguminosa usada en mezcla con gramíneas,6.12,7.43,55.1,77.8,1183,2967,10.1,25.0
+94,Cebada Forrajera,Excelente para climas templados,6.06,7.37,52.8,76.5,1480,3255,8.8,19.2
+95,Festuca,Gramínea perenne para clima frío,5.34,6.99,62.4,87.4,1783,3274,7.1,20.2
+96,Dactylis Glomerata,Pasto resistente al frío,5.34,6.9,53.5,77.3,1746,3118,8.8,20.3
+97,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.67,7.6,52.8,77.4,1439,3214,10.2,23.4
+98,Pasto Sudan,Híbrido de rápido crecimiento,5.17,6.84,43.2,68.7,0,1727,21.0,37.2
+99,Arachis Pintoi,Leguminosa rastrera tropical,5.17,6.79,56.0,87.2,86,1897,19.8,33.7
+100,Calliandra,Arbusto forrajero rico en proteína,5.62,7.52,48.3,79.3,0,2407,17.4,30.1
+101,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.94,6.89,42.7,75.2,0,1756,21.9,36.7
+102,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,4.89,7.02,56.1,85.1,0,2190,17.9,31.7
+103,Pasto Elefante,Forraje tropical de alta producción,5.34,6.9,58.3,80.3,87,1899,19.9,34.6
+104,Alfalfa,Leguminosa rica en proteína para ganado,6.05,7.41,51.4,67.5,998,3244,14.8,27.0
+105,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.7,6.45,37.0,72.0,0,1933,21.2,36.6
+106,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.04,6.7,44.7,78.4,18,2139,19.1,35.5
+107,Pasto Guinea,Pasto tropical de rápido crecimiento,5.08,6.86,57.5,82.4,0,1853,21.2,34.9
+108,Pasto Kikuyo,Muy usado en lechería de clima frío,5.4,6.86,66.2,91.4,1794,3148,10.4,21.4
+109,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.7,7.28,67.8,87.9,1813,3283,7.2,20.0
+110,Ray Grass Italiano,Forraje de alta digestibilidad,5.79,7.19,58.0,84.5,1532,3011,10.2,22.5
+111,Maíz Forrajero,Utilizado principalmente para ensilaje,5.34,6.92,55.8,81.2,0,2540,18.2,31.1
+112,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.83,6.91,47.6,67.2,56,2237,20.0,37.8
+113,Avena Forrajera,Excelente producción en clima frío,5.78,7.26,62.1,87.0,1442,3230,7.6,20.4
+114,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.83,7.48,54.2,77.8,1162,2879,11.4,24.9
+115,Trébol Rojo,Forraje de buena calidad nutricional,6.0,7.24,47.1,75.5,1110,3014,10.2,24.4
+116,Canavalia,Leguminosa usada como cobertura y forraje,5.51,7.4,47.9,77.4,55,1813,19.3,32.6
+117,Leucaena,Árbol forrajero rico en proteína,5.55,7.33,42.7,75.7,6,1713,21.5,35.8
+118,Botón de Oro,Forraje arbustivo de alta proteína,4.95,7.13,51.0,83.4,9,2538,17.4,29.8
+119,King Grass,Variedad de pasto de gran rendimiento,5.41,6.83,61.6,87.8,0,1838,22.3,35.0
+120,Pasto Estrella,Pasto tropical resistente al pastoreo,4.98,6.86,51.4,80.5,0,2018,21.1,35.3
+121,Pasto Tanner,Pasto adaptado a suelos húmedos,4.78,6.48,69.7,91.6,86,1576,21.3,34.1
+122,Pasto Pangola,Excelente digestibilidad para bovinos,5.12,7.17,52.3,81.8,22,1752,19.5,34.2
+123,Moringa,Árbol forrajero con alto contenido nutricional,4.85,7.41,38.6,68.9,0,1512,24.4,38.0
+124,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.04,7.01,50.7,73.3,50,1926,20.0,34.9
+125,Pennisetum Purpureum,Pasto tropical para corte,5.66,7.07,58.6,83.9,27,1751,22.4,35.7
+126,Maralfalfa,Pasto híbrido de alta producción,5.65,7.04,61.9,82.6,61,2035,20.9,34.8
+127,Caña Forrajera,Utilizada como suplemento energético,4.82,7.65,57.0,79.7,20,1848,22.9,35.5
+128,Centrosema,Leguminosa tropical rastrera,5.04,6.77,58.0,86.1,0,1896,19.1,34.8
+129,Desmodium,Leguminosa de buena digestibilidad,5.64,6.96,50.2,82.5,0,2218,17.6,32.7
+130,Guandul,Leguminosa arbustiva resistente,4.85,7.51,46.1,75.7,0,1953,19.7,34.6
+131,Caupí Forrajero,Leguminosa anual tropical,5.04,7.1,47.8,72.1,0,1822,22.1,33.9
+132,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.02,7.0,43.8,77.5,1,2217,20.1,35.7
+133,Pasto Alemán,Forraje adaptado a zonas húmedas,5.06,6.69,69.0,95.7,22,1171,22.3,33.2
+134,Pasto Jaragua,Muy resistente a altas temperaturas,4.71,6.75,41.8,69.0,0,1723,24.5,38.4
+135,Pasto Angleton,Forraje tropical para pastoreo,4.89,6.84,45.6,77.3,36,1883,21.9,35.2
+136,Pasto Toledo,Variedad mejorada de brachiaria,5.04,6.69,47.3,78.1,61,2145,19.4,35.6
+137,Pasto Mombasa,Alta producción de biomasa,4.84,7.04,53.6,82.4,0,1762,21.6,34.8
+138,Pasto Tanzania,Excelente calidad nutricional,4.89,7.1,57.8,81.6,0,1794,21.6,35.2
+139,Pasto Mulato II,Híbrido resistente y nutritivo,5.16,6.84,52.8,81.0,50,2221,19.8,35.7
+140,Pasto Humidícola,Ideal para terrenos inundables,4.56,6.43,76.3,94.6,86,1230,22.0,33.6
+141,Pasto Rhodes,Muy usado en sistemas ganaderos,5.18,6.9,43.1,74.6,69,2100,20.3,35.9
+142,Pasto Buffel,Excelente resistencia a sequía,5.07,7.31,36.7,65.9,64,1809,25.0,39.1
+143,Soja Forrajera,Fuente rica en proteína vegetal,5.81,7.06,48.0,72.0,94,1868,19.0,31.8
+144,Vicia,Leguminosa usada en mezcla con gramíneas,6.06,7.46,55.2,77.1,1125,3064,10.8,24.4
+145,Cebada Forrajera,Excelente para climas templados,5.82,7.51,49.1,77.6,1465,3163,8.5,20.2
+146,Festuca,Gramínea perenne para clima frío,5.45,6.94,59.8,86.6,1722,3207,8.0,19.5
+147,Dactylis Glomerata,Pasto resistente al frío,5.36,7.13,52.9,80.3,1763,3248,7.1,20.5
+148,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.33,7.53,50.4,72.3,1445,3101,10.1,23.2
+149,Pasto Sudan,Híbrido de rápido crecimiento,4.87,7.11,47.1,70.8,94,1766,21.8,37.5
+150,Arachis Pintoi,Leguminosa rastrera tropical,5.01,6.89,55.1,82.1,48,1802,20.7,34.3
+151,Calliandra,Arbusto forrajero rico en proteína,5.69,7.47,51.3,79.0,78,2591,17.2,29.7
+152,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.94,6.93,42.4,74.5,45,1703,22.4,36.9
+153,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.16,6.96,57.8,84.1,90,2146,17.7,31.8
+154,Pasto Elefante,Forraje tropical de alta producción,5.42,6.99,62.1,77.3,5,1858,19.4,34.1
+155,Alfalfa,Leguminosa rica en proteína para ganado,6.05,7.44,51.7,68.8,1043,3139,14.2,27.0
+156,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.47,6.4,38.3,76.6,68,1953,22.4,36.7
+157,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.06,6.77,47.4,79.1,0,2218,20.7,35.8
+158,Pasto Guinea,Pasto tropical de rápido crecimiento,4.99,6.87,52.8,80.8,14,1869,21.4,33.9
+159,Pasto Kikuyo,Muy usado en lechería de clima frío,5.52,6.95,62.5,89.5,1760,3170,10.3,21.7
+160,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.91,7.36,63.3,86.5,1793,3153,9.0,20.8
+161,Ray Grass Italiano,Forraje de alta digestibilidad,5.79,7.09,60.6,84.6,1456,3065,9.2,21.3
+162,Maíz Forrajero,Utilizado principalmente para ensilaje,5.6,6.81,57.1,81.4,0,2462,17.1,32.2
+163,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.04,7.17,46.1,72.2,0,2193,21.0,37.9
+164,Avena Forrajera,Excelente producción en clima frío,5.79,7.46,61.2,82.5,1492,3147,7.2,20.7
+165,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.94,7.66,57.9,77.1,1157,2842,12.5,23.5
+166,Trébol Rojo,Forraje de buena calidad nutricional,6.09,7.24,52.1,77.8,1130,3080,10.8,23.9
+167,Canavalia,Leguminosa usada como cobertura y forraje,5.51,7.49,52.7,78.1,57,1888,20.1,32.1
+168,Leucaena,Árbol forrajero rico en proteína,5.51,7.51,44.2,72.9,58,1710,21.1,35.8
+169,Botón de Oro,Forraje arbustivo de alta proteína,5.0,7.03,51.8,82.6,63,2511,17.9,30.0
+170,King Grass,Variedad de pasto de gran rendimiento,5.61,7.08,62.4,82.9,39,1784,22.4,35.7
+171,Pasto Estrella,Pasto tropical resistente al pastoreo,4.8,6.7,47.7,79.1,63,1995,22.5,36.7
+172,Pasto Tanner,Pasto adaptado a suelos húmedos,4.84,6.44,68.8,87.3,0,1436,22.4,33.2
+173,Pasto Pangola,Excelente digestibilidad para bovinos,5.1,6.94,56.1,81.5,91,1836,20.3,35.4
+174,Moringa,Árbol forrajero con alto contenido nutricional,4.95,7.41,37.6,70.7,0,1556,24.6,37.1
+175,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.01,6.86,48.2,77.0,0,1900,19.5,33.8
+176,Pennisetum Purpureum,Pasto tropical para corte,5.69,7.02,57.9,82.5,88,1715,21.9,34.3
+177,Maralfalfa,Pasto híbrido de alta producción,5.6,7.18,60.9,84.8,96,1937,19.0,34.1
+178,Caña Forrajera,Utilizada como suplemento energético,4.86,7.67,53.3,82.4,0,1828,22.8,35.5
+179,Centrosema,Leguminosa tropical rastrera,5.18,6.78,53.5,82.0,0,1745,20.3,33.8
+180,Desmodium,Leguminosa de buena digestibilidad,5.7,6.84,52.2,82.6,0,2205,17.7,31.6
+181,Guandul,Leguminosa arbustiva resistente,4.85,7.44,45.5,77.9,80,1991,20.8,35.4
+182,Caupí Forrajero,Leguminosa anual tropical,4.81,7.04,47.2,77.2,96,1890,21.0,35.0
+183,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.0,7.16,45.5,82.0,20,2261,19.5,35.7
+184,Pasto Alemán,Forraje adaptado a zonas húmedas,5.09,6.35,70.3,92.8,0,1237,22.6,35.0
+185,Pasto Jaragua,Muy resistente a altas temperaturas,4.7,6.83,39.6,71.8,0,1804,24.3,37.4
+186,Pasto Angleton,Forraje tropical para pastoreo,4.97,6.65,42.2,75.3,89,1756,21.5,35.1
+187,Pasto Toledo,Variedad mejorada de brachiaria,5.13,6.83,47.4,82.8,0,2300,19.7,34.9
+188,Pasto Mombasa,Alta producción de biomasa,4.93,6.98,53.3,77.3,0,1773,21.6,35.3
+189,Pasto Tanzania,Excelente calidad nutricional,5.01,7.11,55.9,78.9,57,1858,22.3,35.7
+190,Pasto Mulato II,Híbrido resistente y nutritivo,4.93,6.81,51.9,80.3,96,2170,19.8,36.4
+191,Pasto Humidícola,Ideal para terrenos inundables,4.55,6.39,73.2,93.5,0,1133,22.5,34.2
+192,Pasto Rhodes,Muy usado en sistemas ganaderos,4.9,7.04,42.3,75.9,0,2205,20.1,36.2
+193,Pasto Buffel,Excelente resistencia a sequía,4.86,7.3,34.5,65.7,40,1786,23.2,39.5
+194,Soja Forrajera,Fuente rica en proteína vegetal,5.81,7.15,50.9,73.5,0,1886,19.4,32.9
+195,Vicia,Leguminosa usada en mezcla con gramíneas,5.81,7.5,53.1,80.1,1120,3057,10.7,24.9
+196,Cebada Forrajera,Excelente para climas templados,5.99,7.51,48.5,77.8,1529,3240,8.7,19.6
+197,Festuca,Gramínea perenne para clima frío,5.69,7.08,58.3,83.7,1757,3206,8.4,19.3
+198,Dactylis Glomerata,Pasto resistente al frío,5.69,7.08,52.6,82.2,1734,3223,8.2,19.1
+199,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.69,7.6,50.7,73.7,1432,3195,9.5,23.5
+200,Pasto Sudan,Híbrido de rápido crecimiento,4.95,6.88,44.5,67.8,36,1804,21.7,38.3
+201,Arachis Pintoi,Leguminosa rastrera tropical,5.18,6.64,53.4,83.8,89,1812,19.4,33.7
+202,Calliandra,Arbusto forrajero rico en proteína,5.33,7.65,49.5,82.1,5,2402,18.5,30.6
+203,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.98,7.17,42.4,75.2,0,1828,21.7,36.6
+204,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.04,7.18,53.6,83.7,84,2206,17.8,31.6
+205,Pasto Elefante,Forraje tropical de alta producción,5.37,6.91,60.5,77.5,79,1858,20.1,34.0
+206,Alfalfa,Leguminosa rica en proteína para ganado,6.1,7.39,48.9,71.0,965,3282,15.4,27.2
+207,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.51,6.45,40.7,73.7,27,1993,22.8,35.7
+208,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.19,6.72,43.2,82.2,53,2146,19.3,34.4
+209,Pasto Guinea,Pasto tropical de rápido crecimiento,5.19,6.93,54.3,78.9,87,1834,22.1,34.5
+210,Pasto Kikuyo,Muy usado en lechería de clima frío,5.55,7.02,66.5,92.6,1862,3175,10.3,21.6
+211,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.94,7.15,65.4,87.4,1841,3223,8.0,20.3
+212,Ray Grass Italiano,Forraje de alta digestibilidad,5.75,6.93,57.2,82.2,1570,2952,10.1,22.1
+213,Maíz Forrajero,Utilizado principalmente para ensilaje,5.48,6.94,55.1,79.6,0,2410,18.5,31.3
+214,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.87,6.89,44.7,67.6,0,2115,20.8,38.0
+215,Avena Forrajera,Excelente producción en clima frío,5.81,7.16,61.1,87.3,1445,3243,7.8,19.4
+216,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.94,7.56,55.2,75.4,1265,2772,11.5,23.2
+217,Trébol Rojo,Forraje de buena calidad nutricional,6.18,7.19,47.4,77.0,1269,2953,10.8,24.5
+218,Canavalia,Leguminosa usada como cobertura y forraje,5.67,7.6,52.3,79.5,2,1731,20.7,32.4
+219,Leucaena,Árbol forrajero rico en proteína,5.38,7.41,42.6,73.0,0,1824,22.5,34.0
+220,Botón de Oro,Forraje arbustivo de alta proteína,4.99,7.16,52.1,82.2,0,2551,17.4,29.7
+221,King Grass,Variedad de pasto de gran rendimiento,5.52,7.11,58.4,84.1,0,1871,21.5,35.1
+222,Pasto Estrella,Pasto tropical resistente al pastoreo,4.96,6.67,51.2,78.1,0,1966,22.2,36.0
+223,Pasto Tanner,Pasto adaptado a suelos húmedos,4.88,6.42,72.4,89.3,50,1578,21.5,34.9
+224,Pasto Pangola,Excelente digestibilidad para bovinos,5.14,6.86,56.2,77.3,85,1828,19.3,35.7
+225,Moringa,Árbol forrajero con alto contenido nutricional,5.05,7.56,40.3,71.3,0,1511,24.5,38.7
+226,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.16,6.81,47.1,74.6,75,2009,21.0,34.9
+227,Pennisetum Purpureum,Pasto tropical para corte,5.61,7.18,60.5,86.3,49,1783,21.2,35.1
+228,Maralfalfa,Pasto híbrido de alta producción,5.57,6.94,61.8,84.8,0,2031,19.8,35.3
+229,Caña Forrajera,Utilizada como suplemento energético,4.91,7.56,54.4,78.9,71,1722,21.2,36.7
+230,Centrosema,Leguminosa tropical rastrera,4.88,6.97,54.3,82.4,46,1866,19.4,33.7
+231,Desmodium,Leguminosa de buena digestibilidad,5.36,6.92,52.1,79.9,18,2118,18.5,31.9
+232,Guandul,Leguminosa arbustiva resistente,5.13,7.67,45.9,75.2,0,1936,20.7,35.5
+233,Caupí Forrajero,Leguminosa anual tropical,4.99,6.87,48.1,77.8,0,1716,21.3,33.3
+234,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.88,6.83,44.8,81.4,14,2288,21.0,36.4
+235,Pasto Alemán,Forraje adaptado a zonas húmedas,5.2,6.42,67.1,97.0,40,1171,21.9,33.1
+236,Pasto Jaragua,Muy resistente a altas temperaturas,5.0,6.78,41.9,71.4,1,1871,23.1,38.2
+237,Pasto Angleton,Forraje tropical para pastoreo,5.01,6.7,46.5,74.3,0,1791,22.4,35.7
+238,Pasto Toledo,Variedad mejorada de brachiaria,5.03,6.91,48.0,78.9,56,2203,19.9,34.4
+239,Pasto Mombasa,Alta producción de biomasa,5.13,6.85,52.4,79.5,39,1768,21.4,35.8
+240,Pasto Tanzania,Excelente calidad nutricional,4.93,7.18,53.8,81.3,60,1793,23.0,35.1
+241,Pasto Mulato II,Híbrido resistente y nutritivo,4.95,6.95,50.3,78.9,0,2156,20.4,35.6
+242,Pasto Humidícola,Ideal para terrenos inundables,4.38,6.65,77.9,96.2,0,1122,22.1,34.0
+243,Pasto Rhodes,Muy usado en sistemas ganaderos,5.09,6.84,44.0,74.1,64,2180,20.1,36.8
+244,Pasto Buffel,Excelente resistencia a sequía,4.82,7.66,32.5,62.5,74,1801,24.7,40.4
+245,Soja Forrajera,Fuente rica en proteína vegetal,5.64,7.38,51.1,74.6,0,1770,20.6,31.2
+246,Vicia,Leguminosa usada en mezcla con gramíneas,6.01,7.67,56.5,80.5,1151,3016,10.1,23.7
+247,Cebada Forrajera,Excelente para climas templados,6.07,7.51,49.3,76.3,1498,3172,7.9,19.3
+248,Festuca,Gramínea perenne para clima frío,5.57,7.11,58.9,84.2,1745,3178,7.1,20.2
+249,Dactylis Glomerata,Pasto resistente al frío,5.67,6.92,56.6,81.5,1764,3143,7.3,20.4
+250,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.43,7.64,47.5,72.3,1461,3210,9.3,23.4
+251,Pasto Sudan,Híbrido de rápido crecimiento,5.19,7.1,43.8,70.8,0,1836,21.5,38.8
+252,Arachis Pintoi,Leguminosa rastrera tropical,5.09,6.93,54.1,83.4,10,1837,19.3,34.6
+253,Calliandra,Arbusto forrajero rico en proteína,5.68,7.51,52.0,77.7,75,2500,17.1,30.6
+254,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.95,6.91,46.1,73.6,52,1881,22.9,36.3
+255,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.02,6.97,57.1,84.3,0,2154,18.3,31.9
+256,Pasto Elefante,Forraje tropical de alta producción,5.31,6.97,62.6,82.6,0,1716,20.2,34.9
+257,Alfalfa,Leguminosa rica en proteína para ganado,5.82,7.35,50.7,67.4,973,3147,15.0,27.7
+258,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.69,6.35,40.0,76.0,69,2084,22.1,36.3
+259,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.81,6.97,43.5,77.9,0,2255,19.7,35.5
+260,Pasto Guinea,Pasto tropical de rápido crecimiento,5.02,6.92,53.3,78.5,0,1730,22.0,34.0
+261,Pasto Kikuyo,Muy usado en lechería de clima frío,5.46,7.13,63.3,87.8,1854,3232,10.6,22.0
+262,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.6,7.03,62.6,86.4,1843,3223,8.6,20.0
+263,Ray Grass Italiano,Forraje de alta digestibilidad,5.8,7.11,59.0,86.7,1468,3082,10.0,22.6
+264,Maíz Forrajero,Utilizado principalmente para ensilaje,5.33,7.12,53.7,77.5,42,2583,17.3,31.4
+265,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.89,6.95,44.7,71.2,53,2270,20.5,37.9
+266,Avena Forrajera,Excelente producción en clima frío,5.81,7.29,62.9,84.8,1433,3180,7.6,19.2
+267,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.82,7.34,53.0,73.4,1100,2778,11.6,24.1
+268,Trébol Rojo,Forraje de buena calidad nutricional,5.91,7.3,47.6,77.6,1258,3048,9.3,24.5
+269,Canavalia,Leguminosa usada como cobertura y forraje,5.63,7.37,49.7,82.6,0,1862,20.6,32.8
+270,Leucaena,Árbol forrajero rico en proteína,5.42,7.64,46.4,77.8,80,1769,21.5,35.2
+271,Botón de Oro,Forraje arbustivo de alta proteína,5.04,7.08,49.6,85.9,42,2444,17.6,30.9
+272,King Grass,Variedad de pasto de gran rendimiento,5.57,6.85,62.1,86.1,74,1801,22.0,35.9
+273,Pasto Estrella,Pasto tropical resistente al pastoreo,5.09,6.81,47.7,79.1,95,1916,22.4,35.3
+274,Pasto Tanner,Pasto adaptado a suelos húmedos,4.91,6.61,70.1,88.3,0,1437,22.2,34.2
+275,Pasto Pangola,Excelente digestibilidad para bovinos,5.13,7.04,52.3,82.7,1,1784,20.1,35.8
+276,Moringa,Árbol forrajero con alto contenido nutricional,5.15,7.67,38.5,70.1,0,1462,23.0,38.6
+277,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.85,6.94,48.6,75.3,0,2099,21.0,34.4
+278,Pennisetum Purpureum,Pasto tropical para corte,5.45,6.84,61.7,84.7,18,1848,21.5,35.3
+279,Maralfalfa,Pasto híbrido de alta producción,5.45,7.15,62.2,86.7,0,1934,20.0,34.6
+280,Caña Forrajera,Utilizada como suplemento energético,4.84,7.63,53.4,82.5,0,1735,21.1,35.1
+281,Centrosema,Leguminosa tropical rastrera,4.97,6.7,52.7,83.8,0,1780,20.4,33.6
+282,Desmodium,Leguminosa de buena digestibilidad,5.66,7.17,49.6,81.5,29,2272,17.3,32.7
+283,Guandul,Leguminosa arbustiva resistente,5.08,7.33,46.9,76.2,0,1971,21.0,34.9
+284,Caupí Forrajero,Leguminosa anual tropical,4.96,6.82,49.8,73.8,0,1757,22.6,33.2
+285,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.0,6.82,46.1,78.2,80,2108,19.3,36.6
+286,Pasto Alemán,Forraje adaptado a zonas húmedas,4.92,6.63,72.7,95.6,0,1240,22.7,34.8
+287,Pasto Jaragua,Muy resistente a altas temperaturas,4.75,6.77,41.4,72.7,0,1851,23.9,37.5
+288,Pasto Angleton,Forraje tropical para pastoreo,4.98,6.92,43.2,76.6,0,1899,21.8,35.6
+289,Pasto Toledo,Variedad mejorada de brachiaria,5.13,6.85,49.7,77.9,21,2190,19.0,35.9
+290,Pasto Mombasa,Alta producción de biomasa,4.89,7.11,56.9,82.1,0,1833,22.3,34.5
+291,Pasto Tanzania,Excelente calidad nutricional,4.99,7.03,55.8,78.7,62,1836,21.7,35.0
+292,Pasto Mulato II,Híbrido resistente y nutritivo,4.83,6.66,47.8,81.8,0,2285,19.5,36.7
+293,Pasto Humidícola,Ideal para terrenos inundables,4.62,6.43,73.6,96.8,43,1240,22.6,34.6
+294,Pasto Rhodes,Muy usado en sistemas ganaderos,5.06,6.89,45.4,72.6,36,2208,19.4,35.8
+295,Pasto Buffel,Excelente resistencia a sequía,4.97,7.38,33.5,64.1,66,1767,23.1,39.1
+296,Soja Forrajera,Fuente rica en proteína vegetal,5.62,7.07,50.1,74.9,0,1724,20.6,32.0
+297,Vicia,Leguminosa usada en mezcla con gramíneas,6.03,7.61,57.5,81.0,1231,3082,10.1,24.5
+298,Cebada Forrajera,Excelente para climas templados,5.89,7.65,50.5,77.8,1491,3220,7.5,20.4
+299,Festuca,Gramínea perenne para clima frío,5.43,6.86,58.5,84.4,1737,3112,7.4,20.8
+300,Dactylis Glomerata,Pasto resistente al frío,5.33,7.04,55.6,81.6,1839,3107,7.0,20.9
+301,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.34,7.37,50.6,75.2,1562,3114,9.3,23.1
+302,Pasto Sudan,Híbrido de rápido crecimiento,5.06,6.94,47.3,70.8,34,1885,22.3,38.0
+303,Arachis Pintoi,Leguminosa rastrera tropical,4.97,6.64,53.6,83.2,0,1741,20.3,33.1
+304,Calliandra,Arbusto forrajero rico en proteína,5.4,7.35,47.7,82.5,3,2564,17.1,30.5
+305,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.05,6.82,46.8,77.3,85,1770,22.7,35.4
+306,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.19,6.9,55.0,87.0,0,2246,19.0,32.8
+307,Pasto Elefante,Forraje tropical de alta producción,5.41,7.11,58.7,79.5,0,1703,20.6,35.0
+308,Alfalfa,Leguminosa rica en proteína para ganado,6.07,7.58,48.5,71.0,954,3211,14.0,28.6
+309,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.62,6.49,40.5,75.6,1,2016,22.0,36.2
+310,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.97,6.84,44.9,80.1,46,2200,20.5,35.3
+311,Pasto Guinea,Pasto tropical de rápido crecimiento,5.08,6.82,54.2,80.1,0,1732,21.2,34.0
+312,Pasto Kikuyo,Muy usado en lechería de clima frío,5.6,6.9,66.2,93.0,1858,3182,10.6,22.1
+313,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.71,7.21,64.6,84.6,1740,3236,8.4,20.9
+314,Ray Grass Italiano,Forraje de alta digestibilidad,5.87,6.84,59.2,85.6,1495,3009,10.3,22.0
+315,Maíz Forrajero,Utilizado principalmente para ensilaje,5.32,7.19,54.2,80.3,0,2495,18.5,32.3
+316,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.15,6.91,42.3,69.9,0,2228,20.3,38.4
+317,Avena Forrajera,Excelente producción en clima frío,5.95,7.17,61.2,85.9,1595,3120,7.8,20.4
+318,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.11,7.44,57.4,73.0,1214,2723,11.6,23.2
+319,Trébol Rojo,Forraje de buena calidad nutricional,5.82,7.2,48.0,75.1,1189,2979,10.4,24.8
+320,Canavalia,Leguminosa usada como cobertura y forraje,5.4,7.54,50.0,82.6,96,1886,20.1,31.2
+321,Leucaena,Árbol forrajero rico en proteína,5.53,7.45,47.2,76.0,93,1770,21.4,34.7
+322,Botón de Oro,Forraje arbustivo de alta proteína,4.84,6.98,48.2,82.9,0,2557,18.9,29.6
+323,King Grass,Variedad de pasto de gran rendimiento,5.49,6.93,57.5,87.4,29,1881,21.9,35.2
+324,Pasto Estrella,Pasto tropical resistente al pastoreo,5.01,6.96,48.8,81.3,62,2038,22.3,35.2
+325,Pasto Tanner,Pasto adaptado a suelos húmedos,4.67,6.57,67.7,91.4,0,1421,22.7,34.3
+326,Pasto Pangola,Excelente digestibilidad para bovinos,4.84,7.08,57.3,82.6,0,1888,20.7,34.5
+327,Moringa,Árbol forrajero con alto contenido nutricional,4.8,7.58,39.8,70.6,6,1476,23.7,38.3
+328,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.02,6.84,52.6,73.7,0,1942,20.3,34.6
+329,Pennisetum Purpureum,Pasto tropical para corte,5.4,6.89,62.6,85.9,0,1711,22.1,34.6
+330,Maralfalfa,Pasto híbrido de alta producción,5.32,6.98,62.1,86.7,0,1982,20.0,34.5
+331,Caña Forrajera,Utilizada como suplemento energético,5.19,7.6,53.4,77.8,0,1898,21.6,35.7
+332,Centrosema,Leguminosa tropical rastrera,4.99,6.89,56.7,83.2,0,1710,19.2,33.2
+333,Desmodium,Leguminosa de buena digestibilidad,5.41,7.17,52.9,80.2,84,2159,17.5,32.6
+334,Guandul,Leguminosa arbustiva resistente,5.03,7.52,42.0,75.4,0,2056,20.6,34.1
+335,Caupí Forrajero,Leguminosa anual tropical,5.18,6.83,52.5,73.1,90,1729,22.3,33.9
+336,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.9,7.19,46.9,79.7,50,2201,20.3,35.3
+337,Pasto Alemán,Forraje adaptado a zonas húmedas,5.13,6.34,72.0,96.5,0,1290,21.9,34.7
+338,Pasto Jaragua,Muy resistente a altas temperaturas,4.95,6.99,37.9,68.4,0,1839,24.6,37.0
+339,Pasto Angleton,Forraje tropical para pastoreo,5.01,6.72,45.6,75.3,0,1717,21.5,35.4
+340,Pasto Toledo,Variedad mejorada de brachiaria,4.84,6.96,49.1,78.2,0,2165,19.1,34.7
+341,Pasto Mombasa,Alta producción de biomasa,5.18,7.07,53.1,79.1,0,1814,21.9,34.5
+342,Pasto Tanzania,Excelente calidad nutricional,5.16,7.04,54.6,78.1,27,1789,21.7,34.3
+343,Pasto Mulato II,Híbrido resistente y nutritivo,5.12,6.8,48.0,78.4,0,2183,20.5,36.4
+344,Pasto Humidícola,Ideal para terrenos inundables,4.31,6.59,77.8,95.9,16,1234,21.5,34.8
+345,Pasto Rhodes,Muy usado en sistemas ganaderos,5.03,7.15,45.9,75.1,0,2267,20.6,36.6
+346,Pasto Buffel,Excelente resistencia a sequía,4.97,7.38,32.3,64.8,1,1866,23.2,40.5
+347,Soja Forrajera,Fuente rica en proteína vegetal,5.67,7.39,52.8,77.6,47,1898,20.9,32.0
+348,Vicia,Leguminosa usada en mezcla con gramíneas,5.95,7.49,53.8,80.5,1196,2990,9.8,23.4
+349,Cebada Forrajera,Excelente para climas templados,5.85,7.32,48.5,77.5,1490,3218,8.1,19.2
+350,Festuca,Gramínea perenne para clima frío,5.57,7.06,61.0,86.0,1732,3146,7.9,20.7
+351,Dactylis Glomerata,Pasto resistente al frío,5.57,7.16,55.8,80.0,1850,3173,8.4,19.7
+352,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.52,7.38,50.5,74.9,1562,3180,10.1,23.7
+353,Pasto Sudan,Híbrido de rápido crecimiento,5.15,7.06,46.9,71.7,0,1831,21.8,37.4
+354,Arachis Pintoi,Leguminosa rastrera tropical,4.99,6.98,52.7,84.0,36,1786,20.9,34.8
+355,Calliandra,Arbusto forrajero rico en proteína,5.31,7.66,48.1,77.0,0,2534,17.9,30.1
+356,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.06,7.01,45.7,74.1,45,1802,21.4,36.8
+357,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.11,6.88,54.6,85.0,71,2225,17.5,32.0
+358,Pasto Elefante,Forraje tropical de alta producción,5.49,6.86,62.5,82.5,83,1700,19.1,34.0
+359,Alfalfa,Leguminosa rica en proteína para ganado,6.15,7.48,50.5,70.4,912,3240,14.9,28.3
+360,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.54,6.66,41.0,73.9,19,1947,21.1,36.4
+361,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.07,6.89,44.8,81.1,64,2194,19.7,34.8
+362,Pasto Guinea,Pasto tropical de rápido crecimiento,4.85,6.83,57.9,80.4,98,1897,21.6,33.6
+363,Pasto Kikuyo,Muy usado en lechería de clima frío,5.48,7.17,63.6,90.5,1873,3227,10.7,21.8
+364,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.68,7.33,67.1,84.7,1830,3167,8.1,20.9
+365,Ray Grass Italiano,Forraje de alta digestibilidad,5.68,6.86,57.6,84.9,1481,3093,10.4,21.4
+366,Maíz Forrajero,Utilizado principalmente para ensilaje,5.39,7.02,57.2,78.1,85,2577,18.3,31.1
+367,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.91,6.85,47.8,70.7,98,2148,19.3,37.6
+368,Avena Forrajera,Excelente producción en clima frío,5.84,7.21,61.2,85.2,1434,3200,8.7,19.3
+369,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.16,7.67,57.1,77.7,1209,2732,11.7,23.3
+370,Trébol Rojo,Forraje de buena calidad nutricional,6.06,7.15,49.7,73.6,1184,3037,10.7,24.2
+371,Canavalia,Leguminosa usada como cobertura y forraje,5.41,7.52,52.9,82.2,65,1895,19.5,31.5
+372,Leucaena,Árbol forrajero rico en proteína,5.59,7.32,43.9,76.4,0,1891,21.4,35.4
+373,Botón de Oro,Forraje arbustivo de alta proteína,5.19,6.97,52.7,86.4,0,2481,17.2,29.6
+374,King Grass,Variedad de pasto de gran rendimiento,5.43,6.88,58.7,82.5,15,1755,21.6,36.0
+375,Pasto Estrella,Pasto tropical resistente al pastoreo,4.8,6.64,47.1,80.3,19,1907,21.1,36.0
+376,Pasto Tanner,Pasto adaptado a suelos húmedos,4.72,6.37,67.8,90.8,0,1550,21.2,33.7
+377,Pasto Pangola,Excelente digestibilidad para bovinos,4.84,7.13,55.5,80.9,0,1820,19.3,35.8
+378,Moringa,Árbol forrajero con alto contenido nutricional,5.19,7.45,39.9,67.8,58,1562,24.8,37.2
+379,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.05,7.03,49.3,74.5,90,1964,20.5,34.2
+380,Pennisetum Purpureum,Pasto tropical para corte,5.3,6.97,62.2,85.1,0,1802,21.5,35.3
+381,Maralfalfa,Pasto híbrido de alta producción,5.31,7.06,62.4,87.7,44,2071,20.9,35.5
+382,Caña Forrajera,Utilizada como suplemento energético,5.17,7.41,57.6,81.9,85,1749,22.5,36.8
+383,Centrosema,Leguminosa tropical rastrera,5.19,6.82,53.8,85.9,94,1867,20.3,33.6
+384,Desmodium,Leguminosa de buena digestibilidad,5.55,7.09,50.5,81.9,5,2234,17.0,31.7
+385,Guandul,Leguminosa arbustiva resistente,4.9,7.5,47.2,77.5,8,2001,19.6,34.4
+386,Caupí Forrajero,Leguminosa anual tropical,4.95,7.11,50.0,72.6,0,1807,21.5,34.3
+387,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.91,6.96,46.9,79.1,92,2228,20.9,35.6
+388,Pasto Alemán,Forraje adaptado a zonas húmedas,4.86,6.46,69.4,95.6,89,1157,22.8,33.6
+389,Pasto Jaragua,Muy resistente a altas temperaturas,4.79,6.71,41.0,67.7,0,1856,24.6,37.3
+390,Pasto Angleton,Forraje tropical para pastoreo,5.06,6.79,47.1,75.2,0,1829,21.9,36.6
+391,Pasto Toledo,Variedad mejorada de brachiaria,4.95,6.88,50.4,81.7,71,2248,19.8,34.6
+392,Pasto Mombasa,Alta producción de biomasa,4.87,7.04,54.8,81.8,0,1862,21.5,35.1
+393,Pasto Tanzania,Excelente calidad nutricional,4.96,6.97,54.6,78.4,100,1879,21.4,34.4
+394,Pasto Mulato II,Híbrido resistente y nutritivo,5.11,6.69,52.1,79.3,0,2119,20.7,36.5
+395,Pasto Humidícola,Ideal para terrenos inundables,4.44,6.59,76.7,95.7,0,1185,21.3,33.2
+396,Pasto Rhodes,Muy usado en sistemas ganaderos,5.05,6.92,44.7,72.1,0,2254,20.8,36.0
+397,Pasto Buffel,Excelente resistencia a sequía,5.15,7.68,36.5,64.2,0,1885,23.6,40.3
+398,Soja Forrajera,Fuente rica en proteína vegetal,5.81,7.21,51.1,74.1,78,1705,20.6,31.7
+399,Vicia,Leguminosa usada en mezcla con gramíneas,6.03,7.64,57.0,77.8,1158,3003,10.0,23.2
+400,Cebada Forrajera,Excelente para climas templados,6.18,7.35,52.6,75.1,1590,3161,7.1,20.6
+401,Festuca,Gramínea perenne para clima frío,5.57,6.86,62.8,85.2,1845,3290,7.1,19.6
+402,Dactylis Glomerata,Pasto resistente al frío,5.45,6.92,56.2,81.7,1716,3113,8.3,19.2
+403,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.48,7.5,51.8,77.9,1570,3193,9.6,24.8
+404,Pasto Sudan,Híbrido de rápido crecimiento,5.01,7.16,46.0,67.4,94,1739,21.3,38.7
+405,Arachis Pintoi,Leguminosa rastrera tropical,4.98,6.7,56.6,83.3,0,1727,20.3,34.5
+406,Calliandra,Arbusto forrajero rico en proteína,5.41,7.63,48.6,79.9,0,2415,18.5,30.6
+407,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.98,7.17,44.0,76.0,7,1858,22.3,35.8
+408,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.08,7.08,52.4,86.1,0,2238,18.6,31.6
+409,Pasto Elefante,Forraje tropical de alta producción,5.31,7.19,60.3,82.8,97,1723,20.2,34.7
+410,Alfalfa,Leguminosa rica en proteína para ganado,5.99,7.62,47.4,71.2,927,3263,14.4,28.1
+411,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.45,6.34,42.5,73.1,0,2043,22.4,36.3
+412,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.85,6.88,46.1,77.5,0,2141,20.1,34.5
+413,Pasto Guinea,Pasto tropical de rápido crecimiento,4.95,7.15,55.6,78.3,0,1859,21.9,33.5
+414,Pasto Kikuyo,Muy usado en lechería de clima frío,5.67,7.13,65.8,92.5,1884,3163,10.7,21.0
+415,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.86,7.22,63.4,82.9,1792,3156,7.2,19.6
+416,Ray Grass Italiano,Forraje de alta digestibilidad,5.84,7.02,61.4,85.3,1451,3028,9.9,22.9
+417,Maíz Forrajero,Utilizado principalmente para ensilaje,5.5,7.07,56.4,80.2,0,2558,17.3,32.0
+418,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.97,6.82,46.7,70.6,99,2123,20.2,38.2
+419,Avena Forrajera,Excelente producción en clima frío,5.9,7.46,62.8,83.3,1572,3246,8.3,20.0
+420,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.11,7.66,57.4,75.1,1158,2899,11.6,24.3
+421,Trébol Rojo,Forraje de buena calidad nutricional,5.99,7.37,47.8,76.3,1227,2967,10.1,24.5
+422,Canavalia,Leguminosa usada como cobertura y forraje,5.64,7.64,52.9,79.8,0,1765,20.1,31.6
+423,Leucaena,Árbol forrajero rico en proteína,5.35,7.35,43.8,76.1,0,1853,22.6,35.5
+424,Botón de Oro,Forraje arbustivo de alta proteína,4.84,7.04,47.1,83.3,0,2552,17.9,29.1
+425,King Grass,Variedad de pasto de gran rendimiento,5.31,7.15,62.7,82.2,5,1864,22.8,34.9
+426,Pasto Estrella,Pasto tropical resistente al pastoreo,4.84,6.82,49.5,77.0,0,2057,21.5,36.0
+427,Pasto Tanner,Pasto adaptado a suelos húmedos,4.62,6.44,69.1,91.5,0,1509,22.5,34.4
+428,Pasto Pangola,Excelente digestibilidad para bovinos,4.96,7.17,57.6,77.3,0,1894,20.3,34.6
+429,Moringa,Árbol forrajero con alto contenido nutricional,4.86,7.52,39.0,69.2,48,1587,24.0,37.8
+430,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.03,7.09,47.8,76.7,36,2045,19.2,33.8
+431,Pennisetum Purpureum,Pasto tropical para corte,5.6,7.16,57.8,86.9,0,1765,23.0,34.7
+432,Maralfalfa,Pasto híbrido de alta producción,5.65,7.13,62.1,86.5,0,2082,19.1,35.9
+433,Caña Forrajera,Utilizada como suplemento energético,5.02,7.51,56.1,82.9,0,1880,21.2,36.9
+434,Centrosema,Leguminosa tropical rastrera,4.91,6.7,55.9,84.1,0,1863,20.0,34.8
+435,Desmodium,Leguminosa de buena digestibilidad,5.41,7.14,48.3,79.1,0,2104,17.3,31.3
+436,Guandul,Leguminosa arbustiva resistente,5.08,7.59,46.6,73.6,21,2097,19.5,34.9
+437,Caupí Forrajero,Leguminosa anual tropical,5.0,7.15,51.4,74.5,31,1769,22.0,34.7
+438,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.14,6.83,45.3,78.2,55,2275,19.3,35.1
+439,Pasto Alemán,Forraje adaptado a zonas húmedas,5.04,6.53,69.4,95.8,60,1161,22.9,33.6
+440,Pasto Jaragua,Muy resistente a altas temperaturas,4.65,6.92,41.8,68.7,31,1854,24.7,38.0
+441,Pasto Angleton,Forraje tropical para pastoreo,5.0,6.85,46.2,73.8,0,1718,22.4,35.1
+442,Pasto Toledo,Variedad mejorada de brachiaria,5.0,6.65,52.4,78.9,0,2152,20.8,35.5
+443,Pasto Mombasa,Alta producción de biomasa,4.9,6.91,54.5,78.9,0,1797,21.1,34.9
+444,Pasto Tanzania,Excelente calidad nutricional,5.2,6.96,56.9,78.6,98,1724,23.0,34.4
+445,Pasto Mulato II,Híbrido resistente y nutritivo,5.04,6.62,52.5,82.2,0,2100,20.8,35.7
+446,Pasto Humidícola,Ideal para terrenos inundables,4.42,6.66,73.1,94.8,0,1250,22.4,33.4
+447,Pasto Rhodes,Muy usado en sistemas ganaderos,4.83,7.02,45.6,73.8,67,2125,20.1,35.6
+448,Pasto Buffel,Excelente resistencia a sequía,5.02,7.67,32.8,63.5,75,1862,24.0,40.9
+449,Soja Forrajera,Fuente rica en proteína vegetal,5.65,7.29,49.3,73.9,0,1777,20.4,31.5
+450,Vicia,Leguminosa usada en mezcla con gramíneas,6.11,7.46,52.1,77.5,1222,3086,10.0,23.5
+451,Cebada Forrajera,Excelente para climas templados,5.88,7.47,50.6,75.0,1545,3116,8.3,20.6
+452,Festuca,Gramínea perenne para clima frío,5.35,7.06,60.6,84.2,1706,3298,8.4,19.9
+453,Dactylis Glomerata,Pasto resistente al frío,5.65,7.17,56.9,78.2,1896,3224,8.2,19.3
+454,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.45,7.7,51.7,76.3,1562,3171,9.0,23.3
+455,Pasto Sudan,Híbrido de rápido crecimiento,5.11,7.14,44.7,69.0,50,1789,22.0,37.1
+456,Arachis Pintoi,Leguminosa rastrera tropical,4.98,6.68,54.4,84.9,62,1746,20.3,34.4
+457,Calliandra,Arbusto forrajero rico en proteína,5.51,7.32,47.0,81.3,0,2573,18.0,30.1
+458,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.93,7.2,45.6,77.7,6,1775,21.9,35.3
+459,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.09,6.89,54.9,84.9,11,2263,18.6,31.9
+460,Pasto Elefante,Forraje tropical de alta producción,5.6,6.83,57.0,79.2,63,1703,19.2,34.8
+461,Alfalfa,Leguminosa rica en proteína para ganado,5.98,7.54,47.7,67.9,921,3264,14.3,28.6
+462,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.5,6.57,40.5,72.2,0,1959,22.5,35.8
+463,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.86,6.68,42.9,80.9,85,2215,20.7,34.2
+464,Pasto Guinea,Pasto tropical de rápido crecimiento,5.02,7.13,54.6,79.6,30,1867,21.4,33.0
+465,Pasto Kikuyo,Muy usado en lechería de clima frío,5.5,6.95,62.7,90.3,1718,3142,9.8,21.2
+466,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.65,7.35,67.7,87.4,1776,3260,8.4,19.9
+467,Ray Grass Italiano,Forraje de alta digestibilidad,5.87,7.14,61.6,87.8,1408,3047,10.1,21.5
+468,Maíz Forrajero,Utilizado principalmente para ensilaje,5.67,6.95,55.7,81.1,50,2480,18.4,31.4
+469,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.12,6.96,45.5,67.7,0,2159,19.2,37.6
+470,Avena Forrajera,Excelente producción en clima frío,5.84,7.32,59.8,84.9,1432,3198,7.2,19.6
+471,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.87,7.38,55.7,75.7,1193,2762,13.0,24.4
+472,Trébol Rojo,Forraje de buena calidad nutricional,5.99,7.1,52.6,76.8,1298,3056,9.6,23.6
+473,Canavalia,Leguminosa usada como cobertura y forraje,5.36,7.44,51.2,79.2,51,1741,19.7,31.7
+474,Leucaena,Árbol forrajero rico en proteína,5.38,7.35,42.5,72.3,0,1739,21.5,34.0
+475,Botón de Oro,Forraje arbustivo de alta proteína,5.09,7.01,52.1,83.4,74,2422,17.6,30.4
+476,King Grass,Variedad de pasto de gran rendimiento,5.66,7.07,62.2,85.1,18,1746,21.2,36.0
+477,Pasto Estrella,Pasto tropical resistente al pastoreo,4.91,6.88,49.7,77.8,0,2044,21.9,36.5
+478,Pasto Tanner,Pasto adaptado a suelos húmedos,4.76,6.47,72.5,90.6,34,1408,21.1,34.9
+479,Pasto Pangola,Excelente digestibilidad para bovinos,4.94,7.08,52.3,77.6,0,1735,20.9,35.7
+480,Moringa,Árbol forrajero con alto contenido nutricional,5.05,7.36,42.9,68.5,20,1519,24.1,37.5
+481,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.84,6.83,48.5,77.2,0,1942,21.0,33.8
+482,Pennisetum Purpureum,Pasto tropical para corte,5.44,6.9,61.9,83.4,0,1753,21.3,35.7
+483,Maralfalfa,Pasto híbrido de alta producción,5.32,7.03,61.7,83.2,0,1965,20.5,35.0
+484,Caña Forrajera,Utilizada como suplemento energético,4.84,7.36,52.8,81.9,13,1888,21.8,36.1
+485,Centrosema,Leguminosa tropical rastrera,4.85,6.91,53.4,83.4,19,1799,20.5,33.9
+486,Desmodium,Leguminosa de buena digestibilidad,5.35,6.88,52.0,79.6,0,2294,18.5,31.5
+487,Guandul,Leguminosa arbustiva resistente,5.17,7.61,44.6,74.8,0,1952,19.8,34.6
+488,Caupí Forrajero,Leguminosa anual tropical,4.91,7.04,48.8,73.3,0,1763,21.8,34.7
+489,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.0,7.05,44.2,78.1,0,2132,19.5,35.8
+490,Pasto Alemán,Forraje adaptado a zonas húmedas,4.89,6.42,67.8,94.5,23,1286,21.9,35.0
+491,Pasto Jaragua,Muy resistente a altas temperaturas,4.96,6.93,40.0,72.0,0,1877,23.3,38.8
+492,Pasto Angleton,Forraje tropical para pastoreo,4.85,6.65,45.5,75.9,0,1770,21.2,35.4
+493,Pasto Toledo,Variedad mejorada de brachiaria,5.15,6.64,50.9,78.0,0,2249,20.4,34.8
+494,Pasto Mombasa,Alta producción de biomasa,5.07,7.14,56.2,82.8,93,1758,21.4,35.3
+495,Pasto Tanzania,Excelente calidad nutricional,4.99,7.04,53.0,77.6,49,1836,22.5,35.3
+496,Pasto Mulato II,Híbrido resistente y nutritivo,5.05,6.89,48.0,80.8,0,2300,20.4,35.1
+497,Pasto Humidícola,Ideal para terrenos inundables,4.37,6.64,76.7,97.8,0,1294,22.9,33.2
+498,Pasto Rhodes,Muy usado en sistemas ganaderos,5.08,6.92,47.2,73.7,0,2212,20.0,35.0
+499,Pasto Buffel,Excelente resistencia a sequía,5.05,7.64,36.5,66.1,0,1825,23.6,39.1
+500,Soja Forrajera,Fuente rica en proteína vegetal,5.72,7.37,47.6,75.4,11,1844,20.8,31.5
+501,Vicia,Leguminosa usada en mezcla con gramíneas,6.12,7.37,52.7,78.8,1113,2934,9.4,24.3
+502,Cebada Forrajera,Excelente para climas templados,6.19,7.5,52.5,76.1,1442,3262,7.2,20.3
+503,Festuca,Gramínea perenne para clima frío,5.49,7.04,61.3,85.8,1739,3274,7.8,19.4
+504,Dactylis Glomerata,Pasto resistente al frío,5.42,6.96,55.6,80.0,1702,3265,7.3,20.0
+505,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.69,7.35,50.3,77.8,1565,3268,10.1,23.9
+506,Pasto Sudan,Híbrido de rápido crecimiento,4.88,7.07,43.7,72.3,14,1714,22.9,37.7
+507,Arachis Pintoi,Leguminosa rastrera tropical,4.83,6.65,52.3,87.3,0,1865,20.4,33.4
+508,Calliandra,Arbusto forrajero rico en proteína,5.59,7.52,48.2,77.8,74,2421,18.4,29.6
+509,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.11,7.2,42.2,73.4,77,1833,21.6,35.0
+510,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.07,7.18,54.5,87.3,96,2200,18.2,31.2
+511,Pasto Elefante,Forraje tropical de alta producción,5.49,6.81,58.9,82.4,0,1838,21.0,34.0
+512,Alfalfa,Leguminosa rica en proteína para ganado,6.07,7.33,48.6,72.3,1080,3157,14.8,29.0
+513,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.47,6.31,42.0,76.8,32,2074,21.4,35.8
+514,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.86,6.92,46.4,77.0,0,2108,19.2,34.4
+515,Pasto Guinea,Pasto tropical de rápido crecimiento,5.07,7.1,54.1,82.9,0,1720,21.6,33.7
+516,Pasto Kikuyo,Muy usado en lechería de clima frío,5.61,6.86,66.2,88.9,1755,3202,9.5,21.2
+517,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.88,7.21,66.2,86.5,1818,3185,7.3,20.8
+518,Ray Grass Italiano,Forraje de alta digestibilidad,5.9,6.91,58.8,87.1,1544,3003,10.2,22.3
+519,Maíz Forrajero,Utilizado principalmente para ensilaje,5.64,6.9,53.6,77.4,33,2447,18.6,32.7
+520,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.08,6.84,45.2,71.3,11,2138,20.1,38.0
+521,Avena Forrajera,Excelente producción en clima frío,5.76,7.18,59.9,82.4,1421,3101,8.3,19.7
+522,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.9,7.4,57.6,74.9,1286,2813,12.1,23.2
+523,Trébol Rojo,Forraje de buena calidad nutricional,5.95,7.05,47.3,72.1,1212,2980,10.6,23.7
+524,Canavalia,Leguminosa usada como cobertura y forraje,5.45,7.68,50.6,81.1,0,1789,20.5,31.9
+525,Leucaena,Árbol forrajero rico en proteína,5.43,7.41,43.9,76.8,46,1849,22.9,34.1
+526,Botón de Oro,Forraje arbustivo de alta proteína,4.99,6.9,51.2,85.4,0,2429,17.1,30.4
+527,King Grass,Variedad de pasto de gran rendimiento,5.4,7.14,62.4,87.6,51,1875,22.6,35.1
+528,Pasto Estrella,Pasto tropical resistente al pastoreo,4.81,6.76,52.1,79.7,0,2023,22.5,36.2
+529,Pasto Tanner,Pasto adaptado a suelos húmedos,4.91,6.56,69.3,92.3,0,1463,22.6,33.9
+530,Pasto Pangola,Excelente digestibilidad para bovinos,5.13,7.0,53.2,77.8,80,1705,19.2,36.0
+531,Moringa,Árbol forrajero con alto contenido nutricional,4.9,7.31,40.3,71.5,0,1507,24.4,38.5
+532,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.92,7.07,49.2,74.5,0,2028,19.8,33.5
+533,Pennisetum Purpureum,Pasto tropical para corte,5.36,6.93,59.1,84.9,0,1790,22.9,36.0
+534,Maralfalfa,Pasto híbrido de alta producción,5.63,6.93,57.1,83.3,0,1988,20.3,35.6
+535,Caña Forrajera,Utilizada como suplemento energético,4.88,7.36,55.0,77.7,0,1748,22.5,36.8
+536,Centrosema,Leguminosa tropical rastrera,5.06,6.92,54.0,85.0,83,1795,19.7,34.7
+537,Desmodium,Leguminosa de buena digestibilidad,5.44,6.94,48.1,77.2,56,2216,18.5,31.8
+538,Guandul,Leguminosa arbustiva resistente,5.07,7.7,43.8,73.0,9,2035,19.7,34.0
+539,Caupí Forrajero,Leguminosa anual tropical,5.08,6.91,49.4,77.5,12,1708,22.3,34.7
+540,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.99,6.94,46.2,82.0,0,2255,19.6,35.4
+541,Pasto Alemán,Forraje adaptado a zonas húmedas,4.98,6.53,70.2,96.3,0,1270,22.4,33.8
+542,Pasto Jaragua,Muy resistente a altas temperaturas,4.96,6.8,37.9,67.3,2,1761,23.3,38.9
+543,Pasto Angleton,Forraje tropical para pastoreo,5.08,6.94,43.6,77.2,27,1738,22.4,36.7
+544,Pasto Toledo,Variedad mejorada de brachiaria,4.87,6.81,52.9,77.3,0,2162,20.8,34.7
+545,Pasto Mombasa,Alta producción de biomasa,5.0,6.81,53.2,77.7,0,1707,22.7,34.1
+546,Pasto Tanzania,Excelente calidad nutricional,4.91,6.96,54.2,82.4,26,1873,21.5,35.3
+547,Pasto Mulato II,Híbrido resistente y nutritivo,5.12,6.86,49.3,79.7,0,2169,19.4,36.1
+548,Pasto Humidícola,Ideal para terrenos inundables,4.53,6.57,73.7,95.0,0,1168,22.1,34.4
+549,Pasto Rhodes,Muy usado en sistemas ganaderos,5.05,7.0,43.4,73.2,0,2136,19.4,36.2
+550,Pasto Buffel,Excelente resistencia a sequía,5.14,7.52,36.2,66.9,65,1707,24.1,39.8
+551,Soja Forrajera,Fuente rica en proteína vegetal,5.66,7.35,48.0,75.6,0,1807,20.5,32.4
+552,Vicia,Leguminosa usada en mezcla con gramíneas,6.19,7.45,55.3,77.9,1158,3070,9.4,24.7
+553,Cebada Forrajera,Excelente para climas templados,6.13,7.56,52.0,73.6,1584,3248,7.5,19.1
+554,Festuca,Gramínea perenne para clima frío,5.45,7.04,59.3,84.1,1724,3218,8.5,19.5
+555,Dactylis Glomerata,Pasto resistente al frío,5.63,6.89,56.5,78.7,1751,3192,7.2,19.5
+556,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.59,7.64,48.3,77.3,1518,3234,9.3,23.1
+557,Pasto Sudan,Híbrido de rápido crecimiento,5.06,7.04,43.5,70.9,0,1852,23.0,38.4
+558,Arachis Pintoi,Leguminosa rastrera tropical,4.82,6.63,53.6,87.9,46,1773,20.7,34.6
+559,Calliandra,Arbusto forrajero rico en proteína,5.61,7.33,51.7,80.6,62,2534,17.5,29.7
+560,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.03,6.96,43.2,78.0,0,1872,22.0,36.5
+561,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.02,7.01,54.2,84.6,94,2193,18.3,31.3
+562,Pasto Elefante,Forraje tropical de alta producción,5.43,7.0,62.0,81.5,0,1736,19.5,34.2
+563,Alfalfa,Leguminosa rica en proteína para ganado,5.8,7.32,50.9,72.3,1075,3180,15.2,27.3
+564,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.44,6.38,38.1,73.3,41,1955,22.9,35.3
+565,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.08,6.73,45.8,81.0,0,2183,20.9,35.1
+566,Pasto Guinea,Pasto tropical de rápido crecimiento,4.85,7.02,52.6,79.7,10,1885,22.6,33.5
+567,Pasto Kikuyo,Muy usado en lechería de clima frío,5.61,7.02,63.9,92.6,1783,3146,9.6,21.6
+568,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.83,7.19,66.1,84.1,1752,3275,7.5,19.8
+569,Ray Grass Italiano,Forraje de alta digestibilidad,5.63,6.97,57.5,86.8,1435,3025,10.5,22.4
+570,Maíz Forrajero,Utilizado principalmente para ensilaje,5.59,7.16,55.7,79.4,3,2478,17.4,31.4
+571,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.96,6.87,45.9,71.0,0,2111,20.4,37.3
+572,Avena Forrajera,Excelente producción en clima frío,5.68,7.21,62.0,83.4,1537,3289,8.5,19.6
+573,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.02,7.53,57.9,74.5,1275,2838,11.6,24.3
+574,Trébol Rojo,Forraje de buena calidad nutricional,6.2,7.17,48.5,74.9,1248,2913,9.5,24.4
+575,Canavalia,Leguminosa usada como cobertura y forraje,5.42,7.47,50.8,82.2,21,1810,20.1,31.3
+576,Leucaena,Árbol forrajero rico en proteína,5.6,7.52,43.8,73.1,38,1753,21.5,34.0
+577,Botón de Oro,Forraje arbustivo de alta proteína,5.02,7.07,50.0,85.8,0,2539,17.5,30.9
+578,King Grass,Variedad de pasto de gran rendimiento,5.44,6.9,57.5,83.6,0,1752,21.8,34.9
+579,Pasto Estrella,Pasto tropical resistente al pastoreo,5.16,6.72,50.8,80.7,19,2020,22.5,36.5
+580,Pasto Tanner,Pasto adaptado a suelos húmedos,4.65,6.46,68.9,88.9,0,1405,23.0,34.7
+581,Pasto Pangola,Excelente digestibilidad para bovinos,5.15,7.04,55.6,82.6,0,1733,19.9,35.1
+582,Moringa,Árbol forrajero con alto contenido nutricional,5.18,7.64,41.4,70.5,92,1403,24.0,38.9
+583,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.89,7.16,50.3,75.9,0,2012,19.9,33.8
+584,Pennisetum Purpureum,Pasto tropical para corte,5.58,6.93,62.7,87.2,15,1853,21.0,35.4
+585,Maralfalfa,Pasto híbrido de alta producción,5.54,6.92,58.2,85.0,0,2019,19.4,34.7
+586,Caña Forrajera,Utilizada como suplemento energético,5.1,7.4,55.9,81.6,56,1741,22.7,35.2
+587,Centrosema,Leguminosa tropical rastrera,5.15,6.66,53.6,82.7,83,1840,19.1,33.2
+588,Desmodium,Leguminosa de buena digestibilidad,5.58,7.0,51.7,81.4,40,2185,17.4,31.1
+589,Guandul,Leguminosa arbustiva resistente,4.95,7.61,44.6,77.5,51,1991,19.8,34.4
+590,Caupí Forrajero,Leguminosa anual tropical,4.95,6.94,48.6,73.0,82,1826,21.4,33.3
+591,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.92,6.81,45.9,77.8,0,2162,20.5,36.1
+592,Pasto Alemán,Forraje adaptado a zonas húmedas,5.05,6.33,68.3,97.9,78,1234,22.4,34.5
+593,Pasto Jaragua,Muy resistente a altas temperaturas,4.8,6.88,38.5,68.1,0,1804,23.2,38.5
+594,Pasto Angleton,Forraje tropical para pastoreo,5.01,6.92,46.3,73.4,0,1764,21.1,36.5
+595,Pasto Toledo,Variedad mejorada de brachiaria,4.98,6.82,47.2,79.2,0,2300,19.4,35.1
+596,Pasto Mombasa,Alta producción de biomasa,5.03,7.07,53.5,77.3,0,1836,21.3,34.5
+597,Pasto Tanzania,Excelente calidad nutricional,5.19,6.82,54.0,81.2,0,1775,22.7,34.3
+598,Pasto Mulato II,Híbrido resistente y nutritivo,5.15,6.63,49.2,77.9,24,2113,19.2,36.1
+599,Pasto Humidícola,Ideal para terrenos inundables,4.65,6.39,74.8,92.7,95,1174,21.4,33.6
+600,Pasto Rhodes,Muy usado en sistemas ganaderos,4.89,7.09,43.2,72.8,77,2197,20.2,36.4
+601,Pasto Buffel,Excelente resistencia a sequía,4.82,7.65,35.5,64.0,0,1760,23.6,39.9
+602,Soja Forrajera,Fuente rica en proteína vegetal,5.67,7.11,50.1,72.2,31,1786,20.4,31.3
+603,Vicia,Leguminosa usada en mezcla con gramíneas,6.08,7.7,53.6,78.6,1197,2911,10.3,24.5
+604,Cebada Forrajera,Excelente para climas templados,6.01,7.6,49.4,76.2,1539,3270,7.8,19.2
+605,Festuca,Gramínea perenne para clima frío,5.64,6.85,60.6,86.0,1730,3261,7.1,20.4
+606,Dactylis Glomerata,Pasto resistente al frío,5.49,7.02,55.6,80.7,1748,3163,7.7,19.3
+607,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.69,7.45,47.8,72.5,1533,3290,10.6,23.7
+608,Pasto Sudan,Híbrido de rápido crecimiento,4.92,7.18,47.1,70.4,28,1717,22.8,38.8
+609,Arachis Pintoi,Leguminosa rastrera tropical,4.9,6.63,52.9,83.7,0,1829,19.9,33.3
+610,Calliandra,Arbusto forrajero rico en proteína,5.6,7.44,51.7,78.4,14,2558,17.2,29.2
+611,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.82,6.82,43.0,74.1,0,1900,21.3,36.8
+612,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.06,7.19,53.6,82.7,69,2244,18.5,33.0
+613,Pasto Elefante,Forraje tropical de alta producción,5.59,7.13,62.7,79.7,0,1833,20.7,35.5
+614,Alfalfa,Leguminosa rica en proteína para ganado,6.16,7.35,51.6,69.8,996,3214,15.4,27.8
+615,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.55,6.65,38.3,76.8,0,1992,21.1,36.9
+616,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.14,6.72,47.1,82.1,9,2211,19.6,35.6
+617,Pasto Guinea,Pasto tropical de rápido crecimiento,5.0,7.16,55.0,79.2,0,1759,21.1,33.7
+618,Pasto Kikuyo,Muy usado en lechería de clima frío,5.61,7.18,67.0,87.1,1739,3185,10.3,21.1
+619,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.78,7.03,64.3,83.6,1735,3164,7.3,19.1
+620,Ray Grass Italiano,Forraje de alta digestibilidad,5.71,6.9,57.0,87.0,1525,3028,10.4,21.2
+621,Maíz Forrajero,Utilizado principalmente para ensilaje,5.48,6.94,56.5,80.3,33,2409,18.7,31.4
+622,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.93,6.89,42.0,73.0,0,2150,19.7,37.5
+623,Avena Forrajera,Excelente producción en clima frío,5.61,7.28,61.6,87.3,1569,3300,7.8,19.9
+624,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.09,7.44,57.1,77.8,1178,2880,12.0,23.4
+625,Trébol Rojo,Forraje de buena calidad nutricional,5.8,7.17,51.4,74.0,1279,2967,10.6,23.4
+626,Canavalia,Leguminosa usada como cobertura y forraje,5.49,7.45,52.5,82.4,0,1860,20.6,31.8
+627,Leucaena,Árbol forrajero rico en proteína,5.46,7.69,45.7,75.8,0,1841,21.8,35.1
+628,Botón de Oro,Forraje arbustivo de alta proteína,4.82,7.2,47.8,85.2,40,2516,18.3,29.9
+629,King Grass,Variedad de pasto de gran rendimiento,5.38,7.11,62.8,87.0,0,1891,21.6,35.7
+630,Pasto Estrella,Pasto tropical resistente al pastoreo,5.19,6.91,47.4,77.3,25,2058,22.4,35.3
+631,Pasto Tanner,Pasto adaptado a suelos húmedos,4.99,6.46,67.4,91.8,38,1497,22.9,34.1
+632,Pasto Pangola,Excelente digestibilidad para bovinos,5.04,6.86,57.2,78.6,75,1769,19.4,35.1
+633,Moringa,Árbol forrajero con alto contenido nutricional,5.13,7.57,42.5,69.7,14,1429,24.3,38.5
+634,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.03,7.01,50.0,72.7,99,1971,19.9,34.5
+635,Pennisetum Purpureum,Pasto tropical para corte,5.7,6.98,60.1,86.2,0,1725,22.3,35.9
+636,Maralfalfa,Pasto híbrido de alta producción,5.52,6.84,58.7,82.8,0,2037,19.3,34.5
+637,Caña Forrajera,Utilizada como suplemento energético,4.92,7.42,54.3,78.6,0,1730,21.0,35.5
+638,Centrosema,Leguminosa tropical rastrera,5.0,6.88,56.1,83.2,0,1791,20.2,34.9
+639,Desmodium,Leguminosa de buena digestibilidad,5.42,7.13,49.5,79.1,0,2280,18.4,31.7
+640,Guandul,Leguminosa arbustiva resistente,5.12,7.3,46.0,72.2,0,1941,20.0,35.5
+641,Caupí Forrajero,Leguminosa anual tropical,4.92,7.01,47.4,73.6,0,1737,21.5,34.0
+642,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.97,6.95,45.4,81.8,0,2288,20.6,36.2
+643,Pasto Alemán,Forraje adaptado a zonas húmedas,5.08,6.4,67.0,97.4,4,1267,22.3,33.6
+644,Pasto Jaragua,Muy resistente a altas temperaturas,4.61,6.81,39.3,67.1,27,1851,24.7,37.7
+645,Pasto Angleton,Forraje tropical para pastoreo,5.16,6.86,46.5,75.9,0,1748,22.4,36.9
+646,Pasto Toledo,Variedad mejorada de brachiaria,5.0,6.99,48.2,81.4,88,2237,20.3,35.7
+647,Pasto Mombasa,Alta producción de biomasa,5.19,7.2,54.2,81.5,93,1891,21.9,34.5
+648,Pasto Tanzania,Excelente calidad nutricional,5.07,6.89,56.1,78.8,0,1855,21.8,34.4
+649,Pasto Mulato II,Híbrido resistente y nutritivo,4.98,6.64,52.1,81.5,0,2206,19.6,36.1
+650,Pasto Humidícola,Ideal para terrenos inundables,4.55,6.34,76.5,96.2,0,1168,22.7,34.9
+651,Pasto Rhodes,Muy usado en sistemas ganaderos,5.19,7.19,43.2,74.1,0,2226,19.4,35.7
+652,Pasto Buffel,Excelente resistencia a sequía,5.02,7.68,37.2,62.3,84,1876,23.8,40.9
+653,Soja Forrajera,Fuente rica en proteína vegetal,5.92,7.29,47.5,77.1,0,1892,19.7,31.1
+654,Vicia,Leguminosa usada en mezcla con gramíneas,5.87,7.41,53.2,81.6,1176,3015,9.7,23.1
+655,Cebada Forrajera,Excelente para climas templados,6.08,7.55,51.1,73.7,1576,3277,8.5,20.4
+656,Festuca,Gramínea perenne para clima frío,5.63,6.94,61.0,85.3,1887,3273,7.9,19.4
+657,Dactylis Glomerata,Pasto resistente al frío,5.4,7.17,53.5,77.1,1852,3265,7.7,19.1
+658,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.48,7.44,47.4,76.3,1423,3134,9.1,24.1
+659,Pasto Sudan,Híbrido de rápido crecimiento,5.18,6.93,46.6,68.6,0,1824,21.6,38.8
+660,Arachis Pintoi,Leguminosa rastrera tropical,4.81,6.87,53.6,84.1,0,1777,20.4,34.9
+661,Calliandra,Arbusto forrajero rico en proteína,5.58,7.57,49.8,80.4,0,2577,17.1,29.2
+662,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.99,7.19,43.7,76.3,0,1818,21.9,35.1
+663,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,4.83,6.82,56.1,83.4,0,2247,17.9,31.8
+664,Pasto Elefante,Forraje tropical de alta producción,5.65,6.97,62.5,81.0,0,1865,20.3,35.7
+665,Alfalfa,Leguminosa rica en proteína para ganado,6.02,7.3,51.4,67.9,1041,3240,14.1,27.3
+666,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.57,6.7,38.3,77.9,0,1969,22.7,35.2
+667,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.91,6.71,45.3,78.5,21,2247,20.1,35.7
+668,Pasto Guinea,Pasto tropical de rápido crecimiento,4.91,7.14,53.9,80.1,0,1863,22.6,35.0
+669,Pasto Kikuyo,Muy usado en lechería de clima frío,5.6,6.88,67.2,87.0,1851,3278,9.1,21.7
+670,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.96,7.3,67.7,85.2,1801,3292,7.7,19.9
+671,Ray Grass Italiano,Forraje de alta digestibilidad,5.74,6.97,62.5,82.8,1430,2905,9.9,22.5
+672,Maíz Forrajero,Utilizado principalmente para ensilaje,5.63,7.04,55.1,81.0,0,2421,18.2,31.2
+673,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.07,6.82,44.0,69.9,0,2121,20.7,37.8
+674,Avena Forrajera,Excelente producción en clima frío,5.6,7.4,61.9,85.3,1472,3197,8.5,20.7
+675,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.97,7.55,57.4,75.3,1150,2703,11.1,24.9
+676,Trébol Rojo,Forraje de buena calidad nutricional,5.81,7.23,48.6,76.7,1195,2968,9.2,23.2
+677,Canavalia,Leguminosa usada como cobertura y forraje,5.62,7.46,49.8,79.2,0,1713,20.8,32.6
+678,Leucaena,Árbol forrajero rico en proteína,5.32,7.56,47.4,72.1,84,1747,21.2,34.5
+679,Botón de Oro,Forraje arbustivo de alta proteína,5.04,6.85,50.3,84.1,0,2405,17.9,29.6
+680,King Grass,Variedad de pasto de gran rendimiento,5.46,7.19,59.2,87.7,0,1786,21.3,34.9
+681,Pasto Estrella,Pasto tropical resistente al pastoreo,4.86,6.78,47.1,81.7,0,1933,22.6,35.5
+682,Pasto Tanner,Pasto adaptado a suelos húmedos,4.83,6.43,67.7,88.2,0,1416,22.4,34.8
+683,Pasto Pangola,Excelente digestibilidad para bovinos,5.07,7.18,56.7,81.8,64,1843,19.3,35.7
+684,Moringa,Árbol forrajero con alto contenido nutricional,5.11,7.53,37.1,70.3,0,1411,23.3,37.2
+685,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.0,6.97,49.0,73.9,0,1955,20.9,34.0
+686,Pennisetum Purpureum,Pasto tropical para corte,5.67,7.09,62.5,84.5,48,1726,21.3,34.0
+687,Maralfalfa,Pasto híbrido de alta producción,5.64,7.01,58.2,87.8,35,1944,19.8,35.3
+688,Caña Forrajera,Utilizada como suplemento energético,4.8,7.51,56.2,81.4,0,1771,22.3,36.8
+689,Centrosema,Leguminosa tropical rastrera,5.13,6.67,57.4,85.3,0,1839,19.7,33.2
+690,Desmodium,Leguminosa de buena digestibilidad,5.4,7.03,51.3,81.1,64,2184,17.4,32.8
+691,Guandul,Leguminosa arbustiva resistente,5.19,7.55,42.9,76.6,0,1966,20.4,35.5
+692,Caupí Forrajero,Leguminosa anual tropical,5.1,6.8,51.9,74.6,89,1784,21.1,33.3
+693,Pasto Bermuda,Pasto resistente y de rápido crecimiento,4.83,6.91,45.6,80.2,0,2297,20.0,36.3
+694,Pasto Alemán,Forraje adaptado a zonas húmedas,5.03,6.46,69.9,97.0,55,1201,22.4,34.6
+695,Pasto Jaragua,Muy resistente a altas temperaturas,4.82,6.83,40.0,67.7,0,1729,23.8,38.3
+696,Pasto Angleton,Forraje tropical para pastoreo,5.0,6.96,47.6,73.9,75,1796,21.9,35.1
+697,Pasto Toledo,Variedad mejorada de brachiaria,5.17,6.98,51.5,82.8,68,2198,20.8,36.0
+698,Pasto Mombasa,Alta producción de biomasa,5.1,6.82,56.2,81.3,0,1716,21.7,34.5
+699,Pasto Tanzania,Excelente calidad nutricional,4.82,7.07,56.8,79.9,0,1831,21.4,35.5
+700,Pasto Mulato II,Híbrido resistente y nutritivo,5.16,6.92,50.4,79.3,65,2297,20.4,35.2
+701,Pasto Humidícola,Ideal para terrenos inundables,4.5,6.5,77.7,97.1,17,1248,22.8,33.3
+702,Pasto Rhodes,Muy usado en sistemas ganaderos,4.95,6.81,46.7,72.7,0,2300,19.4,36.8
+703,Pasto Buffel,Excelente resistencia a sequía,5.09,7.6,34.3,64.8,0,1887,23.7,40.4
+704,Soja Forrajera,Fuente rica en proteína vegetal,5.97,7.25,49.2,77.6,0,1703,20.4,32.5
+705,Vicia,Leguminosa usada en mezcla con gramíneas,6.02,7.39,54.4,78.1,1300,3015,10.9,24.5
+706,Cebada Forrajera,Excelente para climas templados,5.9,7.39,52.7,73.1,1478,3261,7.2,19.8
+707,Festuca,Gramínea perenne para clima frío,5.42,7.13,61.6,83.6,1720,3144,9.0,20.6
+708,Dactylis Glomerata,Pasto resistente al frío,5.44,7.07,56.2,81.9,1856,3230,8.2,20.1
+709,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.38,7.39,47.7,77.0,1586,3102,9.8,23.0
+710,Pasto Sudan,Híbrido de rápido crecimiento,5.18,7.09,44.2,68.8,46,1866,21.3,38.1
+711,Arachis Pintoi,Leguminosa rastrera tropical,5.11,6.75,52.4,86.8,0,1850,20.3,34.7
+712,Calliandra,Arbusto forrajero rico en proteína,5.31,7.47,47.3,82.4,37,2521,18.9,29.2
+713,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.1,6.83,45.9,77.0,0,1807,22.1,36.2
+714,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.09,7.15,56.8,87.0,0,2290,17.1,31.5
+715,Pasto Elefante,Forraje tropical de alta producción,5.52,7.13,62.4,78.2,0,1810,20.3,34.1
+716,Alfalfa,Leguminosa rica en proteína para ganado,5.86,7.31,47.8,68.0,965,3279,15.5,28.0
+717,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.46,6.59,40.2,76.0,0,1917,22.5,36.6
+718,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.83,6.95,45.8,82.9,0,2168,20.6,34.5
+719,Pasto Guinea,Pasto tropical de rápido crecimiento,5.0,6.89,55.0,79.9,99,1839,22.7,33.2
+720,Pasto Kikuyo,Muy usado en lechería de clima frío,5.3,6.87,63.8,92.6,1843,3267,9.4,23.0
+721,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.67,7.37,64.2,83.0,1702,3116,8.1,20.3
+722,Ray Grass Italiano,Forraje de alta digestibilidad,5.91,6.94,60.7,83.4,1530,3063,9.4,21.4
+723,Maíz Forrajero,Utilizado principalmente para ensilaje,5.33,7.02,53.2,83.0,72,2575,17.9,31.3
+724,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.95,7.09,44.7,72.6,0,2246,19.1,37.6
+725,Avena Forrajera,Excelente producción en clima frío,5.98,7.44,58.9,85.1,1560,3279,8.6,19.8
+726,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.05,7.53,56.9,74.5,1129,2780,13.0,24.2
+727,Trébol Rojo,Forraje de buena calidad nutricional,5.88,7.3,51.4,74.3,1276,2980,9.6,24.3
+728,Canavalia,Leguminosa usada como cobertura y forraje,5.61,7.31,47.8,81.9,89,1793,19.2,31.3
+729,Leucaena,Árbol forrajero rico en proteína,5.61,7.62,46.3,75.7,82,1741,22.2,35.5
+730,Botón de Oro,Forraje arbustivo de alta proteína,5.09,6.9,50.5,88.0,77,2473,17.6,29.3
+731,King Grass,Variedad de pasto de gran rendimiento,5.67,6.82,59.2,87.1,0,1783,21.6,35.3
+732,Pasto Estrella,Pasto tropical resistente al pastoreo,5.03,6.75,48.7,77.5,82,2022,22.3,35.3
+733,Pasto Tanner,Pasto adaptado a suelos húmedos,4.85,6.35,72.9,92.0,0,1539,21.3,33.6
+734,Pasto Pangola,Excelente digestibilidad para bovinos,5.06,7.0,56.7,81.2,89,1817,20.4,35.1
+735,Moringa,Árbol forrajero con alto contenido nutricional,4.96,7.44,41.9,68.3,0,1561,23.5,37.6
+736,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.1,6.83,51.2,73.5,0,2034,20.2,34.1
+737,Pennisetum Purpureum,Pasto tropical para corte,5.35,6.8,59.4,84.3,23,1798,22.3,34.7
+738,Maralfalfa,Pasto híbrido de alta producción,5.58,7.17,62.1,87.9,0,2093,20.4,35.3
+739,Caña Forrajera,Utilizada como suplemento energético,5.01,7.65,52.2,77.4,32,1760,21.6,36.3
+740,Centrosema,Leguminosa tropical rastrera,5.11,6.84,55.9,82.2,0,1736,20.1,33.3
+741,Desmodium,Leguminosa de buena digestibilidad,5.48,6.86,51.1,78.0,9,2157,17.8,31.7
+742,Guandul,Leguminosa arbustiva resistente,5.0,7.42,45.2,74.4,0,1981,19.5,35.8
+743,Caupí Forrajero,Leguminosa anual tropical,4.85,7.14,52.4,73.6,0,1766,22.3,35.0
+744,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.03,7.16,45.7,82.7,0,2132,19.0,36.2
+745,Pasto Alemán,Forraje adaptado a zonas húmedas,5.08,6.66,69.5,94.1,30,1263,22.9,33.8
+746,Pasto Jaragua,Muy resistente a altas temperaturas,4.89,6.98,39.3,67.9,0,1716,24.3,37.0
+747,Pasto Angleton,Forraje tropical para pastoreo,5.15,6.83,44.6,72.4,0,1861,21.2,36.8
+748,Pasto Toledo,Variedad mejorada de brachiaria,5.1,6.85,47.4,77.7,84,2251,19.4,34.6
+749,Pasto Mombasa,Alta producción de biomasa,5.01,7.04,56.0,80.8,8,1832,21.5,34.9
+750,Pasto Tanzania,Excelente calidad nutricional,5.02,6.9,57.4,77.5,0,1868,21.8,34.2
+751,Pasto Mulato II,Híbrido resistente y nutritivo,4.88,6.76,48.3,77.5,0,2140,20.8,36.9
+752,Pasto Humidícola,Ideal para terrenos inundables,4.6,6.65,73.5,97.5,0,1216,22.2,33.2
+753,Pasto Rhodes,Muy usado en sistemas ganaderos,4.81,6.86,42.5,76.2,41,2153,19.2,36.8
+754,Pasto Buffel,Excelente resistencia a sequía,5.12,7.57,32.6,65.2,0,1735,24.9,39.0
+755,Soja Forrajera,Fuente rica en proteína vegetal,5.99,7.21,52.9,74.2,0,1737,19.0,31.1
+756,Vicia,Leguminosa usada en mezcla con gramíneas,6.07,7.58,56.1,79.4,1120,3031,9.8,23.3
+757,Cebada Forrajera,Excelente para climas templados,6.19,7.68,51.4,74.6,1433,3274,7.5,20.9
+758,Festuca,Gramínea perenne para clima frío,5.45,6.95,57.0,84.7,1835,3171,8.0,21.0
+759,Dactylis Glomerata,Pasto resistente al frío,5.51,7.11,53.2,82.5,1881,3238,8.3,19.5
+760,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.37,7.67,51.3,76.1,1599,3134,10.7,23.1
+761,Pasto Sudan,Híbrido de rápido crecimiento,5.15,7.07,42.2,71.8,0,1739,21.6,37.8
+762,Arachis Pintoi,Leguminosa rastrera tropical,4.86,6.99,54.9,82.2,99,1723,20.1,33.0
+763,Calliandra,Arbusto forrajero rico en proteína,5.43,7.49,51.6,78.4,63,2531,17.6,30.7
+764,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.05,7.11,46.3,75.0,55,1749,22.9,35.4
+765,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.14,7.19,56.6,82.4,91,2223,17.2,32.6
+766,Pasto Elefante,Forraje tropical de alta producción,5.66,7.04,58.8,82.3,48,1773,19.6,35.5
+767,Alfalfa,Leguminosa rica en proteína para ganado,5.86,7.45,52.7,70.7,1061,3148,15.0,27.7
+768,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.63,6.58,39.4,73.9,0,2005,21.2,36.5
+769,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.12,6.76,44.8,77.4,0,2106,20.8,34.7
+770,Pasto Guinea,Pasto tropical de rápido crecimiento,5.05,6.82,54.2,80.9,80,1886,21.5,33.1
+771,Pasto Kikuyo,Muy usado en lechería de clima frío,5.42,6.99,64.4,91.3,1804,3239,9.0,22.5
+772,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.92,7.3,66.6,82.4,1795,3228,7.6,20.9
+773,Ray Grass Italiano,Forraje de alta digestibilidad,5.67,6.93,62.6,84.6,1401,3015,9.4,21.9
+774,Maíz Forrajero,Utilizado principalmente para ensilaje,5.52,6.8,56.6,82.4,0,2473,17.2,32.6
+775,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.02,6.82,46.4,67.7,0,2279,19.8,37.8
+776,Avena Forrajera,Excelente producción en clima frío,5.99,7.33,58.5,84.9,1481,3215,7.2,19.2
+777,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.07,7.68,54.7,76.4,1274,2739,12.3,24.1
+778,Trébol Rojo,Forraje de buena calidad nutricional,5.83,7.13,52.4,77.2,1258,2976,9.6,23.9
+779,Canavalia,Leguminosa usada como cobertura y forraje,5.48,7.6,48.1,82.3,1,1759,20.5,31.8
+780,Leucaena,Árbol forrajero rico en proteína,5.58,7.38,46.7,76.0,27,1751,22.0,34.0
+781,Botón de Oro,Forraje arbustivo de alta proteína,4.85,6.82,49.4,83.4,96,2466,18.1,30.1
+782,King Grass,Variedad de pasto de gran rendimiento,5.63,6.94,57.0,84.0,19,1707,21.1,34.1
+783,Pasto Estrella,Pasto tropical resistente al pastoreo,5.09,6.71,47.9,81.4,0,2011,22.8,36.7
+784,Pasto Tanner,Pasto adaptado a suelos húmedos,4.86,6.65,70.1,90.7,0,1469,22.2,34.1
+785,Pasto Pangola,Excelente digestibilidad para bovinos,5.02,6.95,54.9,78.3,95,1819,19.2,35.9
+786,Moringa,Árbol forrajero con alto contenido nutricional,5.14,7.31,42.9,68.9,0,1574,24.0,38.6
+787,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.96,6.89,47.8,77.4,0,2016,20.3,34.9
+788,Pennisetum Purpureum,Pasto tropical para corte,5.38,7.02,62.8,86.2,30,1766,22.5,35.0
+789,Maralfalfa,Pasto híbrido de alta producción,5.48,6.94,59.7,83.3,20,1933,19.7,34.6
+790,Caña Forrajera,Utilizada como suplemento energético,4.91,7.7,53.7,77.8,0,1800,21.1,35.5
+791,Centrosema,Leguminosa tropical rastrera,4.92,6.61,52.6,86.2,62,1896,20.6,34.3
+792,Desmodium,Leguminosa de buena digestibilidad,5.35,6.99,48.0,82.6,20,2180,18.7,32.0
+793,Guandul,Leguminosa arbustiva resistente,5.01,7.6,42.2,75.5,77,1911,20.2,35.5
+794,Caupí Forrajero,Leguminosa anual tropical,4.9,6.87,49.4,76.7,53,1798,22.7,34.5
+795,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.18,6.97,46.7,77.1,96,2120,19.9,35.2
+796,Pasto Alemán,Forraje adaptado a zonas húmedas,4.82,6.33,70.6,97.2,0,1279,21.1,33.3
+797,Pasto Jaragua,Muy resistente a altas temperaturas,4.73,6.65,42.3,70.1,0,1862,23.4,38.5
+798,Pasto Angleton,Forraje tropical para pastoreo,4.88,6.92,46.5,76.8,11,1722,22.3,35.3
+799,Pasto Toledo,Variedad mejorada de brachiaria,5.05,6.92,49.8,82.9,13,2115,19.5,35.9
+800,Pasto Mombasa,Alta producción de biomasa,5.14,7.03,55.4,78.9,0,1733,22.2,34.2
+801,Pasto Tanzania,Excelente calidad nutricional,4.9,7.07,54.2,78.0,61,1761,22.6,34.8
+802,Pasto Mulato II,Híbrido resistente y nutritivo,4.86,6.99,51.5,79.8,0,2133,20.9,36.9
+803,Pasto Humidícola,Ideal para terrenos inundables,4.33,6.43,73.2,93.7,4,1262,22.2,33.9
+804,Pasto Rhodes,Muy usado en sistemas ganaderos,4.98,7.13,43.5,74.7,0,2213,20.9,36.7
+805,Pasto Buffel,Excelente resistencia a sequía,4.94,7.54,36.1,62.3,0,1889,24.6,39.9
+806,Soja Forrajera,Fuente rica en proteína vegetal,5.71,7.02,52.1,74.0,18,1819,19.5,31.6
+807,Vicia,Leguminosa usada en mezcla con gramíneas,6.09,7.44,52.0,77.1,1160,2985,10.2,23.3
+808,Cebada Forrajera,Excelente para climas templados,5.95,7.58,47.5,77.3,1572,3158,7.4,20.1
+809,Festuca,Gramínea perenne para clima frío,5.46,7.12,62.5,84.1,1701,3220,7.9,20.4
+810,Dactylis Glomerata,Pasto resistente al frío,5.51,7.02,52.9,78.0,1736,3281,8.4,20.2
+811,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.36,7.59,49.6,72.0,1541,3298,10.7,23.9
+812,Pasto Sudan,Híbrido de rápido crecimiento,5.16,6.81,44.7,67.0,0,1839,21.0,37.5
+813,Arachis Pintoi,Leguminosa rastrera tropical,4.91,6.74,54.9,82.8,3,1842,20.0,33.7
+814,Calliandra,Arbusto forrajero rico en proteína,5.42,7.34,48.4,78.7,7,2525,18.1,29.2
+815,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.19,6.83,44.2,75.3,0,1868,21.7,35.7
+816,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,4.92,6.84,57.5,86.3,89,2236,17.9,31.5
+817,Pasto Elefante,Forraje tropical de alta producción,5.59,7.17,61.0,82.1,100,1900,20.1,35.0
+818,Alfalfa,Leguminosa rica en proteína para ganado,5.95,7.67,52.7,70.3,1063,3121,14.0,28.0
+819,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.57,6.69,37.9,76.1,0,2030,21.3,35.4
+820,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.94,6.84,46.4,78.2,0,2139,19.5,35.3
+821,Pasto Guinea,Pasto tropical de rápido crecimiento,4.81,6.94,53.8,82.3,69,1711,21.7,33.9
+822,Pasto Kikuyo,Muy usado en lechería de clima frío,5.4,6.97,63.6,89.0,1701,3252,10.5,21.7
+823,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.76,7.06,65.4,82.4,1831,3243,7.0,19.1
+824,Ray Grass Italiano,Forraje de alta digestibilidad,5.79,7.16,59.2,82.1,1523,3033,9.6,22.6
+825,Maíz Forrajero,Utilizado principalmente para ensilaje,5.45,7.11,56.3,80.9,0,2456,17.6,31.6
+826,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.1,7.02,42.2,67.0,85,2278,19.9,38.3
+827,Avena Forrajera,Excelente producción en clima frío,5.93,7.26,62.6,83.2,1571,3168,8.7,20.2
+828,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.11,7.38,57.0,73.4,1144,2803,11.3,23.7
+829,Trébol Rojo,Forraje de buena calidad nutricional,5.96,7.39,52.8,76.0,1287,2927,10.6,23.7
+830,Canavalia,Leguminosa usada como cobertura y forraje,5.33,7.69,52.6,78.5,91,1748,19.9,31.1
+831,Leucaena,Árbol forrajero rico en proteína,5.37,7.43,47.7,72.4,1,1817,22.8,35.3
+832,Botón de Oro,Forraje arbustivo de alta proteína,5.17,7.04,50.8,85.6,0,2553,18.2,29.8
+833,King Grass,Variedad de pasto de gran rendimiento,5.35,6.87,57.7,82.1,0,1840,22.5,35.3
+834,Pasto Estrella,Pasto tropical resistente al pastoreo,4.95,6.95,49.3,77.9,0,2100,21.3,35.3
+835,Pasto Tanner,Pasto adaptado a suelos húmedos,4.69,6.67,67.4,88.7,0,1577,22.9,34.5
+836,Pasto Pangola,Excelente digestibilidad para bovinos,4.87,6.86,53.1,82.0,84,1858,20.5,34.3
+837,Moringa,Árbol forrajero con alto contenido nutricional,4.82,7.59,40.2,69.3,0,1570,23.1,38.0
+838,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.99,6.86,50.1,77.3,0,1913,19.6,34.2
+839,Pennisetum Purpureum,Pasto tropical para corte,5.5,7.13,59.1,82.4,45,1885,21.9,35.4
+840,Maralfalfa,Pasto híbrido de alta producción,5.54,6.99,57.2,82.0,0,2040,20.1,34.6
+841,Caña Forrajera,Utilizada como suplemento energético,5.08,7.32,55.2,78.8,0,1755,21.5,36.8
+842,Centrosema,Leguminosa tropical rastrera,5.1,6.67,57.9,84.8,90,1742,19.8,34.0
+843,Desmodium,Leguminosa de buena digestibilidad,5.64,7.11,47.0,78.2,0,2196,18.8,32.8
+844,Guandul,Leguminosa arbustiva resistente,4.89,7.64,44.8,74.9,0,1928,19.9,34.9
+845,Caupí Forrajero,Leguminosa anual tropical,5.02,6.88,50.3,77.1,0,1794,22.7,33.5
+846,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.01,7.0,43.5,78.5,96,2133,20.1,35.0
+847,Pasto Alemán,Forraje adaptado a zonas húmedas,5.18,6.47,68.2,96.7,43,1254,22.7,33.8
+848,Pasto Jaragua,Muy resistente a altas temperaturas,4.79,6.88,39.1,67.2,0,1743,24.8,38.2
+849,Pasto Angleton,Forraje tropical para pastoreo,4.82,6.9,46.3,75.8,42,1885,22.8,36.0
+850,Pasto Toledo,Variedad mejorada de brachiaria,4.83,6.63,50.7,80.1,0,2105,20.9,34.7
+851,Pasto Mombasa,Alta producción de biomasa,5.08,6.81,56.1,78.5,68,1703,22.5,34.1
+852,Pasto Tanzania,Excelente calidad nutricional,4.96,7.14,56.8,81.1,59,1722,22.8,35.1
+853,Pasto Mulato II,Híbrido resistente y nutritivo,4.96,6.71,47.7,77.6,0,2241,20.8,35.3
+854,Pasto Humidícola,Ideal para terrenos inundables,4.47,6.45,75.2,95.0,51,1179,21.3,34.5
+855,Pasto Rhodes,Muy usado en sistemas ganaderos,4.96,6.85,43.2,77.3,0,2112,19.0,36.4
+856,Pasto Buffel,Excelente resistencia a sequía,5.12,7.37,36.6,62.7,0,1809,23.7,39.1
+857,Soja Forrajera,Fuente rica en proteína vegetal,5.95,7.07,48.9,72.3,80,1749,20.2,32.6
+858,Vicia,Leguminosa usada en mezcla con gramíneas,6.04,7.59,52.2,80.7,1135,3070,9.2,24.3
+859,Cebada Forrajera,Excelente para climas templados,5.83,7.39,51.9,75.2,1547,3292,7.4,20.1
+860,Festuca,Gramínea perenne para clima frío,5.54,6.92,58.2,82.9,1743,3231,7.2,20.2
+861,Dactylis Glomerata,Pasto resistente al frío,5.61,7.1,56.6,77.5,1782,3266,7.7,20.6
+862,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.54,7.3,52.0,72.1,1566,3218,9.4,24.6
+863,Pasto Sudan,Híbrido de rápido crecimiento,4.96,7.1,43.3,68.8,99,1728,21.7,38.7
+864,Arachis Pintoi,Leguminosa rastrera tropical,4.88,6.97,55.0,85.1,75,1797,19.7,34.5
+865,Calliandra,Arbusto forrajero rico en proteína,5.44,7.5,47.7,79.7,96,2584,17.7,30.5
+866,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.04,7.1,47.2,77.9,0,1802,22.7,36.2
+867,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.2,6.88,57.7,84.1,0,2211,18.2,32.4
+868,Pasto Elefante,Forraje tropical de alta producción,5.43,7.16,61.7,79.4,84,1707,20.2,35.6
+869,Alfalfa,Leguminosa rica en proteína para ganado,5.87,7.68,47.4,71.8,917,3215,14.1,28.4
+870,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.6,6.58,37.3,78.0,0,2073,21.3,35.9
+871,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.83,6.63,42.3,79.5,27,2219,21.0,35.8
+872,Pasto Guinea,Pasto tropical de rápido crecimiento,4.94,6.83,54.2,79.5,1,1726,21.8,34.1
+873,Pasto Kikuyo,Muy usado en lechería de clima frío,5.49,6.84,64.1,89.3,1856,3151,9.8,22.4
+874,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.91,7.01,63.9,85.6,1742,3204,8.2,20.3
+875,Ray Grass Italiano,Forraje de alta digestibilidad,5.64,7.19,58.4,83.1,1412,3037,10.5,22.7
+876,Maíz Forrajero,Utilizado principalmente para ensilaje,5.64,7.07,52.5,81.1,84,2512,17.7,32.3
+877,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.16,7.07,47.9,70.8,32,2196,20.1,38.2
+878,Avena Forrajera,Excelente producción en clima frío,5.95,7.29,59.9,85.1,1520,3229,8.0,19.9
+879,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.05,7.39,54.5,74.3,1263,2868,12.2,24.6
+880,Trébol Rojo,Forraje de buena calidad nutricional,6.01,7.34,47.4,77.2,1268,2916,9.4,24.9
+881,Canavalia,Leguminosa usada como cobertura y forraje,5.45,7.35,48.8,77.0,89,1735,19.9,31.0
+882,Leucaena,Árbol forrajero rico en proteína,5.56,7.57,42.6,74.2,63,1717,21.2,34.9
+883,Botón de Oro,Forraje arbustivo de alta proteína,5.16,7.08,49.0,86.3,0,2450,18.7,29.2
+884,King Grass,Variedad de pasto de gran rendimiento,5.62,6.86,59.0,85.7,87,1701,21.6,35.0
+885,Pasto Estrella,Pasto tropical resistente al pastoreo,5.03,6.84,52.5,82.2,77,2053,21.4,35.9
+886,Pasto Tanner,Pasto adaptado a suelos húmedos,4.91,6.31,71.4,89.5,0,1524,21.3,34.1
+887,Pasto Pangola,Excelente digestibilidad para bovinos,5.15,6.87,57.9,80.2,0,1749,20.8,34.2
+888,Moringa,Árbol forrajero con alto contenido nutricional,4.87,7.45,41.9,70.7,0,1415,24.6,37.5
+889,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.93,6.86,50.2,75.1,95,2065,20.7,34.0
+890,Pennisetum Purpureum,Pasto tropical para corte,5.41,6.86,57.8,82.3,0,1871,22.7,34.6
+891,Maralfalfa,Pasto híbrido de alta producción,5.46,6.98,60.2,86.1,0,1925,20.8,34.9
+892,Caña Forrajera,Utilizada como suplemento energético,4.86,7.47,56.1,77.4,0,1783,22.7,36.3
+893,Centrosema,Leguminosa tropical rastrera,4.89,6.61,55.6,86.8,34,1757,19.6,33.1
+894,Desmodium,Leguminosa de buena digestibilidad,5.47,7.06,52.0,82.5,0,2178,18.4,32.8
+895,Guandul,Leguminosa arbustiva resistente,4.95,7.43,42.6,75.1,0,2094,20.2,35.3
+896,Caupí Forrajero,Leguminosa anual tropical,4.94,7.02,52.7,75.2,0,1730,22.9,34.3
+897,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.16,7.0,43.1,78.0,0,2219,19.9,35.7
+898,Pasto Alemán,Forraje adaptado a zonas húmedas,4.89,6.38,71.9,96.1,0,1178,22.7,34.4
+899,Pasto Jaragua,Muy resistente a altas temperaturas,4.88,6.68,37.2,72.6,63,1797,23.9,38.7
+900,Pasto Angleton,Forraje tropical para pastoreo,5.14,6.69,42.7,74.9,0,1740,22.9,36.2
+901,Pasto Toledo,Variedad mejorada de brachiaria,4.99,6.6,49.7,80.3,39,2231,20.0,34.8
+902,Pasto Mombasa,Alta producción de biomasa,5.19,6.82,57.0,80.5,36,1825,22.3,35.5
+903,Pasto Tanzania,Excelente calidad nutricional,4.85,6.84,52.7,78.1,0,1710,22.9,35.9
+904,Pasto Mulato II,Híbrido resistente y nutritivo,4.81,6.61,48.1,78.2,0,2167,20.3,35.5
+905,Pasto Humidícola,Ideal para terrenos inundables,4.38,6.69,72.4,96.5,86,1181,22.3,34.7
+906,Pasto Rhodes,Muy usado en sistemas ganaderos,4.84,6.89,46.4,76.0,0,2153,20.2,36.0
+907,Pasto Buffel,Excelente resistencia a sequía,5.17,7.55,35.8,65.1,0,1798,23.1,39.1
+908,Soja Forrajera,Fuente rica en proteína vegetal,5.94,7.1,52.8,74.4,27,1843,19.0,31.7
+909,Vicia,Leguminosa usada en mezcla con gramíneas,5.99,7.61,52.6,81.1,1284,2945,10.5,23.9
+910,Cebada Forrajera,Excelente para climas templados,5.9,7.69,51.1,75.6,1468,3165,8.7,19.8
+911,Festuca,Gramínea perenne para clima frío,5.6,6.81,60.5,85.7,1775,3293,7.4,20.9
+912,Dactylis Glomerata,Pasto resistente al frío,5.62,7.16,52.1,80.1,1728,3283,7.1,21.0
+913,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.6,7.59,47.7,77.9,1583,3184,10.3,24.5
+914,Pasto Sudan,Híbrido de rápido crecimiento,5.11,7.19,45.2,67.6,10,1870,22.2,38.1
+915,Arachis Pintoi,Leguminosa rastrera tropical,5.0,6.73,57.3,82.8,0,1887,19.2,34.1
+916,Calliandra,Arbusto forrajero rico en proteína,5.51,7.52,48.0,78.9,0,2481,18.0,29.9
+917,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,5.01,6.91,42.8,76.9,0,1833,21.2,36.7
+918,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,5.13,7.06,52.5,86.9,0,2124,17.4,32.8
+919,Pasto Elefante,Forraje tropical de alta producción,5.45,6.93,62.3,82.8,36,1769,20.5,34.4
+920,Alfalfa,Leguminosa rica en proteína para ganado,5.9,7.69,47.0,71.4,933,3188,15.3,27.1
+921,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.6,6.62,39.7,72.6,10,2078,21.0,36.3
+922,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,4.94,6.96,45.6,82.2,95,2171,19.1,35.0
+923,Pasto Guinea,Pasto tropical de rápido crecimiento,5.12,7.02,53.5,79.3,24,1830,21.4,34.6
+924,Pasto Kikuyo,Muy usado en lechería de clima frío,5.32,6.93,63.4,90.5,1768,3185,10.3,21.2
+925,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.95,7.27,63.8,87.5,1900,3243,7.0,20.6
+926,Ray Grass Italiano,Forraje de alta digestibilidad,5.76,7.05,62.2,82.9,1580,3013,9.7,22.4
+927,Maíz Forrajero,Utilizado principalmente para ensilaje,5.52,6.88,56.3,80.7,0,2584,17.0,32.1
+928,Sorgo Forrajero,Alta tolerancia al calor y sequía,4.98,6.86,45.9,71.5,0,2193,20.9,37.7
+929,Avena Forrajera,Excelente producción en clima frío,5.85,7.17,58.7,82.7,1466,3256,8.2,19.3
+930,Trébol Blanco,Leguminosa fijadora de nitrógeno,6.04,7.47,55.8,74.1,1158,2779,12.9,24.3
+931,Trébol Rojo,Forraje de buena calidad nutricional,5.95,7.1,49.5,72.6,1277,3059,10.0,23.8
+932,Canavalia,Leguminosa usada como cobertura y forraje,5.42,7.61,48.4,81.5,0,1730,19.9,31.2
+933,Leucaena,Árbol forrajero rico en proteína,5.69,7.35,42.0,77.3,31,1770,22.2,35.5
+934,Botón de Oro,Forraje arbustivo de alta proteína,4.84,7.03,52.2,84.9,82,2475,18.9,30.5
+935,King Grass,Variedad de pasto de gran rendimiento,5.64,7.12,60.4,83.0,0,1831,22.6,35.3
+936,Pasto Estrella,Pasto tropical resistente al pastoreo,4.94,6.84,47.2,80.5,0,1991,22.2,35.7
+937,Pasto Tanner,Pasto adaptado a suelos húmedos,4.6,6.63,71.7,91.8,0,1536,21.9,34.3
+938,Pasto Pangola,Excelente digestibilidad para bovinos,5.1,6.85,53.7,82.7,0,1808,20.1,36.0
+939,Moringa,Árbol forrajero con alto contenido nutricional,5.07,7.66,38.8,70.5,55,1495,24.8,37.7
+940,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,5.14,6.88,52.6,76.4,0,1901,20.9,34.2
+941,Pennisetum Purpureum,Pasto tropical para corte,5.34,6.87,59.4,86.6,0,1806,23.0,34.3
+942,Maralfalfa,Pasto híbrido de alta producción,5.41,7.05,58.2,85.6,90,2081,19.1,34.7
+943,Caña Forrajera,Utilizada como suplemento energético,4.86,7.48,53.9,81.9,30,1882,22.5,36.6
+944,Centrosema,Leguminosa tropical rastrera,5.11,6.66,57.8,85.4,0,1820,20.8,33.8
+945,Desmodium,Leguminosa de buena digestibilidad,5.3,7.14,50.4,82.6,0,2124,18.9,31.9
+946,Guandul,Leguminosa arbustiva resistente,5.17,7.36,44.5,73.9,0,1985,20.7,35.2
+947,Caupí Forrajero,Leguminosa anual tropical,4.84,7.02,49.9,76.3,0,1841,22.9,33.4
+948,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.08,6.92,47.4,78.3,0,2184,20.6,36.3
+949,Pasto Alemán,Forraje adaptado a zonas húmedas,4.87,6.62,72.0,96.3,93,1290,22.2,33.9
+950,Pasto Jaragua,Muy resistente a altas temperaturas,4.81,6.97,40.3,67.3,0,1781,23.8,37.3
+951,Pasto Angleton,Forraje tropical para pastoreo,4.86,6.66,47.2,77.2,0,1880,22.6,36.7
+952,Pasto Toledo,Variedad mejorada de brachiaria,4.96,6.6,47.4,80.5,0,2255,20.6,35.2
+953,Pasto Mombasa,Alta producción de biomasa,4.99,6.95,56.7,77.2,0,1807,21.1,36.0
+954,Pasto Tanzania,Excelente calidad nutricional,4.89,7.17,57.3,82.3,56,1815,22.7,35.2
+955,Pasto Mulato II,Híbrido resistente y nutritivo,4.91,6.92,51.9,77.3,9,2182,20.2,36.1
+956,Pasto Humidícola,Ideal para terrenos inundables,4.57,6.32,74.7,93.7,18,1289,22.6,34.9
+957,Pasto Rhodes,Muy usado en sistemas ganaderos,4.83,7.18,45.5,75.8,0,2220,20.2,36.8
+958,Pasto Buffel,Excelente resistencia a sequía,5.12,7.38,33.3,63.0,60,1865,24.7,39.2
+959,Soja Forrajera,Fuente rica en proteína vegetal,5.68,7.27,49.4,75.8,55,1861,20.3,32.0
+960,Vicia,Leguminosa usada en mezcla con gramíneas,6.18,7.43,54.3,77.1,1215,2986,9.4,24.9
+961,Cebada Forrajera,Excelente para climas templados,5.89,7.42,52.1,74.2,1488,3233,8.3,20.4
+962,Festuca,Gramínea perenne para clima frío,5.58,7.01,57.1,84.7,1878,3173,8.3,19.1
+963,Dactylis Glomerata,Pasto resistente al frío,5.53,7.1,57.3,79.1,1750,3198,7.4,19.5
+964,Lotus Corniculatus,Leguminosa adaptada a zonas frías,5.3,7.54,52.2,76.9,1450,3265,10.3,23.9
+965,Pasto Sudan,Híbrido de rápido crecimiento,4.95,6.92,47.9,69.6,0,1802,22.1,38.2
+966,Arachis Pintoi,Leguminosa rastrera tropical,5.04,6.75,54.8,82.8,0,1871,19.1,33.4
+967,Calliandra,Arbusto forrajero rico en proteína,5.54,7.68,52.3,77.3,9,2446,18.3,30.0
+968,Yuca Forrajera,Raíz y follaje utilizados en alimentación animal,4.81,6.9,43.1,76.0,0,1882,22.8,35.6
+969,Nacedero,Árbol forrajero usado en sistemas silvopastoriles,4.99,6.83,55.3,85.7,0,2297,18.8,31.7
+970,Pasto Elefante,Forraje tropical de alta producción,5.67,6.99,57.8,82.8,0,1820,19.0,35.4
+971,Alfalfa,Leguminosa rica en proteína para ganado,5.98,7.67,48.3,71.4,1092,3264,15.5,29.0
+972,Brachiaria Decumbens,Pasto resistente a sequías y suelos pobres,4.4,6.54,38.9,77.2,0,1953,22.1,36.3
+973,Brachiaria Brizantha,Forraje tropical para pastoreo intensivo,5.1,6.94,42.2,81.2,8,2291,20.8,35.3
+974,Pasto Guinea,Pasto tropical de rápido crecimiento,5.08,7.14,56.3,80.7,56,1754,22.1,34.4
+975,Pasto Kikuyo,Muy usado en lechería de clima frío,5.6,6.97,64.2,88.1,1875,3140,10.5,21.2
+976,Ray Grass Inglés,Ideal para zonas frías y húmedas,5.62,7.29,64.7,82.3,1756,3148,7.8,19.0
+977,Ray Grass Italiano,Forraje de alta digestibilidad,5.93,6.86,58.7,84.3,1433,3042,10.2,22.6
+978,Maíz Forrajero,Utilizado principalmente para ensilaje,5.65,7.18,57.6,81.2,0,2434,17.7,32.6
+979,Sorgo Forrajero,Alta tolerancia al calor y sequía,5.12,6.99,45.9,71.8,7,2191,20.8,37.7
+980,Avena Forrajera,Excelente producción en clima frío,5.89,7.15,57.5,86.5,1519,3291,7.9,20.3
+981,Trébol Blanco,Leguminosa fijadora de nitrógeno,5.99,7.6,54.8,72.6,1212,2814,12.7,23.5
+982,Trébol Rojo,Forraje de buena calidad nutricional,6.12,7.01,51.6,77.1,1218,2908,10.4,23.6
+983,Canavalia,Leguminosa usada como cobertura y forraje,5.34,7.65,50.1,82.8,0,1770,20.4,31.5
+984,Leucaena,Árbol forrajero rico en proteína,5.6,7.69,46.3,73.6,65,1823,23.0,35.8
+985,Botón de Oro,Forraje arbustivo de alta proteína,4.99,7.13,48.3,84.0,0,2581,18.1,30.5
+986,King Grass,Variedad de pasto de gran rendimiento,5.53,7.02,61.0,86.6,0,1894,22.4,34.4
+987,Pasto Estrella,Pasto tropical resistente al pastoreo,5.0,6.97,50.4,78.8,71,1915,22.3,36.0
+988,Pasto Tanner,Pasto adaptado a suelos húmedos,4.88,6.68,72.4,92.4,0,1422,21.4,33.2
+989,Pasto Pangola,Excelente digestibilidad para bovinos,5.12,7.09,57.7,82.8,0,1864,19.6,34.3
+990,Moringa,Árbol forrajero con alto contenido nutricional,5.06,7.48,38.1,69.2,71,1439,24.5,37.5
+991,Cratylia,Leguminosa arbustiva para sistemas silvopastoriles,4.87,6.9,48.5,73.5,9,1957,20.2,34.8
+992,Pennisetum Purpureum,Pasto tropical para corte,5.61,6.94,57.2,86.6,0,1844,21.1,34.5
+993,Maralfalfa,Pasto híbrido de alta producción,5.69,7.04,57.0,84.5,0,1906,19.5,34.4
+994,Caña Forrajera,Utilizada como suplemento energético,5.14,7.46,54.0,83.0,0,1801,22.5,36.1
+995,Centrosema,Leguminosa tropical rastrera,4.95,6.93,52.6,85.6,0,1766,19.5,33.6
+996,Desmodium,Leguminosa de buena digestibilidad,5.6,6.87,50.1,78.2,65,2188,18.0,32.9
+997,Guandul,Leguminosa arbustiva resistente,4.96,7.49,48.0,75.2,88,1980,19.3,35.8
+998,Caupí Forrajero,Leguminosa anual tropical,5.15,7.12,51.6,72.3,0,1829,21.8,34.9
+999,Pasto Bermuda,Pasto resistente y de rápido crecimiento,5.15,7.15,46.6,77.1,75,2254,19.7,36.1
+1000,Pasto Alemán,Forraje adaptado a zonas húmedas,5.14,6.36,69.7,97.5,0,1297,22.1,33.8
