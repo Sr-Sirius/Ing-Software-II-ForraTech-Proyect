@@ -18,13 +18,13 @@
             <div class="dropdown">
 
                 <button class="nav-link
-                    {% if request.endpoint in ['recommendation.recommend', 'encyclopedia.index'] %}active{% endif %}">
+                    {% if request.endpoint in ['recommendation.recommendationLR', 'encyclopedia.index'] %}active{% endif %}">
                     Features
                     <span>▾</span>
                 </button>
 
                 <div class="dropdown-menu">
-                    <a href="{{ url_for('recommendation.recommend') }}">Recommendation</a>
+                    <a href="{{ url_for('recommendation.recommendationLR') }}">Recommendation</a>
                     <a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a>
                 </div>
 
