@@ -4,7 +4,7 @@ from app.ml.sintetyc_dataset_model.random_forest_forraje import predictCropCateg
 from app.ml.sintetyc_dataset_model.Bayesian_Forraje import predictCropCategory as predictBayes,generatePlot as generateBayesPlot,generateRankingPlot as generateBayesRanking,generateFeatureImportancePlot as generateBayesImportance, getBestCrop as getBestCropBayes, getThreshold as getBayesThreshold,getModelMetrics as getModelMetricsB, generateConfusionMatrixPlot as generateConfusionMatrixPlotB, generateROCPlot as generateROCPlotB
 from app.ml.DANE_real_dataset_model.kmeans_Dane import predictCluster, generatePlot as generateKmeansPlot, getClusterInfo, load_model_KM, getModelMetrics as getModelMetricsKM, generateConfusionMatrixPlot as generateConfusionMatrixPlotKM, generateROCPlot as generateROCPlotKM
 from app.ml.DANE_real_dataset_model.KKN_Dane import load_model_K, predictKNN, generatePlot as generatePlotKNN, getClusterInfo, getModelMetrics as getModelMetricsKNN, generateConfusionMatrixPlot as generateConfusionMatrixPlotKNN, generateROCPlot as generateROCPlotKNN
-from app.ml.DANE_real_dataset_model.random_f_Dane import predictCropCategory as predictCropCategoryFD, generatePlot as generatePlotFD, generateFeatureImportancePlot as generateFeatureImportancePlotFD, getBestCrops as getBestCropsFD, getThreshold as getThresholdFD, load_model_RF
+from app.ml.DANE_real_dataset_model.random_f_Dane import predictCropCategory as predictCropCategoryFD, generatePlot as generatePlotFD, generateFeatureImportancePlot as generateFeatureImportancePlotFD, getBestCrops as getBestCropsFD, getThreshold as getThresholdFD, load_model_RF, getModelMetrics as getModelMetricsRD, generateConfusionMatrixPlot as generateConfusionMatrixPlotRD, generateROCPlot as generateROCPlotRD, getClassificationReport as getClassificationReportRD
 from app.ml.DANE_real_dataset_model.Bayesian_Dane import load_model_B,predictCropCategory as predictCropCategoryBD, generatePlot as generatePlotBD,getBestCrops as getBestCropsBD, getThreshold as getThresholdBD
 
 def get_recommendation(data):
@@ -231,45 +231,64 @@ def get_recommendation_KNN(data):
         "roc_plot": roc_plot  # Add ROC curve
     }
 def get_recommendation_RandomFD(data):
-    #Recommendation using Naive Bayes for forage crops
-    
-    import os    
-    # Build path to data file
+    """
+    Servicio corregido para Random Forest DANE.
+
+    Retorna:
+    - Recomendación de variedad usando Random Forest multiclase.
+    - Categoría de aptitud usando Random Forest binario.
+    - Métricas binarias reales: Alta vs Baja aptitud.
+    """
+    import os
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
     DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
-    
-    # Alternative path if file not found
+
     if not os.path.exists(DATA_PATH):
-        DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
-    
-    # Load model with the path
+        raise FileNotFoundError(f"No se encontró el dataset: {DATA_PATH}")
+
     load_model_RF(DATA_PATH)
 
-    # Extract and validate form inputs
     try:
         area_value = float(data.get("area_ha", 50.0))
         proteina_value = float(data.get("ganancia_proteina_pct", 70.0))
         clima_value = str(data.get("clima", "calido")).strip().lower()
+
         if clima_value not in ("calido", "frio"):
             clima_value = "calido"
+
     except (ValueError, TypeError):
-        area_value, proteina_value, clima_value = 50.0, 70.0, "calido"
+        area_value = 50.0
+        proteina_value = 70.0
+        clima_value = "calido"
 
-    # Prediction
-    best_var, best_prob, category = predictCropCategoryFD(area_value, proteina_value, clima_value)
+    best_var, best_prob, category = predictCropCategoryFD(
+        area_value,
+        proteina_value,
+        clima_value,
+    )
 
-    # Generate plots
-    plot = generatePlotFD(area_value, proteina_value, clima_value)
+    plot = generatePlotFD(
+        area_value,
+        proteina_value,
+        clima_value,
+    )
+
     importance_plot = generateFeatureImportancePlotFD()
-    
-    # Get top crops ranking
-    ranking = getBestCropsFD(area_value, proteina_value, clima_value, top_n=10)
-    
-    # Get threshold
-    threshold = getThresholdFD()
 
-    # Return dictionary ready for template
+    ranking = getBestCropsFD(
+        area_value,
+        proteina_value,
+        clima_value,
+        top_n=10,
+    )
+
+    threshold = getThresholdFD()
+    metrics = getModelMetricsRD()
+    confusion_matrix_plot = generateConfusionMatrixPlotRD()
+    roc_plot = generateROCPlotRD()
+    classification_report_dict = getClassificationReportRD()
+
     return {
         "result": best_var,
         "categoria": "ÓPTIMO" if category == 1 else "SUBÓPTIMO",
@@ -281,6 +300,10 @@ def get_recommendation_RandomFD(data):
         "area_value": area_value,
         "proteina_value": proteina_value,
         "clima_value": clima_value,
+        "metrics": metrics,
+        "confusion_matrix_plot": confusion_matrix_plot,
+        "roc_plot": roc_plot,
+        "classification_report": classification_report_dict,
     }
 def get_recommendation_BayesianDane(data):
     # Recommendation using Bayesian DANE model

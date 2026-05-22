@@ -264,7 +264,7 @@
       {% if metrics %}
       <div class="metrics-section" style="margin-top: 28px;">
         <div class="section-header" style="margin-bottom: 20px;">
-          📊 Métricas de Rendimiento del Modelo KNN (K=5)
+          📊 Métricas de Rendimiento del Modelo KNN (K=3)
           <span style="font-size: 0.7rem; margin-left: 12px; color: var(--muted);">
             Evaluación en test set (25% de los datos)
           </span>
@@ -372,7 +372,7 @@
         <!-- Additional KNN-specific metrics explanation -->
         <div class="model-info" style="text-align: left; margin-top: 8px;">
           <strong>🎯 ¿Qué significan estas métricas para KNN?</strong><br>
-          • KNN clasifica basándose en la distancia a los K=5 vecinos más cercanos<br>
+          • KNN clasifica basándose en la distancia a los K=3 vecinos más cercanos<br>
           • La métrica de afinidad se calcula como: 1 / (1 + distancia euclidiana)<br>
           • El modelo fue evaluado con 25% de los datos que no vio durante el entrenamiento<br>
           • El target "Alta aptitud" se define como score_proteina ≥ media del dataset
