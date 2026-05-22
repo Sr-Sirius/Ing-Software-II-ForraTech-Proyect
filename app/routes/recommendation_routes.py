@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from app.services.recommendation_service import get_recommendation, get_recommendationR, get_recommendationB
+from app.services.recommendation_service import get_recommendation, get_recommendationR, get_recommendationB, get_recommendation_KmeansD
 recommendation = Blueprint('recommendation',__name__)
 
 @recommendation.route("/regression", methods=["GET", "POST"])
@@ -30,8 +30,8 @@ def recommendationRF():
         result_data = get_recommendationR(data)  # This function returns data; it does not render
         return render_template("recommendation/RandomRF.html", **result_data)  # Populate the template with the data
     from app.ml.sintetyc_dataset_model.random_forest_forraje import generatePlot as generateRFPlot, getThreshold as getRFThreshold
-    # GET request - mostrar gráfica vacía (sin punto de predicción)
-    empty_plot = generateRFPlot()  # Sin parámetros = solo curva base
+    #GET request - display an empty chart with no forecast points
+    empty_plot = generateRFPlot()  # No parameters = base curve only
     return render_template(
         "recommendation/RandomRF.html",
         result=None,
@@ -53,10 +53,10 @@ def recommendationB():
         result_data = get_recommendationB(data)  # This function returns data; it does not render
         return render_template("recommendation/TeoBayesian.html", **result_data)  # Populate the template with the data
     
-    # GET request - mostrar gráfica vacía (sin punto de predicción)
+    # GET request - display an empty chart with no forecast points
     from app.ml.sintetyc_dataset_model.Bayesian_Forraje import generatePlot as generateBayesPlot, getThreshold as getBayesThreshold
     
-    empty_plot = generateBayesPlot()  # Sin parámetros = solo curva base
+    empty_plot = generateBayesPlot()  # No parameters = base curve only
     return render_template(
         "recommendation/TeoBayesian.html",
         result=None,
@@ -70,4 +70,23 @@ def recommendationB():
         alt_value=1500,
         temp_value=20,
         threshold=getBayesThreshold()
+    )
+@recommendation.route("/KmeansD", methods=["GET", "POST"])
+def recommendationKD():
+    if request.method == "POST":
+        data = request.form.to_dict()
+        result_data = get_recommendation_KmeansD(data)
+        return render_template("recommendation/KmeansD.html", **result_data)
+    return render_template(
+        "recommendation/KmeansD.html",
+        result=None,
+        cluster=None,
+        afinidad=None,
+        score_proteina=None,
+        plot=None,
+        ranking=None,
+        area_value=50.0,
+        proteina_value=70.0,
+        clima_value="calido",
+        cluster_info=None,
     )

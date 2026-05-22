@@ -78,7 +78,7 @@ test_acc  = accuracy_score(y_test, y_pred)
 # ─────────────────────────────────────────────────────────────────
 
 def getThreshold():
-    """Returns the composite threshold."""
+    #returns the composite threshold
     return threshold
 
 
@@ -264,7 +264,7 @@ def generateFeatureImportancePlot():
     class_0 = X_scaled[y == 0]
     class_1 = X_scaled[y == 1]
     
-    # Calculate separation power (difference in means normalized by variance)
+    # Calculate separation power, difference in means normalized by variance
     importance_scores = []
     for i, feature in enumerate(FEATURES):
         mean_diff = abs(class_1[:, i].mean() - class_0[:, i].mean())
