@@ -1,28 +1,33 @@
 from flask import current_app
-from app.ml.sintetyc_dataset_model.logistic_regression_forraje import predictCropCategory as predictLR, generatePlot as generateLRPlot, generateRankingPlot as generateLRRanking, getBestCrop as getBestCropLR, getThreshold as getLRThreshold
-from app.ml.sintetyc_dataset_model.random_forest_forraje import predictCropCategory as predictRF, generatePlot as generateRFPlot,generateRankingPlot as generateRFRanking,getBestCrop as getBestCropRF, getThreshold as getRFThreshold
-from app.ml.sintetyc_dataset_model.Bayesian_Forraje import predictCropCategory as predictBayes,generatePlot as generateBayesPlot,generateRankingPlot as generateBayesRanking,generateFeatureImportancePlot as generateBayesImportance, getBestCrop as getBestCropBayes, getThreshold as getBayesThreshold
+from app.ml.sintetyc_dataset_model.logistic_regression_forraje import predictCropCategory as predictLR, generatePlot as generateLRPlot, generateRankingPlot as generateLRRanking, getBestCrop as getBestCropLR, getThreshold as getLRThreshold, getModelMetrics as getModelMetricsLR, generateConfusionMatrixPlot as generateConfusionMatrixPlotLR, generateROCPlot as generateROCPlotLR
+from app.ml.sintetyc_dataset_model.random_forest_forraje import predictCropCategory as predictRF, generatePlot as generateRFPlot,generateRankingPlot as generateRFRanking,getBestCrop as getBestCropRF, getThreshold as getRFThreshold, generateROCPlot as generateROCPlotRF, generateConfusionMatrixPlot as generateConfusionMatrixPlotRF, getModelMetrics as getModelMetricsRF, generateFeatureImportancePlot as generateFeatureImportancePlotRF
+from app.ml.sintetyc_dataset_model.Bayesian_Forraje import predictCropCategory as predictBayes,generatePlot as generateBayesPlot,generateRankingPlot as generateBayesRanking,generateFeatureImportancePlot as generateBayesImportance, getBestCrop as getBestCropBayes, getThreshold as getBayesThreshold,getModelMetrics as getModelMetricsB, generateConfusionMatrixPlot as generateConfusionMatrixPlotB, generateROCPlot as generateROCPlotB
 from app.ml.DANE_real_dataset_model.kmeans_Dane import predictCluster, generatePlot as generateKmeansPlot, getClusterInfo, load_model_KM
 from app.ml.DANE_real_dataset_model.KKN_Dane import load_model_K, predictKNN, generatePlot as generatePlotKNN, getClusterInfo
 from app.ml.DANE_real_dataset_model.random_f_Dane import predictCropCategory as predictCropCategoryFD, generatePlot as generatePlotFD, generateFeatureImportancePlot as generateFeatureImportancePlotFD, getBestCrops as getBestCropsFD, getThreshold as getThresholdFD, load_model_RF
 from app.ml.DANE_real_dataset_model.Bayesian_Dane import load_model_B,predictCropCategory as predictCropCategoryBD, generatePlot as generatePlotBD,getBestCrops as getBestCropsBD, getThreshold as getThresholdBD
 
 def get_recommendation(data):
-    #Processes the form data and returns results, without rendering
-    #Extract data
+     # Processes the form data and returns results, without rendering
+    # Extract data
     ph_value = float(data["ph"])
     hum_value = float(data["humedad"])
     alt_value = float(data["altitud"])
     temp_value = float(data["temperatura"])
     
-    #Calculate everything using logistic_regression_forraje.py
+    # Calculate everything using logistic_regression_forraje.py
     result, probability = predictLR(ph_value, hum_value, alt_value, temp_value)
     plot = generateLRPlot(ph_value, hum_value, alt_value, temp_value)
     ranking_plot = generateLRRanking(ph_value, hum_value, alt_value, temp_value, top_n=10)
     top_crops = getBestCropLR(ph_value, hum_value, alt_value, temp_value, top_n=10).to_dict(orient="records")
     threshold = getLRThreshold()
     
-    #Return a dictionary containing data
+    # Get model metrics (these are independent of user input)
+    metrics = getModelMetricsLR()
+    confusion_matrix_plot = generateConfusionMatrixPlotLR()
+    roc_plot = generateROCPlotLR()
+    
+    # Return a dictionary containing all data
     return {
         "result": result,
         "probability": probability,
@@ -34,9 +39,12 @@ def get_recommendation(data):
         "alt_value": alt_value,
         "temp_value": temp_value,
         "threshold": threshold,
+        "metrics": metrics,  # Add metrics dictionary
+        "confusion_matrix_plot": confusion_matrix_plot,  # Add confusion matrix
+        "roc_plot": roc_plot  # Add ROC curve
     }
 def get_recommendationR(data):
-    #Processes the form data and returns results, without rendering.
+    # Processes the form data and returns results, without rendering.
     # Extract data with validation
     ph_value = float(data["ph"])
     hum_value = float(data["humedad"])
@@ -45,28 +53,38 @@ def get_recommendationR(data):
     
     # Calculate everything using random_forest_forraje.py
     result, probability = predictRF(ph_value, hum_value, alt_value, temp_value)
-
-    # Generate plots (pasan por las mejoras de RAM)
+    
+    # Generate plots
     plot = generateRFPlot(ph_value, hum_value, alt_value, temp_value)
     ranking_plot = generateRFRanking(ph_value, hum_value, alt_value, temp_value, top_n=10)
+    importance_plot = generateFeatureImportancePlotRF()  # Add feature importance plot
     top_crops = getBestCropRF(ph_value, hum_value, alt_value, temp_value, top_n=10).to_dict(orient="records")
     threshold = getRFThreshold()
     
-    # Return a dictionary containing data
+    # Get model metrics
+    metrics = getModelMetricsRF()  # Llama a getModelMetrics (asegúrate de renombrarla o importarla correctamente)
+    confusion_matrix_plot = generateConfusionMatrixPlotRF()
+    roc_plot = generateROCPlotRF()
+    
+    # Return a dictionary containing all data
     return {
         "result": result,
         "probability": probability,
         "plot": plot,
         "ranking_plot": ranking_plot,
+        "importance_plot": importance_plot,
         "top_crops": top_crops,
         "ph_value": ph_value,
         "hum_value": hum_value,
         "alt_value": alt_value,
         "temp_value": temp_value,
         "threshold": threshold,
+        "metrics": metrics,
+        "confusion_matrix_plot": confusion_matrix_plot,
+        "roc_plot": roc_plot
     }
 def get_recommendationB(data):
-    #Processes the form data for Naive Bayes model
+    # Processes the form data for Naive Bayes model
     # Extract data with validation
     try:
         ph_value = float(data.get("ph", 6.5))
@@ -87,7 +105,12 @@ def get_recommendationB(data):
     top_crops = getBestCropBayes(ph_value, hum_value, alt_value, temp_value, top_n=10).to_dict(orient="records")
     threshold = getBayesThreshold()
     
-    # Return a dictionary containing data
+    # Get model metrics (these are computed from the test set, independent of user input)
+    metrics = getModelMetricsB()  # Add this function from your model
+    confusion_matrix_plot = generateConfusionMatrixPlotB()  # Add from your model
+    roc_plot = generateROCPlotB()  # Add from your model
+    
+    # Return a dictionary containing all data
     return {
         "result": result,
         "probability": probability,
@@ -100,6 +123,9 @@ def get_recommendationB(data):
         "alt_value": alt_value,
         "temp_value": temp_value,
         "threshold": threshold,
+        "metrics": metrics,  # Add metrics dictionary
+        "confusion_matrix_plot": confusion_matrix_plot,  # Add confusion matrix
+        "roc_plot": roc_plot  # Add ROC curve
     }
 def get_recommendation_KmeansD(data):
     import os
@@ -243,22 +269,28 @@ def get_recommendation_RandomFD(data):
 def get_recommendation_BayesianDane(data):
     # Recommendation using Bayesian DANE model
     import os
+    
     # Build path to data file
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
     DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
     
-    # Alternative path if file not found
-    if not os.path.exists(DATA_PATH):
-        DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
-    
     # Load model with the path
-    # Cargar modelo
     load_model_B(DATA_PATH)
     
-    # ... obtener parámetros ...
+    # PRIMERO: Extraer y validar parámetros del formulario
+    try:
+        area_value = float(data.get("area_ha", 50.0))
+        proteina_value = float(data.get("ganancia_proteina_pct", 70.0))
+        clima_value = str(data.get("clima", "calido")).strip().lower()
+        if clima_value not in ("calido", "frio"):
+            clima_value = "calido"
+    except (ValueError, TypeError):
+        area_value = 50.0
+        proteina_value = 70.0
+        clima_value = "calido"
     
-    # Llamar funciones sin sufijo
+    # LUEGO: Usar las variables para las predicciones
     best_var, best_prob, category, ajustadas = predictCropCategoryBD(
         area_value, proteina_value, clima_value
     )
@@ -267,38 +299,14 @@ def get_recommendation_BayesianDane(data):
     ranking = getBestCropsBD(area_value, proteina_value, clima_value, top_n=10)
     threshold = getThresholdBD()
     
-    try:
-        area_value = float(data.get("area_ha", 50.0))
-        proteina_value = float(data.get("ganancia_proteina_pct", 70.0))
-        clima_value = str(data.get("clima", "calido")).strip().lower()
-
-        if clima_value not in ("calido", "frio"):
-            clima_value = "calido"
-
-    except (ValueError, TypeError):
-
-        area_value, proteina_value, clima_value = (50.0,70.0,"calido")
-
-    # Prediction
-    best_var, best_prob, category, ajustadas = predictCropCategoryBD(area_value,proteina_value,clima_value )
-
-    # Generate plots
-    plot = generatePlotBD( area_value, proteina_value, clima_value)
-
-    # Get top crops ranking
-    ranking = getBestCropsBD(area_value, proteina_value,clima_value, top_n=10)
-
-    # Get threshold
-    threshold = getThresholdBD()
-
     return {
         "result": best_var,
-        "categoria":"ÓPTIMO" if category == 1 else "SUBÓPTIMO",
+        "categoria": "ÓPTIMO" if category == 1 else "SUBÓPTIMO",
         "probabilidad": round(best_prob * 100, 1),
-        "threshold":round(threshold * 100, 1),
+        "threshold": round(threshold * 100, 1),
         "plot": plot,
         "ranking": ranking.to_dict(orient="records"),
-        "area_value":area_value,
-        "proteina_value":proteina_value,
-        "clima_value":clima_value,
+        "area_value": area_value,
+        "proteina_value": proteina_value,
+        "clima_value": clima_value,
     }

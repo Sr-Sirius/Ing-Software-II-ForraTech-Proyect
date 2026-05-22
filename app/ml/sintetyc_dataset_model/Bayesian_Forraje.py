@@ -5,6 +5,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
+from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score,confusion_matrix,ConfusionMatrixDisplay,roc_curve,roc_auc_score,classification_report
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -71,7 +72,7 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 train_acc = accuracy_score(y_train, model.predict(X_train))
 test_acc  = accuracy_score(y_test, y_pred)
-
+y_prob = model.predict_proba(X_test)[:, 1]
 
 # ─────────────────────────────────────────────────────────────────
 # FUNCTIONS
@@ -305,4 +306,130 @@ def generateFeatureImportancePlot():
     buf.close()
     gc.collect()  # Force memory cleanup
     
+    return result
+def getModelMetrics():
+    """
+    Retorna métricas principales del modelo Naive Bayes.
+    """
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, zero_division=0)
+    recall = recall_score(y_test, y_pred, zero_division=0)
+    f1 = f1_score(y_test, y_pred, zero_division=0)
+    auc = roc_auc_score(y_test, y_prob)
+
+    return {
+        "exactitud": float(accuracy),
+        "precision": float(precision),
+        "recall": float(recall),
+        "f1_score": float(f1),
+        "roc_auc": float(auc),
+        "train_accuracy": float(train_acc),
+        "test_accuracy": float(test_acc)
+    }
+
+
+def getClassificationReport():
+    """
+    Retorna el reporte de clasificación como diccionario.
+    """
+    return classification_report(
+        y_test,
+        y_pred,
+        target_names=["No óptimo", "Óptimo"],
+        output_dict=True,
+        zero_division=0
+    )
+
+
+def generateConfusionMatrixPlot():
+    """
+    Genera la matriz de confusión del modelo en formato base64.
+    """
+    cm = confusion_matrix(y_test, y_pred)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+
+    disp = ConfusionMatrixDisplay(
+        confusion_matrix=cm,
+        display_labels=["No óptimo", "Óptimo"]
+    )
+
+    disp.plot(
+        ax=ax,
+        cmap="Greens",
+        colorbar=False,
+        values_format="d"
+    )
+
+    ax.set_title(
+        "Matriz de Confusión – Naive Bayes",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Predicción")
+    ax.set_ylabel("Valor real")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
+    return result
+
+
+def generateROCPlot():
+    """
+    Genera la curva ROC del modelo en formato base64.
+    """
+    fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+    auc = roc_auc_score(y_test, y_prob)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+
+    ax.plot(
+        fpr,
+        tpr,
+        color="#1D9E75",
+        linewidth=2.5,
+        label=f"ROC AUC = {auc:.3f}"
+    )
+
+    ax.plot(
+        [0, 1],
+        [0, 1],
+        color="#EF9F27",
+        linestyle="--",
+        linewidth=1.5,
+        label="Clasificador aleatorio"
+    )
+
+    ax.set_title(
+        "Curva ROC – Naive Bayes",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Tasa de Falsos Positivos")
+    ax.set_ylabel("Tasa de Verdaderos Positivos")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.05)
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="lower right")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
     return result

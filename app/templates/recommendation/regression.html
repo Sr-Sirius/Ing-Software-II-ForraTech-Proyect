@@ -264,7 +264,97 @@
       {% endif %}
 
     {% endif %}
-
+      <!-- Metrics Section -->
+{% if metrics %}
+<div class="metrics-section" style="margin-top: 28px;">
+    <div class="section-header" style="margin-bottom: 20px;">
+        Métricas del Modelo
+        <span style="font-size: 0.7rem; margin-left: 12px; color: var(--muted);">
+            Evaluación en test set (25% de los datos)
+        </span>
+    </div>
+    
+        <!-- Metrics Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px;">
+            <div class="plot-card" style="padding: 20px;">
+                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+                    Exactitud
+                </div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+                    {{ "%.1f"|format(metrics.exactitud * 100) }}%
+                </div>
+                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
+                    Aciertos totales
+                </div>
+            </div>
+            
+            <div class="plot-card" style="padding: 20px;">
+                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+                    Precisión
+                </div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+                    {{ "%.1f"|format(metrics.precision * 100) }}%
+                </div>
+                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
+                    Verdaderos positivos / Total positivos predichos
+                </div>
+            </div>
+            
+            <div class="plot-card" style="padding: 20px;">
+                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+                    Recall
+                </div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+                    {{ "%.1f"|format(metrics.recall * 100) }}%
+                </div>
+                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
+                    Verdaderos positivos / Total positivos reales
+                </div>
+            </div>
+            
+            <div class="plot-card" style="padding: 20px;">
+                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+                    F1-Score
+                </div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+                    {{ "%.3f"|format(metrics.f1_score) }}
+                </div>
+                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
+                    Media armónica de precisión y recall
+                </div>
+            </div>
+            
+            <div class="plot-card" style="padding: 20px;">
+                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+                    ROC AUC
+                </div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+                    {{ "%.3f"|format(metrics.roc_auc) }}
+                </div>
+                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
+                    Capacidad de discriminación del modelo
+                </div>
+            </div>
+        </div>
+        
+        <!-- Confusion Matrix and ROC plots -->
+        <div class="plots-grid">
+            {% if confusion_matrix_plot %}
+            <div class="plot-card">
+                <div class="section-header">Matriz de Confusión</div>
+                <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix" style="width: 100%;"/>
+            </div>
+            {% endif %}
+            
+            {% if roc_plot %}
+            <div class="plot-card">
+                <div class="section-header">Curva ROC</div>
+                <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve" style="width: 100%;"/>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
   </main>
 </div>
 

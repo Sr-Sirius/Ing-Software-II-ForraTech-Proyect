@@ -5,6 +5,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,accuracy_score,precision_score,recall_score,f1_score,roc_curve,roc_auc_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 # ── 1. Load dataset ──────────────────────────────────────────────
@@ -43,12 +45,26 @@ _threshold    = df["composite"].mean()
 df["optimal"] = (df["composite"] > _threshold).astype(int)
 
 # ── 5. Train model ───────────────────────────────────────────────
-_X       = df[["composite"]]
-_y       = df["optimal"]
-_scaler  = StandardScaler()
-_X_sc    = _scaler.fit_transform(_X)
-_model   = LogisticRegression(max_iter=1000)
-_model.fit(_X_sc, _y)
+_X = df[["composite"]]
+_y = df["optimal"]
+
+_scaler = StandardScaler()
+_X_sc = _scaler.fit_transform(_X)
+
+_X_train, _X_test, _y_train, _y_test = train_test_split(
+    _X_sc,
+    _y,
+    test_size=0.25,
+    random_state=42,
+    stratify=_y
+)
+
+_model = LogisticRegression(max_iter=1000)
+_model.fit(_X_train, _y_train)
+
+# Predicciones para métricas
+_y_pred = _model.predict(_X_test)
+_y_prob = _model.predict_proba(_X_test)[:, 1]
 
 # ── Helpers ──────────────────────────────────────────────────────
 def _user_composite(ph, hum, alt, temp):
@@ -155,4 +171,116 @@ def generateRankingPlot(ph, hum, alt, temp, top_n=10):
     result = base64.b64encode(buf.getvalue()).decode()
     buf.close()
     gc.collect()  #Force memory cleanup
+    return result
+def getModelMetrics():
+    """
+    Retorna métricas principales del modelo:
+    exactitud, precisión, recall, F1 y AUC ROC.
+    """
+    accuracy = accuracy_score(_y_test, _y_pred)
+    precision = precision_score(_y_test, _y_pred, zero_division=0)
+    recall = recall_score(_y_test, _y_pred, zero_division=0)
+    f1 = f1_score(_y_test, _y_pred, zero_division=0)
+    auc = roc_auc_score(_y_test, _y_prob)
+
+    return {
+        "exactitud": float(accuracy),
+        "precision": float(precision),
+        "recall": float(recall),
+        "f1_score": float(f1),
+        "roc_auc": float(auc)
+    }
+
+
+def generateConfusionMatrixPlot():
+    """
+    Genera matriz de confusión en formato base64.
+    """
+    cm = confusion_matrix(_y_test, _y_pred)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+
+    disp = ConfusionMatrixDisplay(
+        confusion_matrix=cm,
+        display_labels=["No óptimo", "Óptimo"]
+    )
+
+    disp.plot(
+        ax=ax,
+        cmap="Greens",
+        colorbar=False,
+        values_format="d"
+    )
+
+    ax.set_title(
+        "Matriz de Confusión – Regresión Logística",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Predicción")
+    ax.set_ylabel("Valor real")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
+    return result
+
+
+def generateROCPlot():
+    """
+    Genera curva ROC en formato base64.
+    """
+    fpr, tpr, thresholds = roc_curve(_y_test, _y_prob)
+    auc = roc_auc_score(_y_test, _y_prob)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+
+    ax.plot(
+        fpr,
+        tpr,
+        color="#1D9E75",
+        linewidth=2.5,
+        label=f"ROC AUC = {auc:.3f}"
+    )
+
+    ax.plot(
+        [0, 1],
+        [0, 1],
+        color="#EF9F27",
+        linestyle="--",
+        linewidth=1.5,
+        label="Clasificador aleatorio"
+    )
+
+    ax.set_title(
+        "Curva ROC – Regresión Logística",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Tasa de Falsos Positivos")
+    ax.set_ylabel("Tasa de Verdaderos Positivos")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.05)
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="lower right")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
     return result
