@@ -1,4 +1,3 @@
-# app/ml/DANE_real_dataset_model/kmeans_Dane.py
 import io, base64, os, gc
 import pandas as pd
 import numpy as np
@@ -6,6 +5,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,accuracy_score,precision_score,recall_score,f1_score,roc_curve,roc_auc_score, classification_report
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
@@ -17,7 +17,12 @@ _df = None
 _scaler = None
 _kmeans = None
 _pca = None
-
+y_true_eval = None
+y_pred_eval = None
+y_prob_eval = None
+train_acc = None
+test_acc = None
+cluster_quality = None
 # Settings
 K = 4
 FEATURES = [
@@ -32,7 +37,7 @@ FEATURES = [
 def load_model_KM(data_path: str = None):
     # Upload a CSV file and train once. Avoid retraining
     global _df, _scaler, _kmeans, _pca
-    
+    global y_true_eval, y_pred_eval, y_prob_eval, train_acc, test_acc, cluster_quality    
     # If it's already trained, it runs
     if _kmeans is not None:
         return
@@ -54,14 +59,47 @@ def load_model_KM(data_path: str = None):
         0.10 * _df["prop_pastoreo_continuo"]
     )
     _df["log_area"] = np.log1p(_df["area_sembrada_ha"])
-
+# ─────────────────────────────────────────────
+# 5. Train / test split + Random Forest
+# ─────────────────────────────────────────────
     X = _df[FEATURES].copy()
     _scaler = StandardScaler()
     X_scaled = _scaler.fit_transform(X)
 
     _kmeans = KMeans(n_clusters=K, random_state=42, n_init=10)
     _df["cluster"] = _kmeans.fit_predict(X_scaled)
+    # ─────────────────────────────────────────────
+    # Métricas de evaluación para K-Means
+    # K-Means no tiene etiquetas reales, así que creamos
+    # una etiqueta binaria basada en score_proteina.
+    # 1 = Alta aptitud proteica
+    # 0 = Baja aptitud proteica
+    # ─────────────────────────────────────────────
+    _df["optimal"] = (
+        _df["score_proteina"] >= _df["score_proteina"].mean()
+    ).astype(int)
 
+    # Cada cluster se interpreta como alta o baja aptitud
+    cluster_quality = (
+        _df.groupby("cluster")["optimal"]
+        .mean()
+        .to_dict()
+    )
+
+    # Predicción binaria según el promedio de optimal dentro de cada cluster
+    _df["cluster_pred"] = _df["cluster"].map(
+        lambda c: 1 if cluster_quality[c] >= 0.5 else 0
+    )
+
+    # Probabilidad aproximada: proporción de casos óptimos en el cluster
+    _df["cluster_prob"] = _df["cluster"].map(cluster_quality)
+
+    y_true_eval = _df["optimal"].values
+    y_pred_eval = _df["cluster_pred"].values
+    y_prob_eval = _df["cluster_prob"].values
+
+    train_acc = accuracy_score(y_true_eval, y_pred_eval)
+    test_acc = train_acc
     _pca = PCA(n_components=2, random_state=42)
     X_pca = _pca.fit_transform(X_scaled)
     _df["pca1"] = X_pca[:, 0]
@@ -203,3 +241,151 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
     gc.collect()
 
     return result_base64
+def getModelMetrics():
+    """
+    Retorna métricas principales del modelo K-Means.
+    Nota: son métricas aproximadas usando una etiqueta binaria creada
+    a partir del score_proteina.
+    """
+    if _kmeans is None:
+        load_model_KM()
+
+    accuracy = accuracy_score(y_true_eval, y_pred_eval)
+    precision = precision_score(y_true_eval, y_pred_eval, zero_division=0)
+    recall = recall_score(y_true_eval, y_pred_eval, zero_division=0)
+    f1 = f1_score(y_true_eval, y_pred_eval, zero_division=0)
+
+    try:
+        auc = roc_auc_score(y_true_eval, y_prob_eval)
+    except ValueError:
+        auc = 0.0
+
+    return {
+        "exactitud": float(accuracy),
+        "precision": float(precision),
+        "recall": float(recall),
+        "f1_score": float(f1),
+        "roc_auc": float(auc),
+        "train_accuracy": float(train_acc),
+        "test_accuracy": float(test_acc)
+    }
+
+
+def getClassificationReport():
+    """
+    Retorna reporte de clasificación para la evaluación aproximada.
+    """
+    if _kmeans is None:
+        load_model_KM()
+
+    return classification_report(
+        y_true_eval,
+        y_pred_eval,
+        target_names=["Baja aptitud", "Alta aptitud"],
+        output_dict=True,
+        zero_division=0
+    )
+
+
+def generateConfusionMatrixPlot():
+    """
+    Genera matriz de confusión en formato base64.
+    """
+    if _kmeans is None:
+        load_model_KM()
+
+    cm = confusion_matrix(y_true_eval, y_pred_eval)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+
+    disp = ConfusionMatrixDisplay(
+        confusion_matrix=cm,
+        display_labels=["Baja aptitud", "Alta aptitud"]
+    )
+
+    disp.plot(
+        ax=ax,
+        cmap="Greens",
+        colorbar=False,
+        values_format="d"
+    )
+
+    ax.set_title(
+        "Matriz de Confusión – K-Means",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Predicción")
+    ax.set_ylabel("Valor real")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
+    return result
+
+
+def generateROCPlot():
+    """
+    Genera curva ROC en formato base64.
+    """
+    if _kmeans is None:
+        load_model_KM()
+
+    fpr, tpr, thresholds = roc_curve(y_true_eval, y_prob_eval)
+
+    try:
+        auc = roc_auc_score(y_true_eval, y_prob_eval)
+    except ValueError:
+        auc = 0.0
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+
+    ax.plot(
+        fpr,
+        tpr,
+        color="#1D9E75",
+        linewidth=2.5,
+        label=f"ROC AUC = {auc:.3f}"
+    )
+
+    ax.plot(
+        [0, 1],
+        [0, 1],
+        color="#EF9F27",
+        linestyle="--",
+        linewidth=1.5,
+        label="Clasificador aleatorio"
+    )
+
+    ax.set_title(
+        "Curva ROC – K-Means",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Tasa de Falsos Positivos")
+    ax.set_ylabel("Tasa de Verdaderos Positivos")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.05)
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="lower right")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
+    return result

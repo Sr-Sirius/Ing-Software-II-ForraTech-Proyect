@@ -4,7 +4,10 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,accuracy_score,precision_score,recall_score,f1_score,roc_curve,roc_auc_score
 from sklearn.neighbors import NearestNeighbors
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
@@ -15,6 +18,14 @@ _df = None
 _scaler = None
 _knn = None
 _pca = None
+
+_knn_classifier = None
+X_test_eval = None
+y_test_eval = None
+y_pred_eval = None
+y_prob_eval = None
+train_acc = None
+test_acc = None
 
 # Settings
 K = 5
@@ -68,11 +79,47 @@ def load_model_K(data_path: str = None):
     X_scaled = _scaler.fit_transform(X)
     
     # ─────────────────────────────────────────────
+    # Target binario para evaluación supervisada
+    # 1 = Alta aptitud proteica
+    # 0 = Baja aptitud proteica
+    # ─────────────────────────────────────────────
+    _df["optimal"] = (
+        _df["score_proteina"] >= _df["score_proteina"].mean()
+    ).astype(int)
+
+    y = _df["optimal"].values
+    # ─────────────────────────────────────────────
     # Adjust KNN 
     # ─────────────────────────────────────────────
     _knn = NearestNeighbors(n_neighbors=K, metric="euclidean")
     _knn.fit(X_scaled)
     
+    # ─────────────────────────────────────────────
+    # KNN Classifier para métricas
+    # ─────────────────────────────────────────────
+    global _knn_classifier, X_test_eval, y_test_eval, y_pred_eval, y_prob_eval
+    global train_acc, test_acc
+
+    X_train, X_test_eval, y_train, y_test_eval = train_test_split(
+        X_scaled,
+        y,
+        test_size=0.25,
+        random_state=42,
+        stratify=y
+    )
+
+    _knn_classifier = KNeighborsClassifier(
+        n_neighbors=K,
+        metric="euclidean"
+    )
+
+    _knn_classifier.fit(X_train, y_train)
+
+    y_pred_eval = _knn_classifier.predict(X_test_eval)
+    y_prob_eval = _knn_classifier.predict_proba(X_test_eval)[:, 1]
+
+    train_acc = accuracy_score(y_train, _knn_classifier.predict(X_train))
+    test_acc = accuracy_score(y_test_eval, y_pred_eval)
     # PCA for visualization
     _pca = PCA(n_components=2, random_state=42)
     X_pca = _pca.fit_transform(X_scaled)
@@ -252,3 +299,141 @@ def getClusterInfo():
     if _df is None:
         load_model_K()
     return _df.groupby("clima")[["score_proteina", "area_sembrada_ha"]].mean()
+def getModelMetrics():
+    """
+    Retorna métricas principales del modelo KNN Classifier.
+    """
+    if _knn_classifier is None:
+        load_model_K()
+
+    accuracy = accuracy_score(y_test_eval, y_pred_eval)
+    precision = precision_score(y_test_eval, y_pred_eval, zero_division=0)
+    recall = recall_score(y_test_eval, y_pred_eval, zero_division=0)
+    f1 = f1_score(y_test_eval, y_pred_eval, zero_division=0)
+    auc = roc_auc_score(y_test_eval, y_prob_eval)
+
+    return {
+        "exactitud": float(accuracy),
+        "precision": float(precision),
+        "recall": float(recall),
+        "f1_score": float(f1),
+        "roc_auc": float(auc),
+        "train_accuracy": float(train_acc),
+        "test_accuracy": float(test_acc)
+    }
+
+
+def getClassificationReport():
+    """
+    Retorna el reporte completo de clasificación.
+    """
+    if _knn_classifier is None:
+        load_model_K()
+
+    return classification_report(
+        y_test_eval,
+        y_pred_eval,
+        target_names=["Baja aptitud", "Alta aptitud"],
+        output_dict=True,
+        zero_division=0
+    )
+
+
+def generateConfusionMatrixPlot():
+    """
+    Genera la matriz de confusión del KNN Classifier en formato base64.
+    """
+    if _knn_classifier is None:
+        load_model_K()
+
+    cm = confusion_matrix(y_test_eval, y_pred_eval)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+
+    disp = ConfusionMatrixDisplay(
+        confusion_matrix=cm,
+        display_labels=["Baja aptitud", "Alta aptitud"]
+    )
+
+    disp.plot(
+        ax=ax,
+        cmap="Greens",
+        colorbar=False,
+        values_format="d"
+    )
+
+    ax.set_title(
+        "Matriz de Confusión – KNN",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Predicción")
+    ax.set_ylabel("Valor real")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
+    return result
+
+
+def generateROCPlot():
+    """
+    Genera la curva ROC del KNN Classifier en formato base64.
+    """
+    if _knn_classifier is None:
+        load_model_K()
+
+    fpr, tpr, thresholds = roc_curve(y_test_eval, y_prob_eval)
+    auc = roc_auc_score(y_test_eval, y_prob_eval)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+
+    ax.plot(
+        fpr,
+        tpr,
+        color="#1D9E75",
+        linewidth=2.5,
+        label=f"ROC AUC = {auc:.3f}"
+    )
+
+    ax.plot(
+        [0, 1],
+        [0, 1],
+        color="#EF9F27",
+        linestyle="--",
+        linewidth=1.5,
+        label="Clasificador aleatorio"
+    )
+
+    ax.set_title(
+        "Curva ROC – KNN",
+        fontsize=13,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Tasa de Falsos Positivos")
+    ax.set_ylabel("Tasa de Verdaderos Positivos")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1.05)
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="lower right")
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
+    plt.close("all")
+
+    buf.seek(0)
+    result = base64.b64encode(buf.getvalue()).decode()
+    buf.close()
+    gc.collect()
+
+    return result

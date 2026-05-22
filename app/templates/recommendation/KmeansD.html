@@ -298,6 +298,126 @@
       </div>
 
     {% endif %}
+    <!-- Metrics Section - Model Performance Evaluation -->
+      {% if metrics %}
+      <div class="metrics-section" style="margin-top: 28px;">
+        <div class="section-header" style="margin-bottom: 20px;">
+          📊 Métricas de Evaluación del Clustering (K-Means)
+          <span style="font-size: 0.7rem; margin-left: 12px; color: var(--muted);">
+            Evaluación con todo el dataset
+          </span>
+        </div>
+        
+        <!-- Metrics Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px;">
+          <!-- Accuracy Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              Exactitud (Accuracy)
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.1f"|format(metrics.exactitud * 100) }}%
+            </div>
+            <div style="font-size: 0.75rem; color: var(--muted); margin-top: 8px; line-height: 1.4;">
+              Coincidencia cluster-aptitud: {{ "%.1f"|format(metrics.train_accuracy * 100) }}%
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 4px;">
+              Proporción de aciertos en la asignación de aptitud
+            </div>
+          </div>
+          
+          <!-- Precision Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              Precisión (Precision)
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.1f"|format(metrics.precision * 100) }}%
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              VP / (VP + FP) - Confiabilidad de clusters "Alta aptitud"
+            </div>
+          </div>
+          
+          <!-- Recall Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              Sensibilidad (Recall)
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.1f"|format(metrics.recall * 100) }}%
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              VP / (VP + FN) - Detección de casos "Alta aptitud"
+            </div>
+          </div>
+          
+          <!-- F1-Score Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              F1-Score
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.3f"|format(metrics.f1_score) }}
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              Balance entre precisión y recall
+            </div>
+          </div>
+          
+          <!-- ROC AUC Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              ROC AUC
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.3f"|format(metrics.roc_auc) }}
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              Capacidad discriminativa del clustering
+            </div>
+          </div>
+        </div>
+        
+        <!-- Confusion Matrix and ROC plots -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          {% if confusion_matrix_plot %}
+          <div class="plot-card">
+            <div class="section-header">🎯 Matriz de Confusión - K-Means</div>
+            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix" style="width: 100%;"/>
+            <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
+              <strong>Interpretación para K-Means:</strong><br>
+              • VP = Alta aptitud bien agrupada<br>
+              • VN = Baja aptitud bien agrupada<br>
+              • FP = Cluster marcado como "Alta aptitud" pero mayoría es baja<br>
+              • FN = Cluster marcado como "Baja aptitud" pero mayoría es alta
+            </div>
+          </div>
+          {% endif %}
+          
+          {% if roc_plot %}
+          <div class="plot-card">
+            <div class="section-header">📈 Curva ROC - K-Means</div>
+            <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve" style="width: 100%;"/>
+            <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
+              AUC = Área bajo la curva ROC<br>
+              Mide qué tan bien los clusters separan Alta vs Baja aptitud proteica
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        
+        <!-- Additional K-Means specific explanation -->
+        <div class="model-info" style="text-align: left; margin-top: 8px;">
+          <strong>🎯 ¿Qué significan estas métricas para K-Means?</strong><br>
+          • K-Means es un algoritmo <strong>no supervisado</strong> que agrupa variedades similares<br>
+          • Para evaluarlo, se creó una etiqueta binaria: "Alta aptitud" = score_proteina ≥ media<br>
+          • Cada cluster se clasifica como "Alta aptitud" si ≥50% de sus miembros la tienen<br>
+          • Las métricas miden qué tan bien los clusters separan los niveles de aptitud proteica<br>
+          • K=4 clusters · Distancia Euclidiana · Inicialización K-Means++
+        </div>
+      </div>
+      {% endif %}
 
   </main>
 </div>

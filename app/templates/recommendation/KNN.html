@@ -260,7 +260,125 @@
       </div>
 
     {% endif %}
-
+      <!-- Metrics Section - Model Performance Evaluation -->
+      {% if metrics %}
+      <div class="metrics-section" style="margin-top: 28px;">
+        <div class="section-header" style="margin-bottom: 20px;">
+          📊 Métricas de Rendimiento del Modelo KNN (K=5)
+          <span style="font-size: 0.7rem; margin-left: 12px; color: var(--muted);">
+            Evaluación en test set (25% de los datos)
+          </span>
+        </div>
+        
+        <!-- Metrics Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px;">
+          <!-- Accuracy Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              Exactitud (Accuracy)
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.1f"|format(metrics.exactitud * 100) }}%
+            </div>
+            <div style="font-size: 0.75rem; color: var(--muted); margin-top: 8px; line-height: 1.4;">
+              Entrenamiento: {{ "%.1f"|format(metrics.train_accuracy * 100) }}%
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 4px;">
+              Proporción de aciertos totales en test
+            </div>
+          </div>
+          
+          <!-- Precision Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              Precisión (Precision)
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.1f"|format(metrics.precision * 100) }}%
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              VP / (VP + FP) - Confiabilidad de las predicciones
+            </div>
+          </div>
+          
+          <!-- Recall Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              Sensibilidad (Recall)
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.1f"|format(metrics.recall * 100) }}%
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              VP / (VP + FN) - Capacidad de detectar casos positivos
+            </div>
+          </div>
+          
+          <!-- F1-Score Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              F1-Score
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.3f"|format(metrics.f1_score) }}
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              Media armónica entre precisión y recall
+            </div>
+          </div>
+          
+          <!-- ROC AUC Card -->
+          <div class="plot-card" style="padding: 20px;">
+            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
+              ROC AUC
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
+              {{ "%.3f"|format(metrics.roc_auc) }}
+            </div>
+            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
+              1.0 = perfecto · 0.5 = aleatorio · Mayor = Mejor
+            </div>
+          </div>
+        </div>
+        
+        <!-- Confusion Matrix and ROC plots -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          {% if confusion_matrix_plot %}
+          <div class="plot-card">
+            <div class="section-header">🎯 Matriz de Confusión - KNN</div>
+            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix" style="width: 100%;"/>
+            <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
+              <strong>Interpretación:</strong><br>
+              VP = Verdaderos Positivos (Alta aptitud bien clasificada)<br>
+              VN = Verdaderos Negativos (Baja aptitud bien clasificada)<br>
+              FP = Falsos Positivos (Error Tipo I)<br>
+              FN = Falsos Negativos (Error Tipo II - Omisión)
+            </div>
+          </div>
+          {% endif %}
+          
+          {% if roc_plot %}
+          <div class="plot-card">
+            <div class="section-header">📈 Curva ROC - KNN</div>
+            <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve" style="width: 100%;"/>
+            <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
+              AUC = Área bajo la curva ROC<br>
+              Valores cercanos a 1.0 indican excelente capacidad discriminativa
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        
+        <!-- Additional KNN-specific metrics explanation -->
+        <div class="model-info" style="text-align: left; margin-top: 8px;">
+          <strong>🎯 ¿Qué significan estas métricas para KNN?</strong><br>
+          • KNN clasifica basándose en la distancia a los K=5 vecinos más cercanos<br>
+          • La métrica de afinidad se calcula como: 1 / (1 + distancia euclidiana)<br>
+          • El modelo fue evaluado con 25% de los datos que no vio durante el entrenamiento<br>
+          • El target "Alta aptitud" se define como score_proteina ≥ media del dataset
+        </div>
+      </div>
+      {% endif %}
   </main>
 </div>
 
