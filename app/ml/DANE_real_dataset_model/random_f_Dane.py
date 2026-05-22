@@ -30,7 +30,7 @@ FEATURES = [
 # ─────────────────────────────────────────────
 # 1. Load dataset with memory optimization
 # ─────────────────────────────────────────────
-def load_model(data_path: str = None):
+def load_model_RF(data_path: str = None):
     #Loads the dataset and trains the Random Forest model once.
     # Implements memory optimization and path handling.
 
@@ -124,7 +124,7 @@ def load_model(data_path: str = None):
 def getThreshold():
     #Returns the minimum probability to consider a variety optimal
     if _label_encoder is None:
-        load_model()
+        load_model_RF()
     return 1.0 / len(_label_encoder.classes_)
 
 
@@ -149,7 +149,7 @@ def predictCropCategory(area_ha, ganancia_proteina_pct, clima):
     
     # Ensure model is loaded
     if _model is None:
-        load_model()
+        load_model_RF()
     
     uv = buildUserVector(area_ha, ganancia_proteina_pct, clima)
     uv_scaled = _scaler.transform([uv])
@@ -178,7 +178,7 @@ def getBestCrops(area_ha, ganancia_proteina_pct, clima, top_n=10):
     
     # Ensure model is loaded
     if _model is None:
-        load_model()
+        load_model_RF()
     
     uv = buildUserVector(area_ha, ganancia_proteina_pct, clima)
     uv_scaled = _scaler.transform([uv])
@@ -210,7 +210,7 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
     
     # Ensure model is loaded
     if _model is None:
-        load_model()
+        load_model_RF()
     
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
     
@@ -309,7 +309,7 @@ def generateFeatureImportancePlot():
     global _feat_importances
     
     if _feat_importances is None:
-        load_model()
+        load_model_RF()
     
     fig, ax = plt.subplots(figsize=(10, 6))
     

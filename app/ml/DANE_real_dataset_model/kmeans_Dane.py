@@ -29,7 +29,7 @@ FEATURES = [
 # ─────────────────────────────────────────────
 # 1. Load dataset
 # ─────────────────────────────────────────────
-def load_model(data_path: str = None):
+def load_model_KM(data_path: str = None):
     # Upload a CSV file and train once. Avoid retraining
     global _df, _scaler, _kmeans, _pca
     
@@ -70,7 +70,7 @@ def load_model(data_path: str = None):
 def getClusterInfo():
     # Returns a summary for each cluster
     if _df is None:
-        load_model()
+        load_model_KM()
     return _df.groupby("cluster")[["score_proteina", "log_area"]].mean()
 
 def buildUserVector(area_ha, ganancia_proteina_pct, clima):
@@ -98,7 +98,7 @@ def predictCluster(area_ha, ganancia_proteina_pct, clima):
     
     # Ensure that the model is loaded
     if _kmeans is None:
-        load_model()
+        load_model_KM()
     
     uv = buildUserVector(area_ha, ganancia_proteina_pct, clima)
     uv_scaled = _scaler.transform([uv])
@@ -132,7 +132,7 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
     
     # Ensure that the model is loaded
     if _kmeans is None:
-        load_model()
+        load_model_KM()
     
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 

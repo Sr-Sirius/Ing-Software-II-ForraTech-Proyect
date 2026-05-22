@@ -272,10 +272,16 @@
         <div class="cluster-grid">
           {% for cluster in cluster_info %}
           <div class="cluster-card">
-            <h4>CLUSTER {{ cluster.cluster }}</h4>
-            <div class="cluster-num">{{ cluster.cluster }}</div>
-            <div class="metric"><span>Score Proteína:</span> {{ "%.2f"|format(cluster.score_proteina * 100) }}%</div>
-            <div class="metric"><span>log(Área):</span> {{ "%.2f"|format(cluster.log_area) }}</div>
+            <h4>CLUSTER {{ cluster.cluster if cluster.cluster is defined else loop.index0 }}</h4>
+            <div class="cluster-num">{{ cluster.cluster if cluster.cluster is defined else loop.index0 }}</div>
+            <div class="metric">
+              <span>Score Proteína:</span> 
+              {{ "%.2f"|format((cluster.score_proteina if cluster.score_proteina is defined else 0) * 100) }}%
+            </div>
+            <div class="metric">
+              <span>log(Área):</span> 
+              {{ "%.2f"|format(cluster.log_area if cluster.log_area is defined else 0) }}
+            </div>
           </div>
           {% endfor %}
         </div>

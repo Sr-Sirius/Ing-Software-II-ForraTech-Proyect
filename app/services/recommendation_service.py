@@ -2,9 +2,9 @@ from flask import current_app
 from app.ml.sintetyc_dataset_model.logistic_regression_forraje import predictCropCategory as predictLR, generatePlot as generateLRPlot, generateRankingPlot as generateLRRanking, getBestCrop as getBestCropLR, getThreshold as getLRThreshold
 from app.ml.sintetyc_dataset_model.random_forest_forraje import predictCropCategory as predictRF, generatePlot as generateRFPlot,generateRankingPlot as generateRFRanking,getBestCrop as getBestCropRF, getThreshold as getRFThreshold
 from app.ml.sintetyc_dataset_model.Bayesian_Forraje import predictCropCategory as predictBayes,generatePlot as generateBayesPlot,generateRankingPlot as generateBayesRanking,generateFeatureImportancePlot as generateBayesImportance, getBestCrop as getBestCropBayes, getThreshold as getBayesThreshold
-from app.ml.DANE_real_dataset_model.kmeans_Dane import predictCluster, generatePlot as generateKmeansPlot, getClusterInfo, load_model
+from app.ml.DANE_real_dataset_model.kmeans_Dane import predictCluster, generatePlot as generateKmeansPlot, getClusterInfo, load_model_KM
 from app.ml.DANE_real_dataset_model.KKN_Dane import load_model_K, predictKNN, generatePlot as generatePlotKNN, getClusterInfo
-from app.ml.DANE_real_dataset_model.random_f_Dane import predictCropCategory as predictCropCategoryFD, generatePlot as generatePlotFD, generateFeatureImportancePlot as generateFeatureImportancePlotFD, getBestCrops as getBestCropsFD, getThreshold as getThresholdFD
+from app.ml.DANE_real_dataset_model.random_f_Dane import predictCropCategory as predictCropCategoryFD, generatePlot as generatePlotFD, generateFeatureImportancePlot as generateFeatureImportancePlotFD, getBestCrops as getBestCropsFD, getThreshold as getThresholdFD, load_model_RF
 from app.ml.DANE_real_dataset_model.Bayesian_Dane import load_model_B,predictCropCategory as predictCropCategoryBD, generatePlot as generatePlotBD,getBestCrops as getBestCropsBD, getThreshold as getThresholdBD
 
 def get_recommendation(data):
@@ -108,7 +108,7 @@ def get_recommendation_KmeansD(data):
     DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
     
     # Load model using path
-    load_model(DATA_PATH)
+    load_model_KM(DATA_PATH)
 
     # Extract and validate form inputs
     try:
@@ -202,7 +202,7 @@ def get_recommendation_RandomFD(data):
         DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
     
     # Load model with the path
-    load_model(DATA_PATH)
+    load_model_RF(DATA_PATH)
 
     # Extract and validate form inputs
     try:

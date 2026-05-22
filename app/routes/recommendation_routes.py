@@ -2,6 +2,18 @@ from flask import Blueprint, render_template, request
 from app.services.recommendation_service import get_recommendation, get_recommendationR, get_recommendationB, get_recommendation_KmeansD, get_recommendation_KNN, get_recommendation_RandomFD, get_recommendation_BayesianDane
 recommendation = Blueprint('recommendation',__name__)
 
+@recommendation.route("/Menu", methods=["GET"])
+def recommendationM(): 
+    return render_template("recommendation/recomendation_menu.html")
+
+@recommendation.route("/menu_F", methods=["GET", "POST"])
+def recommendationMF(): 
+    return render_template("recommendation/menu_Models_F.html")
+
+@recommendation.route("/menu_D", methods=["GET", "POST"])
+def recommendationMD(): 
+    return render_template("recommendation/menu_Models_D.html")
+
 @recommendation.route("/regression", methods=["GET", "POST"])
 def recommendationLR():
     
