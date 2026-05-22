@@ -5,7 +5,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
@@ -13,17 +13,19 @@ from sklearn.metrics import accuracy_score, classification_report
 # ─────────────────────────────────────────────
 # 1. Load dataset
 # ─────────────────────────────────────────────
-#Path from this file: app/ml/sintetyc_dataset_model/logistic_regression_forraje.py
+# Path from this file: app/ml/sintetyc_dataset_model/Bayesian_Forraje.py
 # go up 3 levels to reach the project root
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "..", ".."))
 
-#Look for the file in the 'data' folder in the root directory
+# Look for the file in the 'data' folder in the root directory
 DATA_PATH = os.path.join(ROOT_DIR, "data", "forrajeo_1000.csv")
 
 df = pd.read_csv(DATA_PATH)
+
 # ─────────────────────────────────────────────
-# 2. Feature engineering  (midpoints)
+# 2. Feature engineering
+# Midpoint of each range variable
 # ─────────────────────────────────────────────
 df["ph_mid"]      = (df["ph_min"]      + df["ph_max"])      / 2
 df["humedad_mid"] = (df["humedad_min"] + df["humedad_max"]) / 2
@@ -31,7 +33,7 @@ df["altitud_mid"] = (df["altitud_min"] + df["altitud_max"]) / 2
 df["temp_mid"]    = (df["temp_min"]    + df["temp_max"])    / 2
 
 # ─────────────────────────────────────────────
-# 3. Composite score + binary target
+# 3. Composite suitability score (same as LR)
 # ─────────────────────────────────────────────
 df["composite"] = (
     0.30 * df["ph_mid"]      / 9    +
@@ -44,7 +46,8 @@ threshold = df["composite"].mean()
 df["optimal"] = (df["composite"] > threshold).astype(int)
 
 # ─────────────────────────────────────────────
-# 4. All 8 range variables as features
+# 4. Feature matrix: all 8 range variables
+# Bayesian benefits from multiple features
 # ─────────────────────────────────────────────
 FEATURES = ["ph_min","ph_max","humedad_min","humedad_max",
             "altitud_min","altitud_max","temp_min","temp_max"]
@@ -56,29 +59,18 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # ─────────────────────────────────────────────
-# 5. Train / test split + Random Forest
-# n_estimators=100 trees, same random_state
-# for reproducibility
+# 5. Train / test split + Gaussian Naive Bayes
 # ─────────────────────────────────────────────
 X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y, test_size=0.2, random_state=42
 )
 
-model = RandomForestClassifier(
-    n_estimators=100,
-    max_depth=None,
-    min_samples_split=2,
-    random_state=42,
-    n_jobs=-1
-)
+model = GaussianNB()
 model.fit(X_train, y_train)
 
-y_pred    = model.predict(X_test)
+y_pred = model.predict(X_test)
 train_acc = accuracy_score(y_train, model.predict(X_train))
 test_acc  = accuracy_score(y_test, y_pred)
-
-# feature importances, unique to RF
-feat_importances = pd.Series(model.feature_importances_, index=FEATURES)
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -99,18 +91,19 @@ def compute_affinity(row, user_ph, user_hum, user_alt, user_temp):
 
 
 def user_features(user_ph, user_hum, user_alt, user_temp):
-    """8-feature vector from user terrain point values."""
+    #Builds the 8-feature vector for the user terrain.
+    # uses the user value as both min and max
+    # point estimate within the range space
     return [[user_ph, user_ph, user_hum, user_hum,
              user_alt, user_alt, user_temp, user_temp]]
 
 
 def predictCropCategory(user_ph, user_hum, user_alt, user_temp):
-    """
-    Random Forest prediction: returns (category, probability).
-    Mirrors predictOilCategory(year).
-    RF averages the vote probabilities of all 100 decision trees:
-        P(optimal) = (trees voting 1) / total_trees
-    """
+    #Naive Bayes prediction: returns (category, probability).
+    # mses Bayes theorem:
+    # p(optimal | features) = P(features | optimal) * P(optimal) / P(features)
+    # gaussianNB estimates P(features | class) as a Gaussian distribution.
+
     feat_scaled = scaler.transform(user_features(user_ph, user_hum, user_alt, user_temp))
     prob        = model.predict_proba(feat_scaled)[0][1]
     category    = model.predict(feat_scaled)[0]
@@ -118,7 +111,7 @@ def predictCropCategory(user_ph, user_hum, user_alt, user_temp):
 
 
 def getBestCrop(user_ph, user_hum, user_alt, user_temp, top_n=10):
-    #Ranks all crops by affinity for the user terrain
+    """Ranks all crops by affinity for the user terrain."""
     df_copy = df.copy()
     df_copy["affinity"] = df_copy.apply(
         lambda row: compute_affinity(row, user_ph, user_hum, user_alt, user_temp), axis=1
@@ -132,29 +125,32 @@ def getBestCrop(user_ph, user_hum, user_alt, user_temp, top_n=10):
 
 
 def generatePlot(user_ph=None, user_hum=None, user_alt=None, user_temp=None):
-    #Main plot: RF vote-probability curve along composite axis
+    #Main plot: Bayesian posterior probability curve
     # - Real data scatter (0/1)
-    # - Smooth RF probability curve (avg tree votes)
+    # - Smooth posterior P(optimal | composite) curve
     # - Decision threshold line at 0.5
     # - User prediction point
-    
     fig, ax = plt.subplots(figsize=(10, 6))
 
     df_sorted = df.sort_values("composite")
     X_plot = df_sorted["composite"].values
     Y_plot = df_sorted["optimal"].values
 
+    # real data scatter
     ax.scatter(X_plot, Y_plot, alpha=0.4, s=20, color="#1D9E75",
                label="Real Data (0 = Not optimal, 1 = Optimal)")
 
-    # smooth probability curve: vary composite, keep other features at mean
+    # smooth posterior curve using composite as proxy feature
     x_min = df["composite"].min() - 0.02
     x_max = df["composite"].max() + 0.02
     X_smooth = np.linspace(x_min, x_max, 500)
 
+    # reconstruct 8-feature vectors along the composite axis
+    # keep non-composite features at their dataset mean
     means = df[FEATURES].mean()
-    smooth_feats = [
-        [
+    smooth_feats = []
+    for c in X_smooth:
+        row_feat = [
             means["ph_min"]      * (c / df["composite"].mean()),
             means["ph_max"]      * (c / df["composite"].mean()),
             means["humedad_min"] * (c / df["composite"].mean()),
@@ -164,18 +160,19 @@ def generatePlot(user_ph=None, user_hum=None, user_alt=None, user_temp=None):
             means["temp_min"]    * (c / df["composite"].mean()),
             means["temp_max"]    * (c / df["composite"].mean()),
         ]
-        for c in X_smooth
-    ]
+        smooth_feats.append(row_feat)
 
-    smooth_scaled = scaler.transform(smooth_feats)
-    y_prob_smooth = model.predict_proba(smooth_scaled)[:, 1]
+    smooth_scaled    = scaler.transform(smooth_feats)
+    y_prob_smooth    = model.predict_proba(smooth_scaled)[:, 1]
 
     ax.plot(X_smooth, y_prob_smooth, color="#0F6E56", linewidth=2.5,
-            label="Random Forest Probability Curve (100 trees)")
+            label="Naive Bayes Posterior P(optimal | terrain)")
 
+    # threshold line
     ax.axhline(y=0.5, color="#EF9F27", linestyle="--", linewidth=1.5,
                label="Threshold (0.5)")
 
+    # user prediction point
     if all(v is not None for v in [user_ph, user_hum, user_alt, user_temp]):
         category, prob = predictCropCategory(user_ph, user_hum, user_alt, user_temp)
         comp_val = (0.30*user_ph/9 + 0.20*user_hum/100 +
@@ -201,10 +198,10 @@ def generatePlot(user_ph=None, user_hum=None, user_alt=None, user_temp=None):
         )
 
     ax.set_xlabel("Composite Terrain Score (pH · Humidity · Altitude · Temp)", fontsize=12)
-    ax.set_ylabel("Probability of Optimal Crop (avg. 100 trees)", fontsize=12)
+    ax.set_ylabel("Posterior Probability P(Optimal | Terrain)", fontsize=12)
     ax.set_title(
-        f"Random Forest – Forage Crop Suitability Classification\n"
-        f"Train acc: {train_acc:.2%}  |  Test acc: {test_acc:.2%}  |  Trees: 100",
+        f"Naive Bayes (Bayesian Theory) – Forage Crop Suitability\n"
+        f"Train acc: {train_acc:.2%}  |  Test acc: {test_acc:.2%}",
         fontsize=13, fontweight="bold"
     )
     ax.set_ylim(-0.05, 1.05)
@@ -212,6 +209,7 @@ def generatePlot(user_ph=None, user_hum=None, user_alt=None, user_temp=None):
     ax.grid(True, alpha=0.3)
     ax.legend(loc="best")
 
+    # Memory optimization: close and cleanup
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
     plt.close('all')  # Close all pending figures
@@ -224,7 +222,7 @@ def generatePlot(user_ph=None, user_hum=None, user_alt=None, user_temp=None):
 
 
 def generateRankingPlot(user_ph, user_hum, user_alt, user_temp, top_n=10):
-    #Bar chart of top N crops by affinity
+    #Bar chart of top N crops by affinity 
     ranked = getBestCrop(user_ph, user_hum, user_alt, user_temp, top_n)
     fig, ax = plt.subplots(figsize=(10, 5))
     colors = ["#1D9E75" if a >= 0.5 else "#EF9F27" for a in ranked["affinity"]]
@@ -233,7 +231,7 @@ def generateRankingPlot(user_ph, user_hum, user_alt, user_temp, top_n=10):
     ax.axvline(x=50, color="#EF9F27", linestyle="--", linewidth=1.5, label="Threshold 50%")
     ax.set_xlabel("Affinity Score (%)", fontsize=12)
     ax.set_title(
-        f"Top {top_n} Forage Crops – Random Forest Affinity\n"
+        f"Top {top_n} Forage Crops – Bayesian Affinity\n"
         f"pH={user_ph} | Hum={user_hum}% | Alt={user_alt}m | Temp={user_temp}°C",
         fontsize=13, fontweight="bold"
     )
@@ -246,6 +244,7 @@ def generateRankingPlot(user_ph, user_hum, user_alt, user_temp, top_n=10):
     orange_p = mpatches.Patch(color="#EF9F27", label="Suboptimal (<50%)")
     ax.legend(handles=[green_p, orange_p], loc="lower right")
     
+    # Memory optimization: close and cleanup
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
     plt.close('all')  # Close all pending figures
@@ -258,23 +257,46 @@ def generateRankingPlot(user_ph, user_hum, user_alt, user_temp, top_n=10):
 
 
 def generateFeatureImportancePlot():
-    #Extra RF chart: variable importance across all 100 trees
-    # shows which terrain variable matters most for classification.
-    fi = feat_importances.sort_values()
+    #Extra Bayesian chart: Feature importance using variance analysis
+    # shows which terrain variable has the most discriminative power
+    # for the Gaussian Naive Bayes model.
+    # Calculate variance ratio for each feature between classes
+    class_0 = X_scaled[y == 0]
+    class_1 = X_scaled[y == 1]
+    
+    # Calculate separation power (difference in means normalized by variance)
+    importance_scores = []
+    for i, feature in enumerate(FEATURES):
+        mean_diff = abs(class_1[:, i].mean() - class_0[:, i].mean())
+        var_pooled = (class_0[:, i].var() + class_1[:, i].var()) / 2
+        if var_pooled > 0:
+            score = mean_diff / np.sqrt(var_pooled)
+        else:
+            score = 0
+        importance_scores.append(score)
+    
+    # Normalize to 0-100%
+    importance_scores = np.array(importance_scores)
+    importance_scores = (importance_scores / importance_scores.sum()) * 100
+    
+    # Create DataFrame for plotting
+    fi = pd.Series(importance_scores, index=FEATURES).sort_values()
+    
     fig, ax = plt.subplots(figsize=(8, 5))
     colors = ["#1D9E75" if v >= fi.mean() else "#9FE1CB" for v in fi]
-    bars = ax.barh(fi.index, fi.values * 100, color=colors, edgecolor="white")
-    ax.axvline(x=fi.mean()*100, color="#EF9F27", linestyle="--",
-               linewidth=1.5, label=f"Mean importance ({fi.mean()*100:.1f}%)")
+    bars = ax.barh(fi.index, fi.values, color=colors, edgecolor="white")
+    ax.axvline(x=fi.mean(), color="#EF9F27", linestyle="--",
+               linewidth=1.5, label=f"Mean importance ({fi.mean():.1f}%)")
     ax.set_xlabel("Feature Importance (%)", fontsize=12)
-    ax.set_title("Random Forest – Feature Importance\n(contribution of each variable to the model)",
+    ax.set_title("Naive Bayes – Feature Separation Power\n(Gaussian discriminative capacity)",
                  fontsize=13, fontweight="bold")
     ax.grid(True, axis="x", alpha=0.3)
     for bar, val in zip(bars, fi.values):
-        ax.text(val*100+0.3, bar.get_y()+bar.get_height()/2,
-                f"{val*100:.1f}%", va="center", fontsize=9)
+        ax.text(val+0.3, bar.get_y()+bar.get_height()/2,
+                f"{val:.1f}%", va="center", fontsize=9)
     ax.legend()
     
+    # Memory optimization: close and cleanup
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
     plt.close('all')  # Close all pending figures
