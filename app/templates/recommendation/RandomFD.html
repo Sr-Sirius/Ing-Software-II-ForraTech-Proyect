@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Random Forest - Forage Crops</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:      #1D9E75;
+      --green-dark: #0F6E56;
+      --amber:      #EF9F27;
+      --blue:       #3B82F6;
+      --blue-dark:  #2563EB;
+      --red:        #D85A30;
+      --bg:         #0A0F0D;
+      --surface:    #111916;
+      --surface2:   #182219;
+      --border:     #1E2E26;
+      --text:       #E8F0EB;
+      --muted:      #6B8A78;
+      --radius:     12px;
+    }
+    body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .logo { width:40px; height:40px; background:var(--green); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+    header h1 { font-size:1.25rem; font-weight:700; letter-spacing:-0.02em; }
+    header p  { font-size:0.78rem; color:var(--muted); font-family:'DM Mono',monospace; }
+
+    .container { display:grid; grid-template-columns:340px 1fr; min-height:calc(100vh - 81px); }
+
+    aside {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 32px 28px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    aside h2 { font-size:0.72rem; font-family:'DM Mono',monospace; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; }
+
+    .field { display:flex; flex-direction:column; gap:8px; }
+    .field label { font-size:0.88rem; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+    .field label span { font-family:'DM Mono',monospace; font-size:0.82rem; background:rgba(29,158,117,0.12); padding:2px 8px; border-radius:6px; }
+    .field input[type="range"] { -webkit-appearance:none; width:100%; height:6px; background:var(--border); border-radius:3px; outline:none; cursor:pointer; }
+    .field input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--green); border:2px solid var(--bg); cursor:pointer; transition:transform .15s,box-shadow .15s; }
+    .field input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.25); box-shadow:0 0 0 6px rgba(29,158,117,0.2); }
+    .range-labels { display:flex; justify-content:space-between; font-size:0.72rem; color:var(--muted); font-family:'DM Mono',monospace; }
+
+    .radio-group { display:flex; gap:16px; margin-top:4px; }
+    .radio-option { display:flex; align-items:center; gap:8px; cursor:pointer; }
+    .radio-option input[type="radio"] { width:18px; height:18px; cursor:pointer; accent-color:var(--green); }
+    .radio-option label { font-size:0.85rem; font-weight:500; cursor:pointer; }
+
+    .btn-predict {
+      margin-top:8px; background:var(--green); color:#fff;
+      font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
+      letter-spacing:0.04em; border:none; border-radius:var(--radius);
+      padding:14px; cursor:pointer; width:100%;
+      transition:background .2s,transform .15s;
+    }
+    .btn-predict:hover  { background:var(--green-dark); transform:translateY(-1px); }
+    .btn-predict:active { transform:translateY(0); }
+
+    main { padding:32px 40px; display:flex; flex-direction:column; gap:28px; }
+
+    .result-banner {
+      border-radius:var(--radius); padding:20px 24px; border:1px solid;
+    }
+    .result-banner.optimal { background:rgba(29,158,117,0.1); border-color:var(--green); }
+    .result-banner.suboptimal { background:rgba(239,159,39,0.1); border-color:var(--amber); }
+    .banner-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+    .badge { padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:700; font-family:'DM Mono',monospace; }
+    .badge.optimal { background:var(--green); color:#fff; }
+    .badge.suboptimal { background:var(--amber); color:#000; }
+    .variety-name { font-size:1.3rem; font-weight:800; letter-spacing:-0.02em; }
+    .banner-stats { display:flex; gap:32px; flex-wrap:wrap; margin-top:12px; }
+    .stat { display:flex; flex-direction:column; gap:3px; }
+    .stat-label { font-size:0.7rem; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; }
+    .stat-value { font-size:1.3rem; font-weight:800; }
+    .stat-value.green { color:var(--green); }
+    .stat-value.amber { color:var(--amber); }
+
+    .ranking-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .section-header { padding:16px 24px; border-bottom:1px solid var(--border); font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace; }
+    .ranking-table { width:100%; border-collapse:collapse; }
+    .ranking-table th { text-align:left; padding:14px 20px; font-size:0.7rem; font-family:'DM Mono',monospace; color:var(--muted); font-weight:500; border-bottom:1px solid var(--border); }
+    .ranking-table td { padding:12px 20px; font-size:0.85rem; border-bottom:1px solid var(--border); }
+    .ranking-table tr:last-child td { border-bottom:none; }
+    .rank-number { font-family:'DM Mono',monospace; font-weight:600; width:50px; }
+    .rank-1 { color:var(--amber); font-weight:800; }
+    .prob-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin-top:6px; width:100px; }
+    .prob-fill { height:100%; border-radius:3px; background:var(--green); }
+    .prob-value { font-family:'DM Mono',monospace; font-size:0.8rem; font-weight:500; }
+
+    .plot-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .plot-card img { width:100%; display:block; filter:brightness(0.97); }
+
+    .plots-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+
+    .empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; min-height:300px; color:var(--muted); text-align:center; }
+    .empty-state .icon { font-size:3.5rem; opacity:0.4; }
+    .empty-state p { font-size:0.9rem; max-width:320px; line-height:1.6; }
+
+    .model-info {
+      background: var(--surface2);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.7rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    @media(max-width:900px) {
+      .container { grid-template-columns:1fr; }
+      aside { border-right:none; border-bottom:1px solid var(--border); }
+      .plots-grid { grid-template-columns:1fr; }
+      header { padding:20px 24px; }
+      main { padding:24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌲</div>
+  <div>
+    <h1>Random Forest Classifier - Forage Crops</h1>
+    <p>Ensemble Learning · 200 Decision Trees · Feature Importance</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <aside>
+    <h2>Terrain Parameters</h2>
+
+    <form action="/recommendation/RandomFD" method="POST" style="display:contents">
+
+      <div class="field">
+        <label>Area (ha) <span id="area-val">{{ area_value or 50.0 }}</span></label>
+        <input type="range" name="area_ha" id="area_ha" min="0.5" max="500" step="0.5"
+               value="{{ area_value or 50.0 }}"
+               oninput="document.getElementById('area-val').textContent=this.value"/>
+        <div class="range-labels"><span>0.5 ha</span><span>500 ha</span></div>
+      </div>
+
+      <div class="field">
+        <label>Target Protein (%) <span id="proteina-val">{{ proteina_value or 70 }}</span></label>
+        <input type="range" name="ganancia_proteina_pct" id="ganancia_proteina_pct" min="0" max="100" step="1"
+               value="{{ proteina_value or 70 }}"
+               oninput="document.getElementById('proteina-val').textContent=this.value"/>
+        <div class="range-labels"><span>0%</span><span>100%</span></div>
+      </div>
+
+      <div class="field">
+        <label>Climate</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="clima" value="calido" 
+                   {% if clima_value == 'calido' or clima_value is none %}checked{% endif %}>
+            <span>🌞 Warm</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="clima" value="frio"
+                   {% if clima_value == 'frio' %}checked{% endif %}>
+            <span>❄️ Cold</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-predict">Analyze Terrain 🌲</button>
+
+    </form>
+    
+    <div class="model-info">
+      🌲 Random Forest · 200 Decision Trees<br>
+      📊 Ensemble learning · Bootstrap aggregation<br>
+      🎯 Feature importance based on Gini impurity
+    </div>
+  </aside>
+
+  <main>
+
+    {% if result is not none %}
+
+      <div class="result-banner {{ 'optimal' if categoria == 'OPTIMAL' else 'suboptimal' }}">
+        <div class="banner-header">
+          <span class="badge {{ 'optimal' if categoria == 'OPTIMAL' else 'suboptimal' }}">
+            {{ categoria }}
+          </span>
+          <span class="variety-name">🌿 {{ result }}</span>
+        </div>
+        <div class="banner-stats">
+          <div class="stat">
+            <span class="stat-label">Vote Probability</span>
+            <span class="stat-value {{ 'green' if categoria == 'OPTIMAL' else 'amber' }}">
+              {{ probabilidad }}%
+            </span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Model Threshold</span>
+            <span class="stat-value">{{ threshold }}%</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Area</span>
+            <span class="stat-value">{{ "%.1f"|format(area_value) }} ha</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Climate</span>
+            <span class="stat-value">{{ '🌞 Warm' if clima_value == 'calido' else '❄️ Cold' }}</span>
+          </div>
+        </div>
+      </div>
+
+      {% if ranking %}
+      <div class="ranking-section">
+        <div class="section-header">🌾 Top 10 crops by vote probability</div>
+        <table class="ranking-table">
+          <thead>
+            <tr><th>#</th><th>Variety</th><th>Probability</th><th>Climate</th><th>Protein Score</th></tr>
+          </thead>
+          <tbody>
+            {% for crop in ranking %}
+            <tr>
+              <td class="rank-number {% if loop.index == 1 %}rank-1{% endif %}">{{ loop.index }}</td>
+              <td style="font-weight:500;">{{ crop.variedad }}</td>
+              <td>
+                <span class="prob-value">{{ "%.1f"|format(crop.probabilidad * 100) }}%</span>
+                <div class="prob-bar"><div class="prob-fill" style="width:{{ "%.1f"|format(crop.probabilidad * 100) }}%"></div></div>
+               </td>
+              <td>{{ '🌞' if crop.clima == 'calido' else '❄️' }}</td>
+              <td class="prob-value">{{ "%.1f"|format(crop.score_proteina * 100) }}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      <div class="plots-grid">
+        {% if plot %}
+        <div class="plot-card">
+          <div class="section-header">🌲 Random Forest – Tree Votes & Feature Importance</div>
+          <img src="data:image/png;base64,{{ plot }}" alt="Random Forest visualization"/>
+        </div>
+        {% endif %}
+        
+        {% if importance_plot %}
+        <div class="plot-card">
+          <div class="section-header">🎯 Feature Importance (Gini Impurity)</div>
+          <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature importance plot"/>
+        </div>
+        {% endif %}
+      </div>
+
+    {% else %}
+
+      <div class="empty-state">
+        <div class="icon">🌲</div>
+        <p>Adjust terrain parameters and press <strong>Analyze Terrain</strong> to get crop suitability classification using <strong>Random Forest (200 trees)</strong> and the best forage crops.</p>
+        <p style="font-size:0.8rem; margin-top:10px;">Ensemble of 200 decision trees · Votes determine optimal variety</p>
+      </div>
+
+    {% endif %}
+
+  </main>
+</div>
+
+</body>
+</html>

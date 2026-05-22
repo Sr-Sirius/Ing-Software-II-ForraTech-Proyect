@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from app.services.recommendation_service import get_recommendation, get_recommendationR, get_recommendationB, get_recommendation_KmeansD, get_recommendation_KNN
+from app.services.recommendation_service import get_recommendation, get_recommendationR, get_recommendationB, get_recommendation_KmeansD, get_recommendation_KNN, get_recommendation_RandomFD, get_recommendation_BayesianDane
 recommendation = Blueprint('recommendation',__name__)
 
 @recommendation.route("/regression", methods=["GET", "POST"])
@@ -115,4 +115,53 @@ def recommendationKNN():
         proteina_value=70.0,
         clima_value="calido",
         cluster_info=None,
+    )
+@recommendation.route("/RandomFD", methods=["GET", "POST"])
+def recommendationBayesian():
+    #Route for Naive Bayes model
+    
+    if request.method == "POST":
+        data = request.form.to_dict()
+        result_data = get_recommendation_RandomFD(data)
+        return render_template("recommendation/RandomFD.html", **result_data)
+    
+    # GET request - show empty form
+    return render_template(
+        "recommendation/RandomFD.html",
+        result=None,
+        categoria=None,
+        probabilidad=None,
+        threshold=None,
+        plot=None,
+        importance_plot=None,
+        ranking=None,
+        area_value=50.0,
+        proteina_value=70.0,
+        clima_value="calido",
+    )
+@recommendation.route("/DaneBayesian", methods=["GET", "POST"])
+def recommendationBayesianDane():
+    # Route for Bayesian DANE forage recommendation model
+
+    if request.method == "POST":
+        data = request.form.to_dict()
+        result_data = get_recommendation_BayesianDane(data)
+
+        return render_template(
+            "recommendation/DaneBayesian.html",
+            **result_data
+        )
+
+    # GET request
+    return render_template(
+        "recommendation/DaneBayesian.html",
+        result=None,
+        categoria=None,
+        probabilidad=None,
+        threshold=None,
+        plot=None,
+        ranking=None,
+        area_value=50.0,
+        proteina_value=70.0,
+        clima_value="calido",
     )

@@ -3,7 +3,9 @@ from app.ml.sintetyc_dataset_model.logistic_regression_forraje import predictCro
 from app.ml.sintetyc_dataset_model.random_forest_forraje import predictCropCategory as predictRF, generatePlot as generateRFPlot,generateRankingPlot as generateRFRanking,getBestCrop as getBestCropRF, getThreshold as getRFThreshold
 from app.ml.sintetyc_dataset_model.Bayesian_Forraje import predictCropCategory as predictBayes,generatePlot as generateBayesPlot,generateRankingPlot as generateBayesRanking,generateFeatureImportancePlot as generateBayesImportance, getBestCrop as getBestCropBayes, getThreshold as getBayesThreshold
 from app.ml.DANE_real_dataset_model.kmeans_Dane import predictCluster, generatePlot as generateKmeansPlot, getClusterInfo, load_model
-from app.ml.DANE_real_dataset_model.KKN_Dane import load_model_K, predictKNN, generatePlot, getClusterInfo
+from app.ml.DANE_real_dataset_model.KKN_Dane import load_model_K, predictKNN, generatePlot as generatePlotKNN, getClusterInfo
+from app.ml.DANE_real_dataset_model.random_f_Dane import predictCropCategory as predictCropCategoryFD, generatePlot as generatePlotFD, generateFeatureImportancePlot as generateFeatureImportancePlotFD, getBestCrops as getBestCropsFD, getThreshold as getThresholdFD
+from app.ml.DANE_real_dataset_model.Bayesian_Dane import load_model_B,predictCropCategory as predictCropCategoryBD, generatePlot as generatePlotBD,getBestCrops as getBestCropsBD, getThreshold as getThresholdBD
 
 def get_recommendation(data):
     #Processes the form data and returns results, without rendering
@@ -166,7 +168,7 @@ def get_recommendation_KNN(data):
     prediction = predictKNN(area_value, proteina_value, clima_value)
 
     # Generated graph PCA + ranking
-    plot = generatePlot(area_value, proteina_value, clima_value)
+    plot = generatePlotKNN(area_value, proteina_value, clima_value)
 
     # Cluster information, for compatibility
     cluster_info = getClusterInfo().reset_index().to_dict(orient="records")
@@ -185,4 +187,118 @@ def get_recommendation_KNN(data):
         "area_value": area_value,
         "proteina_value": proteina_value,
         "clima_value": clima_value,
+    }
+def get_recommendation_RandomFD(data):
+    #Recommendation using Naive Bayes for forage crops
+    
+    import os    
+    # Build path to data file
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
+    DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
+    
+    # Alternative path if file not found
+    if not os.path.exists(DATA_PATH):
+        DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
+    
+    # Load model with the path
+    load_model(DATA_PATH)
+
+    # Extract and validate form inputs
+    try:
+        area_value = float(data.get("area_ha", 50.0))
+        proteina_value = float(data.get("ganancia_proteina_pct", 70.0))
+        clima_value = str(data.get("clima", "calido")).strip().lower()
+        if clima_value not in ("calido", "frio"):
+            clima_value = "calido"
+    except (ValueError, TypeError):
+        area_value, proteina_value, clima_value = 50.0, 70.0, "calido"
+
+    # Prediction
+    best_var, best_prob, category = predictCropCategoryFD(area_value, proteina_value, clima_value)
+
+    # Generate plots
+    plot = generatePlotFD(area_value, proteina_value, clima_value)
+    importance_plot = generateFeatureImportancePlotFD()
+    
+    # Get top crops ranking
+    ranking = getBestCropsFD(area_value, proteina_value, clima_value, top_n=10)
+    
+    # Get threshold
+    threshold = getThresholdFD()
+
+    # Return dictionary ready for template
+    return {
+        "result": best_var,
+        "categoria": "ÓPTIMO" if category == 1 else "SUBÓPTIMO",
+        "probabilidad": round(best_prob * 100, 1),
+        "threshold": round(threshold * 100, 1),
+        "plot": plot,
+        "importance_plot": importance_plot,
+        "ranking": ranking.to_dict(orient="records"),
+        "area_value": area_value,
+        "proteina_value": proteina_value,
+        "clima_value": clima_value,
+    }
+def get_recommendation_BayesianDane(data):
+    # Recommendation using Bayesian DANE model
+    import os
+    # Build path to data file
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
+    DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
+    
+    # Alternative path if file not found
+    if not os.path.exists(DATA_PATH):
+        DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
+    
+    # Load model with the path
+    # Cargar modelo
+    load_model_B(DATA_PATH)
+    
+    # ... obtener parámetros ...
+    
+    # Llamar funciones sin sufijo
+    best_var, best_prob, category, ajustadas = predictCropCategoryBD(
+        area_value, proteina_value, clima_value
+    )
+    
+    plot = generatePlotBD(area_value, proteina_value, clima_value)
+    ranking = getBestCropsBD(area_value, proteina_value, clima_value, top_n=10)
+    threshold = getThresholdBD()
+    
+    try:
+        area_value = float(data.get("area_ha", 50.0))
+        proteina_value = float(data.get("ganancia_proteina_pct", 70.0))
+        clima_value = str(data.get("clima", "calido")).strip().lower()
+
+        if clima_value not in ("calido", "frio"):
+            clima_value = "calido"
+
+    except (ValueError, TypeError):
+
+        area_value, proteina_value, clima_value = (50.0,70.0,"calido")
+
+    # Prediction
+    best_var, best_prob, category, ajustadas = predictCropCategoryBD(area_value,proteina_value,clima_value )
+
+    # Generate plots
+    plot = generatePlotBD( area_value, proteina_value, clima_value)
+
+    # Get top crops ranking
+    ranking = getBestCropsBD(area_value, proteina_value,clima_value, top_n=10)
+
+    # Get threshold
+    threshold = getThresholdBD()
+
+    return {
+        "result": best_var,
+        "categoria":"ÓPTIMO" if category == 1 else "SUBÓPTIMO",
+        "probabilidad": round(best_prob * 100, 1),
+        "threshold":round(threshold * 100, 1),
+        "plot": plot,
+        "ranking": ranking.to_dict(orient="records"),
+        "area_value":area_value,
+        "proteina_value":proteina_value,
+        "clima_value":clima_value,
     }
