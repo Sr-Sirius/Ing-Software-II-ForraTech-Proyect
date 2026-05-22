@@ -3,6 +3,8 @@ from app.ml.sintetyc_dataset_model.logistic_regression_forraje import predictCro
 from app.ml.sintetyc_dataset_model.random_forest_forraje import predictCropCategory as predictRF, generatePlot as generateRFPlot,generateRankingPlot as generateRFRanking,getBestCrop as getBestCropRF, getThreshold as getRFThreshold
 from app.ml.sintetyc_dataset_model.Bayesian_Forraje import predictCropCategory as predictBayes,generatePlot as generateBayesPlot,generateRankingPlot as generateBayesRanking,generateFeatureImportancePlot as generateBayesImportance, getBestCrop as getBestCropBayes, getThreshold as getBayesThreshold
 from app.ml.DANE_real_dataset_model.kmeans_Dane import predictCluster, generatePlot as generateKmeansPlot, getClusterInfo, load_model
+from app.ml.DANE_real_dataset_model.KKN_Dane import load_model_K, predictKNN, generatePlot, getClusterInfo
+
 def get_recommendation(data):
     #Processes the form data and returns results, without rendering
     #Extract data
@@ -132,6 +134,52 @@ def get_recommendation_KmeansD(data):
         "afinidad": round(prediction["afinidad"], 4),
         "score_proteina": round(prediction["score_proteina"], 4),
         "ranking": prediction["ranking"].to_dict(orient="records"),
+        "plot": plot,
+        "cluster_info": cluster_info,
+        "area_value": area_value,
+        "proteina_value": proteina_value,
+        "clima_value": clima_value,
+    }
+def get_recommendation_KNN(data):
+    # Recommendation using KNN (K-Nearest Neighbors) for pastures
+    
+    import os    
+    # Create a path to the data file
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
+    DATA_PATH = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
+    
+    # Cargar modelo con la ruta
+    load_model_K(DATA_PATH)
+
+    # Extraer y validar inputs del formulario
+    try:
+        area_value = float(data.get("area_ha", 50.0))
+        proteina_value = float(data.get("ganancia_proteina_pct", 70.0))
+        clima_value = str(data.get("clima", "calido")).strip().lower()
+        if clima_value not in ("calido", "frio"):
+            clima_value = "calido"
+    except (ValueError, TypeError):
+        area_value, proteina_value, clima_value = 50.0, 70.0, "calido"
+
+    # Prediction with KNN
+    prediction = predictKNN(area_value, proteina_value, clima_value)
+
+    # Generated graph PCA + ranking
+    plot = generatePlot(area_value, proteina_value, clima_value)
+
+    # Cluster information, for compatibility
+    cluster_info = getClusterInfo().reset_index().to_dict(orient="records")
+
+    # Return the dictionary ready for the template
+    return {
+        "result": prediction["variedad"],
+        "categoria": "ÓPTIMO" if prediction["categoria"] == 1 else "SUBÓPTIMO",
+        "distancia": round(prediction["distancia"], 4),
+        "afinidad": round(prediction["afinidad"], 4),
+        "probabilidad": round(prediction["probabilidad"] * 100, 1),
+        "score_proteina": round(prediction["ranking"].iloc[0]["score_proteina"], 4),
+        "ranking": prediction["ranking"][["variedad", "distancia", "afinidad_ajustada", "clima", "score_proteina"]].head(5).to_dict(orient="records"),
         "plot": plot,
         "cluster_info": cluster_info,
         "area_value": area_value,
