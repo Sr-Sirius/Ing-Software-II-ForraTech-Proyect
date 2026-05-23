@@ -6,6 +6,22 @@ recommendation = Blueprint('recommendation',__name__)
 def recommendationM(): 
     return render_template("recommendation/recomendation_menu.html")
 
+@recommendation.route("/menu_M", methods=["GET", "POST"])
+def recommendationMM(): 
+    return render_template("recommendation/menu_metrics.html")
+
+@recommendation.route("/docs", methods=["GET", "POST"])
+def recommendationDs(): 
+    return render_template("recommendation/docs.html")
+
+@recommendation.route("/Mforraje", methods=["GET", "POST"])
+def recommendationMTF(): 
+    return render_template("recommendation/metrics_forraje.html")
+
+@recommendation.route("/Mdane", methods=["GET", "POST"])
+def recommendationMTD(): 
+    return render_template("recommendation/metrics_dane.html")
+
 @recommendation.route("/menu_F", methods=["GET", "POST"])
 def recommendationMF(): 
     return render_template("recommendation/menu_Models_F.html")
@@ -13,6 +29,7 @@ def recommendationMF():
 @recommendation.route("/menu_D", methods=["GET", "POST"])
 def recommendationMD(): 
     return render_template("recommendation/menu_Models_D.html")
+
 
 @recommendation.route("/regression", methods=["GET", "POST"])
 def recommendationLR():

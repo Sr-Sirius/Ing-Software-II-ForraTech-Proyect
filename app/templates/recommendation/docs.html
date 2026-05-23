@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documentación · AgroML</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --green:#1D9E75; --green-dark:#0F6E56; --amber:#EF9F27;
+      --blue:#4A90D9; --purple:#8B5CF6;
+      --bg:#0A0F0D; --surface:#111916; --surface2:#182219;
+      --border:#1E2E26; --text:#E8F0EB; --muted:#6B8A78; --radius:12px;
+    }
+    body { font-family:'Syne',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:24px 48px; border-bottom:1px solid var(--border); background:var(--surface);
+    }
+    .logo-wrap { display:flex; align-items:center; gap:14px; }
+    .logo { width:40px; height:40px; background:var(--green); border-radius:10px;
+            display:flex; align-items:center; justify-content:center; font-size:22px; }
+    header h1 { font-size:1.2rem; font-weight:700; }
+    header p  { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace; }
+    .back-btn { font-family:'DM Mono',monospace; font-size:0.75rem; padding:8px 16px;
+                border-radius:20px; border:1px solid var(--border); color:var(--muted);
+                text-decoration:none; transition:all .2s; }
+    .back-btn:hover { border-color:var(--green); color:var(--green); }
+
+    .layout { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 81px); }
+
+    /* ── Sidebar nav ── */
+    .doc-nav { background:var(--surface); border-right:1px solid var(--border);
+               padding:32px 20px; position:sticky; top:0; height:100vh; overflow-y:auto; }
+    .doc-nav h2 { font-family:'DM Mono',monospace; font-size:0.68rem; color:var(--muted);
+                  letter-spacing:0.12em; text-transform:uppercase; margin-bottom:16px; }
+    .doc-nav a { display:block; font-size:0.85rem; color:var(--muted); text-decoration:none;
+                 padding:8px 12px; border-radius:8px; margin-bottom:2px;
+                 transition:all .15s; border-left:2px solid transparent; }
+    .doc-nav a:hover   { color:var(--text); background:var(--surface2); }
+    .doc-nav a.active  { color:var(--green); background:rgba(29,158,117,0.1);
+                         border-left-color:var(--green); }
+    .doc-nav .nav-section { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--border);
+                             letter-spacing:0.1em; text-transform:uppercase; margin:20px 0 8px 12px; }
+
+    /* ── Doc content ── */
+    .doc-content { padding:48px 60px; max-width:860px; }
+
+    .doc-section { margin-bottom:56px; scroll-margin-top:32px; }
+
+    /* Headings */
+    .doc-content h2 { font-size:1.6rem; font-weight:800; letter-spacing:-0.03em;
+                      margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+    .doc-content h3 { font-size:1.05rem; font-weight:700; margin:28px 0 10px; color:var(--green); }
+    .doc-content h4 { font-size:0.9rem; font-weight:600; margin:20px 0 8px; color:var(--muted);
+                      font-family:'DM Mono',monospace; letter-spacing:0.06em; text-transform:uppercase; }
+
+    /* Body text */
+    .doc-content p  { font-size:0.92rem; line-height:1.8; color:#C4D4CB; margin-bottom:14px; }
+    .doc-content ul { padding-left:20px; margin-bottom:14px; }
+    .doc-content li { font-size:0.92rem; line-height:1.8; color:#C4D4CB; margin-bottom:4px; }
+    .doc-content li::marker { color:var(--green); }
+
+    /* Code / mono */
+    .doc-content code { font-family:'DM Mono',monospace; font-size:0.82rem;
+                        background:var(--surface2); border:1px solid var(--border);
+                        padding:2px 7px; border-radius:5px; color:var(--green); }
+    .code-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+                  padding:20px 24px; margin:16px 0; overflow-x:auto; }
+    .code-block pre { font-family:'DM Mono',monospace; font-size:0.82rem; line-height:1.7;
+                      color:#C4D4CB; white-space:pre; }
+    .code-block .kw  { color:var(--purple); }
+    .code-block .fn  { color:var(--amber); }
+    .code-block .st  { color:var(--green); }
+    .code-block .cm  { color:var(--muted); }
+
+    /* Info / warning boxes */
+    .callout { border-radius:var(--radius); padding:16px 20px; margin:20px 0;
+               border-left:3px solid; font-size:0.88rem; line-height:1.7; }
+    .callout.info    { background:rgba(74,144,217,0.08);  border-color:var(--blue);  color:#C4D4CB; }
+    .callout.success { background:rgba(29,158,117,0.08);  border-color:var(--green); color:#C4D4CB; }
+    .callout.warning { background:rgba(239,159,39,0.08);  border-color:var(--amber); color:#C4D4CB; }
+    .callout strong  { color:var(--text); }
+
+    /* Table */
+    .doc-table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.86rem; }
+    .doc-table th { text-align:left; padding:10px 14px; background:var(--surface2);
+                    font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.08em;
+                    text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+    .doc-table td { padding:10px 14px; border-bottom:1px solid var(--border); color:#C4D4CB; }
+    .doc-table tr:hover td { background:var(--surface2); }
+    .doc-table td code { font-size:0.78rem; }
+
+    /* Tags */
+    .tag { display:inline-block; font-family:'DM Mono',monospace; font-size:0.68rem;
+           padding:2px 9px; border-radius:5px; margin-right:4px; }
+    .tag.green  { background:rgba(29,158,117,0.15); color:var(--green); }
+    .tag.amber  { background:rgba(239,159,39,0.15);  color:var(--amber); }
+    .tag.blue   { background:rgba(74,144,217,0.15);  color:var(--blue);  }
+    .tag.purple { background:rgba(139,92,246,0.15);  color:var(--purple); }
+
+    /* Layer diagram */
+    .layer-stack { display:flex; flex-direction:column; gap:4px; margin:20px 0; }
+    .layer-item  { border-radius:8px; padding:12px 18px; font-size:0.88rem;
+                   display:flex; align-items:center; justify-content:space-between; border:1px solid; }
+    .layer-item.l4 { background:rgba(74,144,217,0.08);  border-color:rgba(74,144,217,0.3);  }
+    .layer-item.l3 { background:rgba(29,158,117,0.08);  border-color:rgba(29,158,117,0.3);  }
+    .layer-item.l2 { background:rgba(239,159,39,0.08);  border-color:rgba(239,159,39,0.3);  }
+    .layer-item.l1 { background:rgba(139,92,246,0.08);  border-color:rgba(139,92,246,0.3);  }
+    .layer-item .lname { font-weight:700; }
+    .layer-item .lfile { font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--muted); }
+    .layer-arrow { text-align:center; font-size:0.8rem; color:var(--muted); padding:2px 0; }
+
+    @media(max-width:900px) {
+      .layout { grid-template-columns:1fr; }
+      .doc-nav { display:none; }
+      .doc-content { padding:32px 24px; }
+      header { padding:20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo">🌿</div>
+    <div>
+      <h1>Documentación técnica</h1>
+      <p>AgroML · Arquitectura, datasets y variables</p>
+    </div>
+  </div>
+  <a href="/menu" class="back-btn">← Inicio</a>
+</header>
+
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <nav class="doc-nav">
+    <h2>Contenido</h2>
+    <a href="#overview"     class="active">Visión general</a>
+    <a href="#datasets">Datasets</a>
+    <a href="#variables">Variables</a>
+    <span class="nav-section">Arquitectura</span>
+    <a href="#layers">Capas Flask</a>
+    <a href="#pipeline">Pipeline ML</a>
+    <a href="#models">Modelos</a>
+    <span class="nav-section">Referencia</span>
+    <a href="#routes">Rutas</a>
+    <a href="#config">Configuración</a>
+  </nav>
+
+  <!-- ── Content ── -->
+  <main class="doc-content">
+
+    <!-- Visión general -->
+    <section class="doc-section" id="overview">
+      <h2>Visión general</h2>
+      <p>AgroML es un sistema web de recomendación de cultivos forrajeros construido con <strong>Flask</strong> y <strong>scikit-learn</strong>. Implementa dos módulos independientes: uno sobre un dataset sintético de 1 000 registros y otro sobre datos reales del <strong>ENA 2019 (DANE)</strong>.</p>
+      <div class="callout success">
+        <strong>Objetivo:</strong> dado un conjunto de condiciones del terreno (pH, humedad, altitud, temperatura) o del productor (área disponible, ganancia de proteína deseada, clima), el sistema recomienda la variedad forrajera más adecuada.
+      </div>
+      <p>La arquitectura sigue un diseño de <strong>4 capas desacopladas</strong> que separa el modelo ML de la interfaz web, facilitando el mantenimiento y la extensión.</p>
+    </section>
+
+    <!-- Datasets -->
+    <section class="doc-section" id="datasets">
+      <h2>Datasets</h2>
+
+      <h3>forrajeo_1000.csv — Dataset sintético</h3>
+      <p>Generado con 52 especies forrajeras repetidas cíclicamente con variación aleatoria. Contiene los <strong>rangos de condiciones toleradas</strong> por cada especie.</p>
+      <table class="doc-table">
+        <thead><tr><th>Columna</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>int</td><td>Identificador único (1–1 000)</td></tr>
+          <tr><td><code>nombre</code></td><td>str</td><td>Nombre de la especie forrajera</td></tr>
+          <tr><td><code>ph_min / ph_max</code></td><td>float</td><td>Rango de pH tolerable</td></tr>
+          <tr><td><code>humedad_min / humedad_max</code></td><td>float</td><td>Rango de humedad relativa (%)</td></tr>
+          <tr><td><code>altitud_min / altitud_max</code></td><td>float</td><td>Rango de altitud (msnm)</td></tr>
+          <tr><td><code>temp_min / temp_max</code></td><td>float</td><td>Rango de temperatura (°C)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>ena_2019_pastos_ml.csv — Dataset DANE</h3>
+      <p>Derivado del <strong>Anexo ENA 2019</strong> del DANE. Contiene 26 variedades de pastos con sus áreas sembradas y proporciones de uso por tipo de aprovechamiento.</p>
+      <table class="doc-table">
+        <thead><tr><th>Columna</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>variedad</code></td><td>Nombre de la variedad de pasto</td></tr>
+          <tr><td><code>clima</code></td><td><code>calido</code> o <code>frio</code></td></tr>
+          <tr><td><code>area_sembrada_ha</code></td><td>Hectáreas totales sembradas (ENA 2019)</td></tr>
+          <tr><td><code>prop_pastoreo_continuo</code></td><td>Proporción del área en pastoreo continuo</td></tr>
+          <tr><td><code>prop_pastoreo_rotacional</code></td><td>Proporción en pastoreo rotacional</td></tr>
+          <tr><td><code>prop_corte</code></td><td>Proporción en uso de corte</td></tr>
+          <tr><td><code>prop_banco_proteina</code></td><td>Proporción en banco de proteína</td></tr>
+          <tr><td><code>score_proteina</code></td><td>Score calculado: aptitud proteica (0–1)</td></tr>
+          <tr><td><code>log_area</code></td><td>log(1 + area_sembrada_ha)</td></tr>
+          <tr><td><code>clima_num</code></td><td>0 = cálido · 1 = frío</td></tr>
+          <tr><td><code>uso_principal</code></td><td>Uso dominante de la variedad</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Variables -->
+    <section class="doc-section" id="variables">
+      <h2>Variables de entrada del usuario</h2>
+
+      <h3>Módulo Forraje (dataset sintético)</h3>
+      <table class="doc-table">
+        <thead><tr><th>Campo</th><th>Rango</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>ph</code></td><td>3.0 – 9.0</td><td>pH del suelo</td></tr>
+          <tr><td><code>humedad</code></td><td>0 – 100 %</td><td>Humedad relativa</td></tr>
+          <tr><td><code>altitud</code></td><td>0 – 4 000 m</td><td>Altitud sobre el nivel del mar</td></tr>
+          <tr><td><code>temperatura</code></td><td>0 – 45 °C</td><td>Temperatura promedio anual</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Módulo DANE (ENA 2019)</h3>
+      <table class="doc-table">
+        <thead><tr><th>Campo</th><th>Rango</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>area_ha</code></td><td>0.5 – 1 000 000</td><td>Hectáreas disponibles para sembrar</td></tr>
+          <tr><td><code>ganancia_proteina_pct</code></td><td>0 – 100 %</td><td>Ganancia de proteína deseada para los animales</td></tr>
+          <tr><td><code>clima</code></td><td>calido / frio</td><td>Clima del terreno del productor</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Capas -->
+    <section class="doc-section" id="layers">
+      <h2>Arquitectura de capas Flask</h2>
+      <p>El sistema sigue un diseño de <strong>4 capas desacopladas</strong>. Cada capa conoce solo a la capa inmediatamente inferior.</p>
+
+      <div class="layer-stack">
+        <div class="layer-item l4">
+          <span><span class="lname">Capa 4 – Routes</span> · recibe HTTP, devuelve HTML/JSON</span>
+          <span class="lfile">app/routes/recommendation_routes.py</span>
+        </div>
+        <div class="layer-arrow">↓ llama al servicio</div>
+        <div class="layer-item l3">
+          <span><span class="lname">Capa 3 – Service</span> · reglas de negocio, gráficas</span>
+          <span class="lfile">app/services/recommendation_service.py</span>
+        </div>
+        <div class="layer-arrow">↓ invoca predict()</div>
+        <div class="layer-item l2">
+          <span><span class="lname">Capa 2 – Pipeline</span> · validación, preprocesamiento</span>
+          <span class="lfile">app/ml/pipelines/dane_pipeline.py</span>
+        </div>
+        <div class="layer-arrow">↓ delega al modelo</div>
+        <div class="layer-item l1">
+          <span><span class="lname">Capa 1 – Models</span> · sklearn, entrenamiento, predicción</span>
+          <span class="lfile">app/ml/models/dane/ · app/ml/models/sintetyc_dataset/</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pipeline -->
+    <section class="doc-section" id="pipeline">
+      <h2>Pipeline ML</h2>
+      <p>El <code>DanePipeline</code> se instancia <strong>una sola vez</strong> al arrancar la app (<code>create_app()</code>) y entrena los 4 modelos en memoria. Las rutas nunca llaman directamente a los modelos.</p>
+
+      <div class="callout info">
+        <strong>Singleton pattern:</strong> cada modelo usa un guard <code>if _model is not None: return</code> para evitar re-entrenar en cada request.
+      </div>
+
+      <h4>Flujo de una predicción</h4>
+      <div class="code-block"><pre><span class="cm"># 1. Route recibe POST</span>
+data = request.form.to_dict()
+
+<span class="cm"># 2. Service extrae y valida</span>
+area_ha = <span class="fn">float</span>(data.get(<span class="st">"area_ha"</span>, 50))
+
+<span class="cm"># 3. Pipeline construye el vector</span>
+user_vector = pipeline.<span class="fn">build_user_vector</span>(area_ha, proteina, clima)
+
+<span class="cm"># 4. Modelo predice</span>
+raw = model.<span class="fn">predict</span>(user_vector, clima)
+
+<span class="cm"># 5. Service devuelve dict al template</span>
+<span class="kw">return</span> { <span class="st">"result"</span>: raw[<span class="st">"best_variety"</span>], <span class="st">"plot"</span>: chart_b64, ... }</pre></div>
+    </section>
+
+    <!-- Modelos -->
+    <section class="doc-section" id="models">
+      <h2>Modelos ML implementados</h2>
+
+      <h3>Dataset sintético (forrajeo_1000)</h3>
+      <p><span class="tag green">Regresión Logística</span> Curva sigmoide sobre un score compuesto de las 4 variables del terreno. Predice si el terreno es óptimo (1) o no (0) y genera un ranking de afinidad por especie.</p>
+
+      <h3>Dataset DANE (ENA 2019)</h3>
+      <p><span class="tag amber">K-Means</span> Agrupa las 26 variedades en 4 clusters. Asigna el terreno del usuario al cluster más cercano y recomienda la variedad más próxima al centroide.</p>
+      <p><span class="tag blue">KNN (K=5)</span> Encuentra los 5 vecinos más cercanos al vector del usuario en espacio euclidiano escalado. Ajusta la afinidad por clima.</p>
+      <p><span class="tag green">Random Forest</span> 200 árboles de decisión votan por la variedad. Incluye importancia de variables y cross-validation de 3 folds.</p>
+      <p><span class="tag purple">Naive Bayes</span> Calcula P(variedad|terreno) usando distribuciones gaussianas por clase. Aplica el teorema de Bayes con ajuste de prior por clima.</p>
+    </section>
+
+    <!-- Rutas -->
+    <section class="doc-section" id="routes">
+      <h2>Rutas disponibles</h2>
+      <table class="doc-table">
+        <thead><tr><th>Método</th><th>Ruta</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/menu</code></td><td>Menú principal</td></tr>
+          <tr><td><code>GET</code></td><td><code>/docs</code></td><td>Esta página</td></tr>
+          <tr><td><code>GET/POST</code></td><td><code>/recommendation/regression</code></td><td>Módulo forraje (Reg. Logística)</td></tr>
+          <tr><td><code>GET/POST</code></td><td><code>/recommendation/clustering</code></td><td>Módulo DANE – K-Means</td></tr>
+          <tr><td><code>GET/POST</code></td><td><code>/recommendation/knn</code></td><td>Módulo DANE – KNN</td></tr>
+          <tr><td><code>GET/POST</code></td><td><code>/recommendation/random-forest-dane</code></td><td>Módulo DANE – Random Forest</td></tr>
+          <tr><td><code>GET/POST</code></td><td><code>/recommendation/bayesian-dane</code></td><td>Módulo DANE – Naive Bayes</td></tr>
+          <tr><td><code>GET</code></td><td><code>/metrics/forraje</code></td><td>Comparación 3 modelos forraje</td></tr>
+          <tr><td><code>GET</code></td><td><code>/metrics/dane</code></td><td>Comparación 4 modelos DANE</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/predict</code></td><td>API REST JSON</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Config -->
+    <section class="doc-section" id="config">
+      <h2>Configuración</h2>
+      <p>Todas las rutas a datos y parámetros de modelos se centralizan en <code>config.py</code>.</p>
+      <div class="code-block"><pre><span class="kw">class</span> <span class="fn">Config</span>:
+    DATA_PATH_FORRAJEO = os.path.<span class="fn">join</span>(BASE_DIR, <span class="st">"data"</span>, <span class="st">"forrajeo_1000.csv"</span>)
+    DATA_PATH_PASTOS   = os.path.<span class="fn">join</span>(BASE_DIR, <span class="st">"data"</span>, <span class="st">"ena_2019_pastos_ml.csv"</span>)
+
+    KMEANS_K         = <span class="st">4</span>
+    KNN_K            = <span class="st">5</span>
+    RF_N_ESTIMATORS  = <span class="st">200</span>
+    RF_RANDOM_STATE  = <span class="st">42</span>
+
+    PROTEIN_WEIGHTS  = {
+        <span class="st">"banco_proteina"</span>      : <span class="st">0.50</span>,
+        <span class="st">"corte"</span>               : <span class="st">0.30</span>,
+        <span class="st">"pastoreo_rotacional"</span> : <span class="st">0.10</span>,
+        <span class="st">"pastoreo_continuo"</span>  : <span class="st">0.10</span>,
+    }</pre></div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Métricas DANE · AgroML</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --green:#1D9E75; --green-dark:#0F6E56; --amber:#EF9F27;
+      --blue:#4A90D9; --purple:#8B5CF6; --coral:#E8593C;
+      --bg:#0A0F0D; --surface:#111916; --surface2:#182219;
+      --border:#1E2E26; --text:#E8F0EB; --muted:#6B8A78; --radius:12px;
+    }
+    body { font-family:'Syne',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:24px 48px; border-bottom:1px solid var(--border); background:var(--surface);
+    }
+    .logo-wrap { display:flex; align-items:center; gap:14px; }
+    .logo { width:40px; height:40px; background:var(--green); border-radius:10px;
+            display:flex; align-items:center; justify-content:center; font-size:22px; }
+    header h1 { font-size:1.2rem; font-weight:700; }
+    header p  { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace; }
+    .back-btn { font-family:'DM Mono',monospace; font-size:0.75rem; padding:8px 16px;
+                border-radius:20px; border:1px solid var(--border); color:var(--muted);
+                text-decoration:none; transition:all .2s; }
+    .back-btn:hover { border-color:var(--green); color:var(--green); }
+
+    .page { padding:40px 48px; max-width:1300px; }
+
+    .page-title { margin-bottom:32px; }
+    .page-title .tag { display:inline-block; font-family:'DM Mono',monospace; font-size:0.7rem;
+                       color:var(--amber); background:rgba(239,159,39,0.12);
+                       padding:3px 12px; border-radius:20px; margin-bottom:12px; letter-spacing:0.1em; }
+    .page-title h2 { font-size:2rem; font-weight:800; letter-spacing:-0.03em; margin-bottom:8px; }
+    .page-title p  { font-size:0.9rem; color:var(--muted); line-height:1.6; max-width:640px; }
+
+    /* ── Model color: kmeans=blue, knn=green, bayes=purple, rf=amber ── */
+
+    /* ── 4-col summary ── */
+    .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:36px; }
+    .summary-card { background:var(--surface); border:1px solid var(--border);
+                    border-radius:var(--radius); padding:22px; position:relative; overflow:hidden; }
+    .summary-card::before { content:''; position:absolute; top:0; left:0; right:0;
+                             height:3px; border-radius:var(--radius) var(--radius) 0 0; }
+    .summary-card.km::before    { background:var(--blue);   }
+    .summary-card.knn::before   { background:var(--green);  }
+    .summary-card.bayes::before { background:var(--purple); }
+    .summary-card.rf::before    { background:var(--amber);  }
+    .model-label { font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.1em;
+                   text-transform:uppercase; margin-bottom:8px; }
+    .model-label.km    { color:var(--blue);   }
+    .model-label.knn   { color:var(--green);  }
+    .model-label.bayes { color:var(--purple); }
+    .model-label.rf    { color:var(--amber);  }
+    .model-name { font-size:0.95rem; font-weight:700; margin-bottom:14px; }
+    .model-acc  { font-size:2.4rem; font-weight:800; letter-spacing:-0.04em; }
+    .model-acc.km    { color:var(--blue);   }
+    .model-acc.knn   { color:var(--green);  }
+    .model-acc.bayes { color:var(--purple); }
+    .model-acc.rf    { color:var(--amber);  }
+    .model-acc-label { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted); margin-top:2px; }
+    .winner-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:0.63rem;
+                    background:rgba(29,158,117,0.15); color:var(--green); padding:2px 8px;
+                    border-radius:5px; margin-top:8px; }
+
+    /* ── Section title ── */
+    .section-title { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px; }
+
+    /* ── Radar-style comparison table ── */
+    .metrics-table-wrap { background:var(--surface); border:1px solid var(--border);
+                          border-radius:var(--radius); overflow:hidden; margin-bottom:32px; }
+    table { width:100%; border-collapse:collapse; }
+    thead th { padding:13px 16px; text-align:left; background:var(--surface2);
+               font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.08em;
+               text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+    tbody td { padding:12px 16px; border-bottom:1px solid var(--border); font-size:0.86rem; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover td { background:var(--surface2); }
+    .metric-name { font-weight:600; }
+    .metric-desc { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace; margin-top:2px; }
+
+    .bar-cell { display:flex; align-items:center; gap:8px; }
+    .bar-outer { flex:1; height:7px; background:var(--border); border-radius:4px; overflow:hidden; min-width:60px; }
+    .bar-inner { height:100%; border-radius:4px; }
+    .bar-inner.km    { background:var(--blue);   }
+    .bar-inner.knn   { background:var(--green);  }
+    .bar-inner.bayes { background:var(--purple); }
+    .bar-inner.rf    { background:var(--amber);  }
+    .bar-val { font-family:'DM Mono',monospace; font-size:0.8rem; min-width:36px; text-align:right; }
+    .bar-val.km    { color:var(--blue);   }
+    .bar-val.knn   { color:var(--green);  }
+    .bar-val.bayes { color:var(--purple); }
+    .bar-val.rf    { color:var(--amber);  }
+
+    /* ── CV row ── */
+    .cv-row { display:flex; gap:12px; margin-bottom:32px; flex-wrap:wrap; }
+    .cv-pill { display:flex; flex-direction:column; align-items:center; gap:4px;
+               background:var(--surface); border:1px solid var(--border);
+               border-radius:var(--radius); padding:16px 22px; }
+    .cv-pill .cv-label { font-family:'DM Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; }
+    .cv-pill .cv-val   { font-size:1.4rem; font-weight:800; }
+    .cv-pill .cv-std   { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted); }
+
+    /* ── Model-specific detail cards ── */
+    .detail-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:32px; }
+    .detail-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .detail-header { padding:12px 18px; border-bottom:1px solid var(--border);
+                     font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; }
+    .detail-header.km    { color:var(--blue);   }
+    .detail-header.knn   { color:var(--green);  }
+    .detail-header.bayes { color:var(--purple); }
+    .detail-header.rf    { color:var(--amber);  }
+    .detail-body { padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+    .detail-row  { display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; }
+    .detail-row .dkey { color:var(--muted); font-family:'DM Mono',monospace; font-size:0.78rem; }
+    .detail-row .dval { font-weight:700; }
+
+    /* ── Plots ── */
+    .plots-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }
+    .plot-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .plot-header { padding:12px 18px; border-bottom:1px solid var(--border);
+                   font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted);
+                   letter-spacing:0.1em; text-transform:uppercase; }
+    .plot-card img { width:100%; display:block; }
+
+    /* ── Feature importance full width ── */
+    .plot-wide { background:var(--surface); border:1px solid var(--border);
+                 border-radius:var(--radius); overflow:hidden; margin-bottom:32px; }
+
+    @media(max-width:1100px) {
+      .summary-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media(max-width:768px) {
+      .page { padding:28px 24px; }
+      .summary-grid { grid-template-columns:1fr; }
+      .detail-grid  { grid-template-columns:1fr; }
+      .plots-grid   { grid-template-columns:1fr; }
+      header { padding:20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo">🌿</div>
+    <div>
+      <h1>Métricas comparativas · DANE</h1>
+      <p>K-Means · KNN · Naive Bayes · Random Forest · ENA 2019</p>
+    </div>
+  </div>
+  <a href="/menu" class="back-btn">← Inicio</a>
+</header>
+
+<div class="page">
+
+  <div class="page-title">
+    <div class="tag">Dataset DANE · ena_2019_pastos_ml.csv · 26 variedades</div>
+    <h2>Comparación de modelos — DANE</h2>
+    <p>Tabla comparativa de accuracy, precisión, recall, F1 y métricas específicas de los 4 modelos entrenados sobre el dataset ENA 2019 del DANE.</p>
+  </div>
+
+  <!-- ── 4-col accuracy summary ── -->
+  <p class="section-title">Accuracy global por modelo</p>
+  <div class="summary-grid">
+
+    <div class="summary-card km">
+      <div class="model-label km">Modelo 1</div>
+      <div class="model-name">K-Means Clustering</div>
+      <div class="model-acc km">{{ metrics_km.accuracy | default('—') }}</div>
+      <div class="model-acc-label">afinidad media</div>
+      {% if metrics_km.is_best %}<span class="winner-badge">mejor score</span>{% endif %}
+    </div>
+
+    <div class="summary-card knn">
+      <div class="model-label knn">Modelo 2</div>
+      <div class="model-name">K-Vecinos Cercanos</div>
+      <div class="model-acc knn">{{ metrics_knn.accuracy | default('—') }}</div>
+      <div class="model-acc-label">test accuracy</div>
+      {% if metrics_knn.is_best %}<span class="winner-badge">mejor score</span>{% endif %}
+    </div>
+
+    <div class="summary-card bayes">
+      <div class="model-label bayes">Modelo 3</div>
+      <div class="model-name">Teoría Bayesiana</div>
+      <div class="model-acc bayes">{{ metrics_bayes.accuracy | default('—') }}</div>
+      <div class="model-acc-label">test accuracy</div>
+      {% if metrics_bayes.is_best %}<span class="winner-badge">mejor score</span>{% endif %}
+    </div>
+
+    <div class="summary-card rf">
+      <div class="model-label rf">Modelo 4</div>
+      <div class="model-name">Random Forest</div>
+      <div class="model-acc rf">{{ metrics_rf.accuracy | default('—') }}</div>
+      <div class="model-acc-label">test accuracy</div>
+      {% if metrics_rf.is_best %}<span class="winner-badge">mejor score</span>{% endif %}
+    </div>
+
+  </div>
+
+  <!-- ── Cross-validation (supervisados) ── -->
+  {% if cv_knn or cv_bayes or cv_rf %}
+  <p class="section-title">Cross-validation (3 folds) — modelos supervisados</p>
+  <div class="cv-row">
+    {% if cv_knn %}
+    <div class="cv-pill">
+      <span class="cv-label" style="color:var(--green)">KNN</span>
+      <span class="cv-val"   style="color:var(--green)">{{ cv_knn.mean }}</span>
+      <span class="cv-std">± {{ cv_knn.std }}</span>
+    </div>{% endif %}
+    {% if cv_bayes %}
+    <div class="cv-pill">
+      <span class="cv-label" style="color:var(--purple)">Naive Bayes</span>
+      <span class="cv-val"   style="color:var(--purple)">{{ cv_bayes.mean }}</span>
+      <span class="cv-std">± {{ cv_bayes.std }}</span>
+    </div>{% endif %}
+    {% if cv_rf %}
+    <div class="cv-pill">
+      <span class="cv-label" style="color:var(--amber)">Random Forest</span>
+      <span class="cv-val"   style="color:var(--amber)">{{ cv_rf.mean }}</span>
+      <span class="cv-std">± {{ cv_rf.std }}</span>
+    </div>{% endif %}
+  </div>
+  {% endif %}
+
+  <!-- ── Detailed metrics table ── -->
+  <p class="section-title">Métricas detalladas</p>
+  <div class="metrics-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>K-Means</th>
+          <th>KNN (K=5)</th>
+          <th>Naive Bayes</th>
+          <th>Random Forest</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set rows = [
+          ('Accuracy / Afinidad media', 'Exactitud global del modelo',
+           metrics_km.accuracy,  metrics_knn.accuracy,  metrics_bayes.accuracy,  metrics_rf.accuracy),
+          ('Precision',  'TP / (TP + FP)',
+           metrics_km.precision, metrics_knn.precision, metrics_bayes.precision, metrics_rf.precision),
+          ('Recall',     'TP / (TP + FN)',
+           metrics_km.recall,    metrics_knn.recall,    metrics_bayes.recall,    metrics_rf.recall),
+          ('F1-Score',   'Media armónica precision/recall',
+           metrics_km.f1,        metrics_knn.f1,        metrics_bayes.f1,        metrics_rf.f1),
+          ('ROC-AUC',    'Área bajo la curva ROC',
+           metrics_km.roc_auc,   metrics_knn.roc_auc,   metrics_bayes.roc_auc,   metrics_rf.roc_auc),
+        ] %}
+        {% for name, desc, vkm, vknn, vb, vrf in rows %}
+        <tr>
+          <td>
+            <div class="metric-name">{{ name }}</div>
+            <div class="metric-desc">{{ desc }}</div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner km" style="width:{{ (vkm|default(0)|float*100)|round(1) }}%"></div></div>
+              <span class="bar-val km">{{ vkm | default('—') }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner knn" style="width:{{ (vknn|default(0)|float*100)|round(1) }}%"></div></div>
+              <span class="bar-val knn">{{ vknn | default('—') }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner bayes" style="width:{{ (vb|default(0)|float*100)|round(1) }}%"></div></div>
+              <span class="bar-val bayes">{{ vb | default('—') }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner rf" style="width:{{ (vrf|default(0)|float*100)|round(1) }}%"></div></div>
+              <span class="bar-val rf">{{ vrf | default('—') }}</span>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Model-specific detail cards ── -->
+  <p class="section-title">Detalles específicos por modelo</p>
+  <div class="detail-grid">
+
+    <div class="detail-card">
+      <div class="detail-header km">K-Means Clustering</div>
+      <div class="detail-body">
+        <div class="detail-row">
+          <span class="dkey">Número de clusters (K)</span>
+          <span class="dval" style="color:var(--blue)">{{ metrics_km.n_clusters | default(4) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Inercia (inertia)</span>
+          <span class="dval">{{ metrics_km.inertia | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Silhouette score</span>
+          <span class="dval" style="color:var(--blue)">{{ metrics_km.silhouette | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Afinidad media (top-1)</span>
+          <span class="dval">{{ metrics_km.mean_affinity | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Variedades / cluster</span>
+          <span class="dval">{{ metrics_km.vars_per_cluster | default('—') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-header knn">K-Vecinos Cercanos (KNN)</div>
+      <div class="detail-body">
+        <div class="detail-row">
+          <span class="dkey">K vecinos</span>
+          <span class="dval" style="color:var(--green)">{{ metrics_knn.k | default(5) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Métrica de distancia</span>
+          <span class="dval">euclidean</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Distancia media (top-1)</span>
+          <span class="dval" style="color:var(--green)">{{ metrics_knn.mean_dist | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Afinidad ajustada media</span>
+          <span class="dval">{{ metrics_knn.mean_affinity | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">CV accuracy</span>
+          <span class="dval">{{ cv_knn.mean if cv_knn else '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-header bayes">Teoría Bayesiana (GaussianNB)</div>
+      <div class="detail-body">
+        <div class="detail-row">
+          <span class="dkey">Prior uniforme</span>
+          <span class="dval" style="color:var(--purple)">{{ metrics_bayes.prior | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Clases (variedades)</span>
+          <span class="dval">{{ metrics_bayes.n_classes | default(26) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Posterior máxima media</span>
+          <span class="dval" style="color:var(--purple)">{{ metrics_bayes.mean_posterior | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">CV accuracy</span>
+          <span class="dval">{{ cv_bayes.mean if cv_bayes else '—' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">CV std</span>
+          <span class="dval">{{ cv_bayes.std if cv_bayes else '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-header rf">Random Forest</div>
+      <div class="detail-body">
+        <div class="detail-row">
+          <span class="dkey">Árboles (n_estimators)</span>
+          <span class="dval" style="color:var(--amber)">{{ metrics_rf.n_estimators | default(200) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Variable más importante</span>
+          <span class="dval">{{ metrics_rf.top_feature | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">Importancia top feature</span>
+          <span class="dval" style="color:var(--amber)">{{ metrics_rf.top_feature_pct | default('—') }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">CV accuracy</span>
+          <span class="dval">{{ cv_rf.mean if cv_rf else '—' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="dkey">CV std</span>
+          <span class="dval">{{ cv_rf.std if cv_rf else '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Plots ── -->
+  {% if plot_km or plot_knn or plot_bayes or plot_rf %}
+  <p class="section-title">Visualizaciones por modelo</p>
+  <div class="plots-grid">
+    {% if plot_km %}
+    <div class="plot-card">
+      <div class="plot-header">PCA Clusters · K-Means</div>
+      <img src="data:image/png;base64,{{ plot_km }}" alt="KMeans PCA"/>
+    </div>{% endif %}
+    {% if plot_knn %}
+    <div class="plot-card">
+      <div class="plot-header">Curva afinidad · KNN</div>
+      <img src="data:image/png;base64,{{ plot_knn }}" alt="KNN distance"/>
+    </div>{% endif %}
+    {% if plot_bayes %}
+    <div class="plot-card">
+      <div class="plot-header">Posterior bayesiana · Naive Bayes</div>
+      <img src="data:image/png;base64,{{ plot_bayes }}" alt="Bayes posterior"/>
+    </div>{% endif %}
+    {% if plot_rf %}
+    <div class="plot-card">
+      <div class="plot-header">Votos por árbol · Random Forest</div>
+      <img src="data:image/png;base64,{{ plot_rf }}" alt="RF votes"/>
+    </div>{% endif %}
+  </div>{% endif %}
+
+  <!-- ── Feature importance (RF, ancho completo) ── -->
+  {% if importance_plot %}
+  <p class="section-title">Importancia de variables · Random Forest</p>
+  <div class="plot-wide">
+    <div class="plot-header" style="padding:12px 18px;border-bottom:1px solid var(--border);
+         font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);
+         letter-spacing:0.1em;text-transform:uppercase;">
+      Contribución de cada variable al modelo RF · DANE
+    </div>
+    <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature importance" style="width:100%;display:block;"/>
+  </div>{% endif %}
+
+</div><!-- /page -->
+</body>
+</html>

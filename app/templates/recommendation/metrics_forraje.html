@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Métricas Forraje · AgroML</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --green:#1D9E75; --green-dark:#0F6E56; --amber:#EF9F27;
+      --blue:#4A90D9; --purple:#8B5CF6; --coral:#E8593C;
+      --bg:#0A0F0D; --surface:#111916; --surface2:#182219;
+      --border:#1E2E26; --text:#E8F0EB; --muted:#6B8A78; --radius:12px;
+    }
+    body { font-family:'Syne',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:24px 48px; border-bottom:1px solid var(--border); background:var(--surface);
+    }
+    .logo-wrap { display:flex; align-items:center; gap:14px; }
+    .logo { width:40px; height:40px; background:var(--green); border-radius:10px;
+            display:flex; align-items:center; justify-content:center; font-size:22px; }
+    header h1 { font-size:1.2rem; font-weight:700; }
+    header p  { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace; }
+    .back-btn { font-family:'DM Mono',monospace; font-size:0.75rem; padding:8px 16px;
+                border-radius:20px; border:1px solid var(--border); color:var(--muted);
+                text-decoration:none; transition:all .2s; }
+    .back-btn:hover { border-color:var(--green); color:var(--green); }
+
+    /* ── Page layout ── */
+    .page { padding:40px 48px; max-width:1200px; }
+
+    .page-title { margin-bottom:32px; }
+    .page-title .tag { display:inline-block; font-family:'DM Mono',monospace; font-size:0.7rem;
+                       color:var(--green); background:rgba(29,158,117,0.12);
+                       padding:3px 12px; border-radius:20px; margin-bottom:12px; letter-spacing:0.1em; }
+    .page-title h2 { font-size:2rem; font-weight:800; letter-spacing:-0.03em; margin-bottom:8px; }
+    .page-title p  { font-size:0.9rem; color:var(--muted); line-height:1.6; max-width:600px; }
+
+    /* ── Model color map ── */
+    /* LR=green, Bayes=purple, RF=amber */
+
+    /* ── Summary cards ── */
+    .summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px; }
+    .summary-card { background:var(--surface); border:1px solid var(--border);
+                    border-radius:var(--radius); padding:24px; position:relative; overflow:hidden; }
+    .summary-card::before { content:''; position:absolute; top:0; left:0; right:0;
+                             height:3px; border-radius:var(--radius) var(--radius) 0 0; }
+    .summary-card.lr::before     { background:var(--green); }
+    .summary-card.bayes::before  { background:var(--purple); }
+    .summary-card.rf::before     { background:var(--amber); }
+    .model-label { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.1em;
+                   text-transform:uppercase; margin-bottom:8px; }
+    .model-label.lr    { color:var(--green);  }
+    .model-label.bayes { color:var(--purple); }
+    .model-label.rf    { color:var(--amber);  }
+    .model-name { font-size:1rem; font-weight:700; margin-bottom:16px; }
+    .model-acc  { font-size:2.8rem; font-weight:800; letter-spacing:-0.04em; }
+    .model-acc.lr    { color:var(--green);  }
+    .model-acc.bayes { color:var(--purple); }
+    .model-acc.rf    { color:var(--amber);  }
+    .model-acc-label { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted); margin-top:2px; }
+    .winner-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:0.65rem;
+                    background:rgba(29,158,117,0.15); color:var(--green); padding:2px 8px;
+                    border-radius:5px; margin-top:8px; }
+
+    /* ── Section header ── */
+    .section-title { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px; }
+
+    /* ── Metrics table ── */
+    .metrics-table-wrap { background:var(--surface); border:1px solid var(--border);
+                          border-radius:var(--radius); overflow:hidden; margin-bottom:32px; }
+    table { width:100%; border-collapse:collapse; }
+    thead th { padding:14px 18px; text-align:left; background:var(--surface2);
+               font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.08em;
+               text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+    tbody td { padding:13px 18px; border-bottom:1px solid var(--border); font-size:0.88rem; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover td { background:var(--surface2); }
+    .metric-name { font-weight:600; }
+    .metric-desc { font-size:0.78rem; color:var(--muted); font-family:'DM Mono',monospace; margin-top:2px; }
+
+    /* bar cells */
+    .bar-cell { display:flex; align-items:center; gap:10px; }
+    .bar-outer { flex:1; height:8px; background:var(--border); border-radius:4px; overflow:hidden; min-width:80px; }
+    .bar-inner { height:100%; border-radius:4px; }
+    .bar-inner.lr    { background:var(--green);  }
+    .bar-inner.bayes { background:var(--purple); }
+    .bar-inner.rf    { background:var(--amber);  }
+    .bar-val { font-family:'DM Mono',monospace; font-size:0.82rem; min-width:38px; text-align:right; }
+    .bar-val.lr    { color:var(--green);  }
+    .bar-val.bayes { color:var(--purple); }
+    .bar-val.rf    { color:var(--amber);  }
+    .best-marker { font-size:0.7rem; margin-left:4px; }
+
+    /* ── Class report ── */
+    .report-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+    .report-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .report-header { padding:12px 18px; border-bottom:1px solid var(--border);
+                     font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; }
+    .report-header.lr    { color:var(--green);  }
+    .report-header.bayes { color:var(--purple); }
+    .report-header.rf    { color:var(--amber);  }
+    .report-body { padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+    .report-row { display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; }
+    .report-row .rkey { color:var(--muted); font-family:'DM Mono',monospace; font-size:0.78rem; }
+    .report-row .rval { font-weight:700; }
+
+    /* ── Plots from Jinja ── */
+    .plots-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:32px; }
+    .plot-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .plot-header { padding:14px 20px; border-bottom:1px solid var(--border);
+                   font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted);
+                   letter-spacing:0.1em; text-transform:uppercase; }
+    .plot-card img { width:100%; display:block; }
+
+    /* ── CV scores ── */
+    .cv-row { display:flex; gap:12px; margin-bottom:32px; flex-wrap:wrap; }
+    .cv-pill { display:flex; flex-direction:column; align-items:center; gap:4px;
+               background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+               padding:16px 24px; }
+    .cv-pill .cv-label { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+    .cv-pill .cv-val   { font-size:1.4rem; font-weight:800; }
+    .cv-pill .cv-std   { font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--muted); }
+
+    @media(max-width:900px) {
+      .page { padding:28px 24px; }
+      .summary-grid { grid-template-columns:1fr; }
+      .report-grid  { grid-template-columns:1fr; }
+      .plots-grid   { grid-template-columns:1fr; }
+      header { padding:20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo">🌿</div>
+    <div>
+      <h1>Métricas comparativas · Forraje</h1>
+      <p>Regresión Logística · Naive Bayes · Random Forest · Dataset sintético</p>
+    </div>
+  </div>
+  <a href="/menu" class="back-btn">← Inicio</a>
+</header>
+
+<div class="page">
+
+  <div class="page-title">
+    <div class="tag">Dataset sintético · forrajeo_1000.csv</div>
+    <h2>Comparación de modelos — Forraje</h2>
+    <p>Tabla comparativa de las métricas de clasificación de los 3 modelos entrenados sobre el dataset sintético de 1 000 registros con variables de terreno.</p>
+  </div>
+
+  <!-- ── Summary accuracy cards ── -->
+  <p class="section-title">Accuracy global</p>
+  <div class="summary-grid">
+
+    <div class="summary-card lr">
+      <div class="model-label lr">Modelo 1</div>
+      <div class="model-name">Regresión Logística</div>
+      <div class="model-acc lr">{{ metrics_lr.accuracy | default('—') }}</div>
+      <div class="model-acc-label">test accuracy</div>
+      {% if metrics_lr.is_best_accuracy %}<span class="winner-badge">mejor accuracy</span>{% endif %}
+    </div>
+
+    <div class="summary-card bayes">
+      <div class="model-label bayes">Modelo 2</div>
+      <div class="model-name">Teoría Bayesiana</div>
+      <div class="model-acc bayes">{{ metrics_bayes.accuracy | default('—') }}</div>
+      <div class="model-acc-label">test accuracy</div>
+      {% if metrics_bayes.is_best_accuracy %}<span class="winner-badge">mejor accuracy</span>{% endif %}
+    </div>
+
+    <div class="summary-card rf">
+      <div class="model-label rf">Modelo 3</div>
+      <div class="model-name">Random Forest</div>
+      <div class="model-acc rf">{{ metrics_rf.accuracy | default('—') }}</div>
+      <div class="model-acc-label">test accuracy</div>
+      {% if metrics_rf.is_best_accuracy %}<span class="winner-badge">mejor accuracy</span>{% endif %}
+    </div>
+
+  </div>
+
+  <!-- ── Cross-validation ── -->
+  {% if cv_lr or cv_bayes or cv_rf %}
+  <p class="section-title">Cross-validation (3 folds)</p>
+  <div class="cv-row">
+    {% if cv_lr %}
+    <div class="cv-pill">
+      <span class="cv-label" style="color:var(--green)">Reg. Logística</span>
+      <span class="cv-val" style="color:var(--green)">{{ cv_lr.mean }}</span>
+      <span class="cv-std">± {{ cv_lr.std }}</span>
+    </div>{% endif %}
+    {% if cv_bayes %}
+    <div class="cv-pill">
+      <span class="cv-label" style="color:var(--purple)">Naive Bayes</span>
+      <span class="cv-val" style="color:var(--purple)">{{ cv_bayes.mean }}</span>
+      <span class="cv-std">± {{ cv_bayes.std }}</span>
+    </div>{% endif %}
+    {% if cv_rf %}
+    <div class="cv-pill">
+      <span class="cv-label" style="color:var(--amber)">Random Forest</span>
+      <span class="cv-val" style="color:var(--amber)">{{ cv_rf.mean }}</span>
+      <span class="cv-std">± {{ cv_rf.std }}</span>
+    </div>{% endif %}
+  </div>
+  {% endif %}
+
+  <!-- ── Metrics comparison table ── -->
+  <p class="section-title">Métricas detalladas</p>
+  <div class="metrics-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>Regresión Logística</th>
+          <th>Teoría Bayesiana</th>
+          <th>Random Forest</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set rows = [
+          ('Accuracy',  'Porcentaje de predicciones correctas',
+           metrics_lr.accuracy,  metrics_bayes.accuracy,  metrics_rf.accuracy),
+          ('Precision', 'TP / (TP + FP) — calidad positivos',
+           metrics_lr.precision, metrics_bayes.precision, metrics_rf.precision),
+          ('Recall',    'TP / (TP + FN) — cobertura positivos',
+           metrics_lr.recall,    metrics_bayes.recall,    metrics_rf.recall),
+          ('F1-Score',  'Media armónica de precision y recall',
+           metrics_lr.f1,        metrics_bayes.f1,        metrics_rf.f1),
+          ('ROC-AUC',   'Área bajo la curva ROC',
+           metrics_lr.roc_auc,   metrics_bayes.roc_auc,   metrics_rf.roc_auc),
+        ] %}
+        {% for name, desc, vlr, vb, vrf in rows %}
+        <tr>
+          <td>
+            <div class="metric-name">{{ name }}</div>
+            <div class="metric-desc">{{ desc }}</div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner lr" style="width:{{ (vlr|default(0)|float * 100)|round(1) }}%"></div></div>
+              <span class="bar-val lr">{{ vlr | default('—') }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner bayes" style="width:{{ (vb|default(0)|float * 100)|round(1) }}%"></div></div>
+              <span class="bar-val bayes">{{ vb | default('—') }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="bar-cell">
+              <div class="bar-outer"><div class="bar-inner rf" style="width:{{ (vrf|default(0)|float * 100)|round(1) }}%"></div></div>
+              <span class="bar-val rf">{{ vrf | default('—') }}</span>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Classification report per model ── -->
+  <p class="section-title">Reporte por clase</p>
+  <div class="report-grid">
+
+    <div class="report-card">
+      <div class="report-header lr">Regresión Logística</div>
+      <div class="report-body">
+        {% for row in report_lr | default([]) %}
+        <div class="report-row">
+          <span class="rkey">{{ row.label }}</span>
+          <span class="rval" style="color:var(--green)">{{ row.value }}</span>
+        </div>
+        {% else %}
+        <div style="color:var(--muted);font-size:0.85rem">Sin datos de reporte</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="report-card">
+      <div class="report-header bayes">Teoría Bayesiana</div>
+      <div class="report-body">
+        {% for row in report_bayes | default([]) %}
+        <div class="report-row">
+          <span class="rkey">{{ row.label }}</span>
+          <span class="rval" style="color:var(--purple)">{{ row.value }}</span>
+        </div>
+        {% else %}
+        <div style="color:var(--muted);font-size:0.85rem">Sin datos de reporte</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="report-card">
+      <div class="report-header rf">Random Forest</div>
+      <div class="report-body">
+        {% for row in report_rf | default([]) %}
+        <div class="report-row">
+          <span class="rkey">{{ row.label }}</span>
+          <span class="rval" style="color:var(--amber)">{{ row.value }}</span>
+        </div>
+        {% else %}
+        <div style="color:var(--muted);font-size:0.85rem">Sin datos de reporte</div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Plots ── -->
+  {% if plot_lr or plot_bayes or plot_rf or importance_plot %}
+  <p class="section-title">Visualizaciones</p>
+  <div class="plots-grid">
+    {% if plot_lr %}
+    <div class="plot-card">
+      <div class="plot-header">Curva sigmoide · Reg. Logística</div>
+      <img src="data:image/png;base64,{{ plot_lr }}" alt="LR sigmoid"/>
+    </div>{% endif %}
+    {% if plot_bayes %}
+    <div class="plot-card">
+      <div class="plot-header">Curva posterior · Naive Bayes</div>
+      <img src="data:image/png;base64,{{ plot_bayes }}" alt="Bayes posterior"/>
+    </div>{% endif %}
+    {% if plot_rf %}
+    <div class="plot-card">
+      <div class="plot-header">Votos por árbol · Random Forest</div>
+      <img src="data:image/png;base64,{{ plot_rf }}" alt="RF votes"/>
+    </div>{% endif %}
+    {% if importance_plot %}
+    <div class="plot-card">
+      <div class="plot-header">Importancia de variables · RF</div>
+      <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature importance"/>
+    </div>{% endif %}
+  </div>
+  {% endif %}
+
+</div><!-- /page -->
+</body>
+</html>
