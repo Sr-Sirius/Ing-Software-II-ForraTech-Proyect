@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documentación de Modelos ML – AgroData</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:      #1D9E75;
+  --green-dark: #0F6E56;
+  --amber:      #EF9F27;
+  --bg:         #0A0F0D;
+  --surface:    #111916;
+  --surface2:   #182219;
+  --border:     #1E2E26;
+  --text:       #E8F0EB;
+  --muted:      #6B8A78;
+  --radius:     12px;
+}
+
+body {
+  font-family: 'Syne', sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(29,158,117,.18), transparent 28%),
+    radial-gradient(circle at 85% 80%, rgba(239,159,39,.10), transparent 26%),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+  z-index: 0;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 28px 40px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(17,25,22,.82);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.logo {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  display: grid; place-items: center;
+  box-shadow: 0 0 30px rgba(29,158,117,.22);
+  flex-shrink: 0;
+}
+.logo svg { width: 25px; height: 25px; fill: none; stroke: white; stroke-width: 2.2; }
+
+.brand h1 { font-size: clamp(1.1rem, 2vw, 1.7rem); font-weight: 800; letter-spacing: -.04em; }
+
+.badge {
+  font-family: 'DM Mono', monospace;
+  color: var(--amber);
+  border: 1px solid rgba(239,159,39,.35);
+  background: rgba(239,159,39,.08);
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-size: .82rem;
+  white-space: nowrap;
+}
+
+main {
+  width: min(1200px, calc(100% - 34px));
+  margin: 0 auto;
+  padding: 54px 0 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Hero ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 28px;
+  align-items: stretch;
+  margin-bottom: 48px;
+}
+
+.hero-card {
+  background: linear-gradient(145deg, rgba(17,25,22,.98), rgba(24,34,25,.92));
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 10px);
+  padding: clamp(28px, 5vw, 54px);
+  box-shadow: 0 24px 70px rgba(0,0,0,.28);
+  position: relative;
+  overflow: hidden;
+}
+.hero-card::after {
+  content: "";
+  position: absolute;
+  width: 260px; height: 260px;
+  right: -90px; top: -90px;
+  background: radial-gradient(circle, rgba(29,158,117,.22), transparent 68%);
+}
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: .82rem;
+  margin-bottom: 14px;
+}
+
+.hero h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: .92;
+  letter-spacing: -.08em;
+}
+
+.hero p {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.status-panel {
+  background: rgba(17,25,22,.74);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 10px);
+  padding: 26px;
+  display: grid;
+  gap: 16px;
+}
+
+.metric {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.metric span {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  color: var(--muted);
+  font-size: .78rem;
+  margin-bottom: 8px;
+}
+.metric strong { font-size: 1.5rem; color: var(--text); }
+
+/* ── Model selector tabs ── */
+.tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.tab-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: .82rem;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.tab-btn:hover { border-color: rgba(29,158,117,.5); color: var(--text); }
+.tab-btn.active {
+  border-color: var(--green);
+  background: rgba(29,158,117,.12);
+  color: var(--green);
+}
+
+/* ── Model panel ── */
+.model-panel { display: none; }
+.model-panel.active { display: block; }
+
+/* ── Section heading ── */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  margin-top: 44px;
+}
+.section-heading:first-child { margin-top: 0; }
+
+.step-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  color: var(--green);
+  border: 1px solid rgba(29,158,117,.35);
+  background: rgba(29,158,117,.08);
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.section-heading h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  letter-spacing: -.04em;
+}
+
+/* ── Two-col layout for sections ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+/* ── Info card ── */
+.info-card {
+  background: linear-gradient(180deg, rgba(24,34,25,.96), rgba(17,25,22,.98));
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 6px);
+  padding: 26px;
+  transition: border-color .2s ease;
+}
+.info-card:hover { border-color: rgba(29,158,117,.35); }
+
+.info-card .card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  margin-bottom: 10px;
+}
+
+.info-card h4 {
+  font-size: 1.05rem;
+  letter-spacing: -.03em;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.info-card p, .info-card li {
+  color: var(--muted);
+  font-size: .93rem;
+  line-height: 1.65;
+}
+.info-card ul { padding-left: 18px; }
+.info-card li { margin-bottom: 5px; }
+
+/* Highlight card */
+.info-card.highlight {
+  border-color: rgba(29,158,117,.38);
+  background: linear-gradient(145deg, rgba(29,158,117,.07), rgba(17,25,22,.98));
+}
+.info-card.highlight .card-label { color: var(--green); }
+
+/* Full-width card */
+.info-card.full { grid-column: 1 / -1; }
+
+/* ── Metric chips ── */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.chip {
+  font-family: 'DM Mono', monospace;
+  font-size: .78rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.chip.green { border-color: rgba(29,158,117,.5); color: var(--green); background: rgba(29,158,117,.08); }
+.chip.amber { border-color: rgba(239,159,39,.5); color: var(--amber); background: rgba(239,159,39,.08); }
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 44px 0;
+}
+
+/* ── Code block ── */
+.code-block {
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem;
+  background: rgba(0,0,0,.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  color: #9FE1CB;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── Back link ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  text-decoration: none;
+  color: var(--green);
+  font-family: 'DM Mono', monospace;
+  font-size: .82rem;
+  transition: color .2s ease;
+}
+.back-link:hover { color: var(--amber); }
+
+footer {
+  width: min(1200px, calc(100% - 34px));
+  margin: 0 auto;
+  padding: 18px 0 38px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: .78rem;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 880px) {
+  header { padding: 22px 18px; flex-direction: column; align-items: flex-start; }
+  .hero { grid-template-columns: 1fr; }
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .tabs { gap: 8px; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">
+      <svg viewBox="0 0 24 24"><path d="M20 4C12 4 5 8.5 5 15a5 5 0 0 0 5 5c6.5 0 10-8 10-16Z"/><path d="M5 19c3-6 7-9 13-12"/></svg>
+    </div>
+    <div>
+      <h1>Documentación de Modelos ML</h1>
+      <div class="eyebrow">Clasificador de cultivos forrajeros</div>
+    </div>
+  </div>
+  <div class="badge">Sistema · AgroData</div>
+</header>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-card">
+      <div class="eyebrow">Metodología CRISP-DM</div>
+      <h2>Pipeline de Ingeniería ML</h2>
+      <p>Documentación técnica de los modelos de machine learning para recomendación y clasificación de cultivos forrajeros. Cubre desde el entendimiento del negocio hasta el sistema de predicción en producción.</p>
+    </div>
+    <aside class="status-panel">
+      <div class="metric">
+        <span>MODELOS DOCUMENTADOS</span>
+        <strong>5 modelos</strong>
+      </div>
+      <div class="metric">
+        <span>DATASETS</span>
+        <strong>2 fuentes</strong>
+      </div>
+      <div class="metric">
+        <span>ETAPAS</span>
+        <strong>6 fases</strong>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ── Model tabs ── -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showModel('lr')">Regresión Logística</button>
+    <button class="tab-btn" onclick="showModel('nb_syn')">Naive Bayes Sintético</button>
+    <button class="tab-btn" onclick="showModel('rf_syn')">Random Forest Sintético</button>
+    <button class="tab-btn" onclick="showModel('dane')">DANE (Bayes + RF + KNN + KMeans)</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODELO 1: Regresión Logística
+  ════════════════════════════════════════════ -->
+  <div id="panel-lr" class="model-panel active">
+
+    <!-- 1. Business Understanding -->
+    <div class="section-heading">
+      <span class="step-badge">01</span>
+      <h3>Business Understanding</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Objetivo de negocio</div>
+        <h4>¿Qué problema resuelve?</h4>
+        <p>Determinar si las condiciones de un terreno (pH, humedad, altitud, temperatura) son <strong>óptimas o no</strong> para el cultivo forrajero, y recomendar el cultivo más adecuado según afinidad.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Contexto & usuarios</div>
+        <h4>Público objetivo</h4>
+        <ul>
+          <li>Productores agrícolas y ganaderos</li>
+          <li>Técnicos agronómicos de campo</li>
+          <li>Plataforma AgroData (decisiones de siembra)</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip green">Clasificación binaria</span>
+          <span class="chip amber">Recomendación de cultivo</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- 2. Data Understanding -->
+    <div class="section-heading">
+      <span class="step-badge">02</span>
+      <h3>Data Understanding</h3>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-label">Fuente de datos</div>
+        <h4>Dataset sintético</h4>
+        <p>Archivo <code>forrajeo_1000.csv</code> con 1000 registros de cultivos forrajeros y rangos de condiciones agroecológicas.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Variables de entrada</div>
+        <h4>Features principales</h4>
+        <ul>
+          <li><code>ph_min / ph_max</code></li>
+          <li><code>humedad_min / humedad_max</code></li>
+          <li><code>altitud_min / altitud_max</code></li>
+          <li><code>temp_min / temp_max</code></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Variable objetivo</div>
+        <h4>Target binario</h4>
+        <p>Variable <code>optimal</code> (0/1) derivada del puntaje compuesto. <strong>1</strong> = condiciones óptimas; <strong>0</strong> = no óptimas.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- 3. Data Engineering -->
+    <div class="section-heading">
+      <span class="step-badge">03</span>
+      <h3>Data Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Feature engineering</div>
+        <h4>Construcción de variables derivadas</h4>
+        <ul>
+          <li><code>ph_mid = (ph_min + ph_max) / 2</code></li>
+          <li><code>humedad_mid</code>, <code>altitud_mid</code>, <code>temp_mid</code> análogos</li>
+        </ul>
+        <p style="margin-top:10px;">Transformación a punto medio para representar el centro de cada rango.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Puntaje compuesto & target</div>
+        <h4>Fórmula de aptitud</h4>
+        <div class="code-block">composite =
+  0.30 × ph_mid/9    +
+  0.20 × hum_mid/100 +
+  0.30 × alt_mid/4000+
+  0.20 × temp_mid/45
+
+optimal = composite > mean(composite)</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Preprocesamiento</div>
+        <h4>Escalado & split</h4>
+        <ul>
+          <li>Feature: solo <code>composite</code> (1 variable)</li>
+          <li>Escalado: <code>StandardScaler</code></li>
+          <li>Split: 75% train / 25% test (<code>stratify=y</code>)</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Función de afinidad</div>
+        <h4>compute_affinity()</h4>
+        <p>Para rankear cultivos: pesos 0.30 pH, 0.20 humedad, 0.30 altitud, 0.20 temperatura. Verifica si el valor del usuario cae dentro del rango del cultivo.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- 4. Model Engineering -->
+    <div class="section-heading">
+      <span class="step-badge">04</span>
+      <h3>Model Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Algoritmo</div>
+        <h4>Logistic Regression</h4>
+        <p>Modelo lineal generalizado. Aplica la función sigmoide sobre el puntaje compuesto escalado para estimar <em>P(optimal | composite)</em>.</p>
+        <div class="code-block">LogisticRegression(max_iter=1000)</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Parámetros clave</div>
+        <h4>Configuración del modelo</h4>
+        <ul>
+          <li><code>max_iter=1000</code> para convergencia segura</li>
+          <li>Umbral de decisión: <strong>0.5</strong></li>
+          <li>Solver por defecto (<code>lbfgs</code>)</li>
+          <li>Una sola feature de entrada: <code>composite</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- 5. Model Evaluation -->
+    <div class="section-heading">
+      <span class="step-badge">05</span>
+      <h3>Model Evaluation</h3>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-label">Métricas principales</div>
+        <h4>getModelMetrics()</h4>
+        <div class="chip-row">
+          <span class="chip green">Exactitud</span>
+          <span class="chip green">Precisión</span>
+          <span class="chip green">Recall</span>
+          <span class="chip green">F1-Score</span>
+          <span class="chip amber">ROC AUC</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Visualizaciones</div>
+        <h4>Gráficas generadas</h4>
+        <ul>
+          <li>Curva sigmoide logística</li>
+          <li>Matriz de confusión (<code>Greens</code>)</li>
+          <li>Curva ROC con AUC</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Salida base64</div>
+        <h4>Formato de retorno</h4>
+        <p>Todas las gráficas se generan con <code>matplotlib</code>, se guardan en buffer y se encodean en base64 PNG para integración directa en el frontend.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- 6. Prediction System -->
+    <div class="section-heading">
+      <span class="step-badge">06</span>
+      <h3>Prediction System</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">API pública</div>
+        <h4>Funciones de predicción</h4>
+        <ul>
+          <li><code>predictCropCategory(ph, hum, alt, temp)</code> → <code>(int, float)</code></li>
+          <li><code>getBestCrop(ph, hum, alt, temp, top_n)</code> → DataFrame rankeado</li>
+          <li><code>getThreshold()</code> → umbral de decisión</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Flujo de predicción</div>
+        <h4>Pipeline de inferencia</h4>
+        <div class="code-block">1. Usuario ingresa: ph, hum, alt, temp
+2. _user_composite() → valor escalar
+3. StandardScaler.transform()
+4. model.predict_proba() → P(optimal)
+5. model.predict() → categoría 0/1
+6. getBestCrop() → ranking por afinidad</div>
+      </div>
+    </div>
+
+  </div><!-- /panel-lr -->
+
+
+  <!-- ════════════════════════════════════════════
+       MODELO 2: Naive Bayes Sintético
+  ════════════════════════════════════════════ -->
+  <div id="panel-nb_syn" class="model-panel">
+
+    <div class="section-heading">
+      <span class="step-badge">01</span>
+      <h3>Business Understanding</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Objetivo de negocio</div>
+        <h4>¿Qué problema resuelve?</h4>
+        <p>Clasificar terrenos como óptimos o no óptimos para forraje usando <strong>probabilidad bayesiana</strong>, incorporando 8 variables de rango simultáneamente para mayor precisión que la regresión logística.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Diferencial vs. regresión logística</div>
+        <h4>Ventaja bayesiana</h4>
+        <ul>
+          <li>Modela la incertidumbre de forma explícita</li>
+          <li>Utiliza todas las variables de rango (8 features)</li>
+          <li>Actualización probabilística por el teorema de Bayes</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip green">Clasificación probabilística</span>
+          <span class="chip amber">8 features</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">02</span>
+      <h3>Data Understanding</h3>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-label">Fuente de datos</div>
+        <h4>Dataset sintético</h4>
+        <p><code>forrajeo_1000.csv</code> – 1000 registros con rangos min/max de condiciones agroecológicas por cultivo.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Features ampliadas</div>
+        <h4>8 variables de entrada</h4>
+        <div class="code-block">ph_min, ph_max,
+humedad_min, humedad_max,
+altitud_min, altitud_max,
+temp_min, temp_max</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Variable objetivo</div>
+        <h4>Target idéntico a LR</h4>
+        <p>Mismo <code>composite score</code> y umbral <code>mean(composite)</code> para mantener comparabilidad entre modelos.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">03</span>
+      <h3>Data Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Feature engineering</div>
+        <h4>Midpoints + composite</h4>
+        <p>Se calculan los puntos medios de cada rango (igual que en LR) para construir el composite score y el target. Sin embargo, el modelo <strong>entrena con las 8 variables originales</strong>, no con el composite.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Preprocesamiento</div>
+        <h4>Escalado & split</h4>
+        <ul>
+          <li>Escalado: <code>StandardScaler</code> sobre 8 features</li>
+          <li>Split: 80% train / 20% test</li>
+          <li>Vector de usuario: <code>[ph,ph,hum,hum,alt,alt,temp,temp]</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">04</span>
+      <h3>Model Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Algoritmo</div>
+        <h4>Gaussian Naive Bayes</h4>
+        <p>Aplica el <strong>Teorema de Bayes</strong>:</p>
+        <div class="code-block">P(optimal|features) =
+  P(features|optimal) × P(optimal)
+  ─────────────────────────────────
+           P(features)
+
+GaussianNB estima P(features|class)
+como una distribución gaussiana.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Feature importance bayesiana</div>
+        <h4>Poder discriminativo</h4>
+        <p>Se calcula mediante la <strong>ratio de varianza</strong> entre clases: diferencia de medias normalizada por la desviación estándar combinada. Se muestra en <code>generateFeatureImportancePlot()</code>.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">05</span>
+      <h3>Model Evaluation</h3>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-label">Métricas</div>
+        <h4>getModelMetrics()</h4>
+        <div class="chip-row">
+          <span class="chip green">Exactitud</span>
+          <span class="chip green">Precisión</span>
+          <span class="chip green">Recall</span>
+          <span class="chip green">F1-Score</span>
+          <span class="chip amber">ROC AUC</span>
+          <span class="chip">Train Acc</span>
+          <span class="chip">Test Acc</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Reporte de clasificación</div>
+        <h4>getClassificationReport()</h4>
+        <p>Reporte completo por clase: <em>No óptimo</em> y <em>Óptimo</em>, con soporte, precisión y recall por clase.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Visualizaciones extra</div>
+        <h4>Gráficas adicionales</h4>
+        <ul>
+          <li>Curva posterior bayesiana</li>
+          <li>Feature importance (varianza)</li>
+          <li>Matriz de confusión</li>
+          <li>Curva ROC</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">06</span>
+      <h3>Prediction System</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">API pública</div>
+        <h4>Funciones expuestas</h4>
+        <ul>
+          <li><code>predictCropCategory(ph, hum, alt, temp)</code></li>
+          <li><code>getBestCrop(ph, hum, alt, temp, top_n)</code></li>
+          <li><code>generatePlot(user_ph, user_hum, user_alt, user_temp)</code></li>
+          <li><code>generateRankingPlot(...)</code></li>
+          <li><code>generateFeatureImportancePlot()</code></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Flujo de inferencia</div>
+        <h4>Pipeline de predicción</h4>
+        <div class="code-block">1. user_features() → vector [ph,ph,hum,...]
+2. scaler.transform()
+3. model.predict_proba() → P(optimal)
+4. model.predict() → clase 0/1
+5. compute_affinity() por cultivo
+6. getBestCrop() → ranking top-N</div>
+      </div>
+    </div>
+
+  </div><!-- /panel-nb_syn -->
+
+
+  <!-- ════════════════════════════════════════════
+       MODELO 3: Random Forest Sintético
+  ════════════════════════════════════════════ -->
+  <div id="panel-rf_syn" class="model-panel">
+
+    <div class="section-heading">
+      <span class="step-badge">01</span>
+      <h3>Business Understanding</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Objetivo de negocio</div>
+        <h4>¿Qué problema resuelve?</h4>
+        <p>Clasificar terrenos y recomendar cultivos forrajeros con máxima precisión usando un <strong>ensamble de 100 árboles de decisión</strong>, capturando relaciones no lineales que la regresión logística no puede modelar.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Diferencial clave</div>
+        <h4>Ensamble vs. modelo simple</h4>
+        <ul>
+          <li>Reduce varianza por agregación de votos</li>
+          <li>Captura interacciones complejas entre variables</li>
+          <li>Feature importance nativa (impureza Gini)</li>
+          <li>Robusto frente a outliers</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip green">100 árboles</span>
+          <span class="chip amber">Feature importance Gini</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">02</span>
+      <h3>Data Understanding</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Dataset & features</div>
+        <h4>Misma base que NB Sintético</h4>
+        <p><code>forrajeo_1000.csv</code> con las mismas 8 features de rango y el mismo composite target. Permite comparación directa de rendimiento entre algoritmos.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Feature importances</div>
+        <h4>Análisis de relevancia</h4>
+        <p>RF calcula automáticamente la importancia de cada feature mediante reducción de impureza Gini acumulada en los 100 árboles. Disponible en <code>feat_importances</code>.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">03</span>
+      <h3>Data Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Misma ingeniería</div>
+        <h4>Consistencia entre modelos</h4>
+        <p>Idéntico pipeline de feature engineering al de NB Sintético: midpoints, composite score, <code>StandardScaler</code>. Entrena con las 8 variables originales de rango.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Split</div>
+        <h4>Partición de datos</h4>
+        <ul>
+          <li>80% train / 20% test</li>
+          <li><code>random_state=42</code> para reproducibilidad</li>
+          <li>Vector usuario: punto estimado <code>[ph,ph,hum,hum,...]</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">04</span>
+      <h3>Model Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Algoritmo</div>
+        <h4>Random Forest Classifier</h4>
+        <div class="code-block">RandomForestClassifier(
+  n_estimators  = 100,
+  max_depth     = None,
+  min_samples_split = 2,
+  random_state  = 42,
+  n_jobs        = -1
+)
+
+P(optimal) = votos_a_favor / total_trees</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Mecanismo interno</div>
+        <h4>Agregación por votación</h4>
+        <p>Cada árbol vota de forma independiente. La probabilidad final es el <strong>promedio de probabilidades</strong> de los 100 árboles. Se visualiza árbol por árbol en <code>generatePlot()</code>.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">05</span>
+      <h3>Model Evaluation</h3>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-label">Métricas</div>
+        <h4>getModelMetrics()</h4>
+        <div class="chip-row">
+          <span class="chip green">Exactitud</span>
+          <span class="chip green">Precisión</span>
+          <span class="chip green">Recall</span>
+          <span class="chip green">F1</span>
+          <span class="chip amber">ROC AUC</span>
+          <span class="chip">Train vs Test Acc</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Overfitting check</div>
+        <h4>Train vs. Test accuracy</h4>
+        <p>RF sin restricción de profundidad puede memorizar datos de entrenamiento. Se monitorea la brecha <em>train_acc − test_acc</em> como indicador de sobreajuste.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Visualizaciones</div>
+        <h4>Gráficas disponibles</h4>
+        <ul>
+          <li>Curva de probabilidad RF (100 árboles)</li>
+          <li>Feature importance (Gini)</li>
+          <li>Ranking de cultivos</li>
+          <li>Matriz de confusión + ROC</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">06</span>
+      <h3>Prediction System</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">API pública</div>
+        <h4>Funciones expuestas</h4>
+        <ul>
+          <li><code>predictCropCategory(ph, hum, alt, temp)</code> → <code>(int, float)</code></li>
+          <li><code>getBestCrop(ph, hum, alt, temp, top_n)</code></li>
+          <li><code>generateFeatureImportancePlot()</code></li>
+          <li><code>generatePlot()</code> con punto del usuario</li>
+          <li><code>generateRankingPlot()</code></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Flujo de inferencia</div>
+        <h4>Pipeline de predicción</h4>
+        <div class="code-block">1. user_features() → 8-feature vector
+2. scaler.transform()
+3. model.predict_proba() → P(optimal)
+   (avg. votos de 100 árboles)
+4. compute_affinity() por cultivo
+5. getBestCrop() → ranking top-N</div>
+      </div>
+    </div>
+
+  </div><!-- /panel-rf_syn -->
+
+
+  <!-- ════════════════════════════════════════════
+       MODELO 4: DANE (Bayes + RF + KNN + KMeans)
+  ════════════════════════════════════════════ -->
+  <div id="panel-dane" class="model-panel">
+
+    <div class="section-heading">
+      <span class="step-badge">01</span>
+      <h3>Business Understanding</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Objetivo de negocio</div>
+        <h4>Clasificación con datos reales DANE</h4>
+        <p>Cuatro modelos que usan el censo agropecuario DANE ENA 2019 para recomendar <strong>variedades de pasto reales</strong> según área sembrada, ganancia proteica deseada y clima (frío/cálido).</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Modelos incluidos</div>
+        <h4>Suite de 4 algoritmos</h4>
+        <div class="chip-row">
+          <span class="chip green">Bayes DANE</span>
+          <span class="chip green">RF DANE</span>
+          <span class="chip amber">KNN DANE</span>
+          <span class="chip amber">K-Means DANE</span>
+        </div>
+        <p style="margin-top:12px;">Cada uno recomienda variedades con una perspectiva algorítmica distinta.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">02</span>
+      <h3>Data Understanding</h3>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-label">Fuente de datos</div>
+        <h4>DANE ENA 2019</h4>
+        <p>Encuesta Nacional Agropecuaria 2019. Registros reales de variedades de pasto sembradas en Colombia con datos de uso, área y clima.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Variables disponibles</div>
+        <h4>Columnas clave</h4>
+        <ul>
+          <li><code>variedad</code> – nombre del pasto</li>
+          <li><code>area_sembrada_ha</code> – área en hectáreas</li>
+          <li><code>clima</code> – frío / cálido</li>
+          <li><code>prop_banco_proteina</code></li>
+          <li><code>prop_corte</code>, <code>prop_pastoreo_*</code></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Naturaleza del problema</div>
+        <h4>Multiclase real</h4>
+        <p>A diferencia del dataset sintético, aquí el target es la <strong>variedad de pasto</strong> (problema multiclase). Se añade una capa binaria de aptitud proteica para métricas comparables.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">03</span>
+      <h3>Data Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Features construidas</div>
+        <h4>Pipeline compartido (todos los modelos DANE)</h4>
+        <div class="code-block">score_proteina =
+  0.50 × prop_banco_proteina +
+  0.30 × prop_corte          +
+  0.10 × prop_pastoreo_rot   +
+  0.10 × prop_pastoreo_cont
+
+log_area   = log1p(area_sembrada_ha)
+clima_num  = {"frio":1, "calido":0}</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Vector de usuario</div>
+        <h4>buildUserVector(area, proteína%, clima)</h4>
+        <div class="code-block">gp = ganancia_proteina / 100
+prop_banco = min(gp×0.60, 0.60)
+prop_corte = min(gp×0.40, 0.40)
+prop_rot   = max(1 - banco - corte - 0.05, 0)
+prop_cont  = max(0.05, residual)
+→ [log_area, score_p, clima_num,
+   prop_cont, prop_rot, prop_corte, prop_banco]</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Target binario (modelos supervisados)</div>
+        <h4>Aptitud alta / baja</h4>
+        <p><code>optimal = score_proteina ≥ median(score_proteina)</code>. Se usa la <strong>mediana</strong> (no la media) para robustez frente a outliers.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Codificación de clases</div>
+        <h4>LabelEncoder (RF & Bayes DANE)</h4>
+        <p>Las variedades se codifican numéricamente con <code>LabelEncoder</code> para entrenamiento multiclase. La decodificación se aplica en la predicción final.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">04</span>
+      <h3>Model Engineering</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Bayesiano DANE</div>
+        <h4>GaussianNB + ajuste por clima</h4>
+        <p>Entrena un Naive Bayes multiclase sobre variedades. Las probabilidades posteriores se ajustan con un <strong>factor de likelihood por clima</strong> (×1.25 si coincide, ×0.75 si no) y se renormalizan.</p>
+      </div>
+      <div class="info-card highlight">
+        <div class="card-label">Random Forest DANE</div>
+        <h4>Modelo dual: multiclase + binario</h4>
+        <ul>
+          <li><strong>Modelo 1</strong>: RF multiclase (200 árboles) → recomienda variedad</li>
+          <li><strong>Modelo 2</strong>: RF binario balanceado → clasifica aptitud alta/baja</li>
+          <li>Umbral optimizado por F1 en entrenamiento</li>
+        </ul>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">KNN DANE</div>
+        <h4>Vecinos más cercanos (K=3)</h4>
+        <ul>
+          <li><code>NearestNeighbors(k=3, metric='euclidean')</code> para recomendación</li>
+          <li><code>KNeighborsClassifier(weights='distance')</code> para métricas</li>
+          <li>Ajuste de afinidad por clima: ×1.20 / ×0.80</li>
+          <li>PCA 2D para visualización de vecindad</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">K-Means DANE</div>
+        <h4>Clustering no supervisado (K=4)</h4>
+        <ul>
+          <li><code>KMeans(n_clusters=4, n_init=10)</code></li>
+          <li>Métricas aproximadas: target binario por proporción de óptimos en cluster</li>
+          <li>PCA 2D para visualización de clusters</li>
+          <li>Afinidad: inverso de la distancia euclidiana al centroide</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">05</span>
+      <h3>Model Evaluation</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-label">Modelos supervisados (Bayes, RF, KNN)</div>
+        <h4>Métricas estándar</h4>
+        <div class="chip-row">
+          <span class="chip green">Exactitud</span>
+          <span class="chip green">Precisión</span>
+          <span class="chip green">Recall</span>
+          <span class="chip green">F1</span>
+          <span class="chip amber">ROC AUC</span>
+        </div>
+        <p style="margin-top:12px;">Validación cruzada estratificada con <code>StratifiedKFold</code>. El número de folds se adapta al mínimo de muestras por clase.</p>
+      </div>
+      <div class="info-card">
+        <div class="card-label">K-Means (no supervisado)</div>
+        <h4>Métricas aproximadas</h4>
+        <p>Al no tener etiquetas, se construye un target proxy basado en <code>score_proteina ≥ mean</code>. Las métricas de exactitud, F1 y AUC se interpretan como indicadores de <em>cohesión</em> del cluster, no como métricas de clasificación.</p>
+      </div>
+    </div>
+    <div class="info-card full" style="margin-top:18px;">
+      <div class="card-label">Visualizaciones generadas – todos los modelos DANE</div>
+      <div class="chip-row">
+        <span class="chip green">PCA 2D de clusters/vecinos</span>
+        <span class="chip green">Ranking bayesiano posterior</span>
+        <span class="chip green">Distribuciones gaussianas por variedad</span>
+        <span class="chip amber">Votos por árbol (RF)</span>
+        <span class="chip amber">Importancia de variables (Gini)</span>
+        <span class="chip">Matriz de confusión</span>
+        <span class="chip">Curva ROC</span>
+        <span class="chip">Curva de afinidad KNN</span>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="section-heading">
+      <span class="step-badge">06</span>
+      <h3>Prediction System</h3>
+    </div>
+    <div class="two-col">
+      <div class="info-card highlight">
+        <div class="card-label">Entradas del usuario</div>
+        <h4>Parámetros de predicción</h4>
+        <ul>
+          <li><code>area_ha</code> – hectáreas del terreno</li>
+          <li><code>ganancia_proteina_pct</code> – objetivo proteico (0–100%)</li>
+          <li><code>clima</code> – <em>"frio"</em> o <em>"calido"</em></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Carga lazy (load_model)</div>
+        <h4>Patrón de inicialización</h4>
+        <p>Todos los modelos DANE implementan un patrón de <strong>lazy loading</strong>: se entrenan solo una vez al primer uso mediante <code>load_model_B()</code>, <code>load_model_RF()</code>, <code>load_model_K()</code>, <code>load_model_KM()</code>. Las variables globales garantizan que no se reentrenen en llamadas sucesivas.</p>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top:18px;">
+      <div class="info-card">
+        <div class="card-label">Flujo Bayes & RF DANE</div>
+        <h4>Inferencia multiclase</h4>
+        <div class="code-block">1. buildUserVector() → 7 features
+2. scaler.transform()
+3. model.predict_proba() → probs por variedad
+4. Ajuste por factor de clima
+5. Re-normalización bayesiana
+6. top_n variedades rankeadas</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Flujo KNN & K-Means DANE</div>
+        <h4>Inferencia por similitud</h4>
+        <div class="code-block">1. buildUserVector() → 7 features
+2. scaler.transform()
+3. knn.kneighbors() o kmeans.predict()
+4. Filtro + ajuste de afinidad por clima
+5. Ordenar por afinidad = 1/(1+dist)
+6. Retornar variedad + ranking top-K</div>
+      </div>
+    </div>
+
+  </div><!-- /panel-dane -->
+
+  <a href="/recommendation/Menu" class="back-link">← Volver al Menú Principal</a>
+
+</main>
+
+<footer>
+  © 2026 · Documentación técnica – Modelos de recomendación y clasificación forrajera · AgroData
+</footer>
+
+<script>
+function showModel(id) {
+  document.querySelectorAll('.model-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

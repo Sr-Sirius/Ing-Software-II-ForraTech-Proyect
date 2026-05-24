@@ -13,6 +13,7 @@
       --amber:      #EF9F27;
       --blue:       #4A90D9;
       --purple:     #8B5CF6;
+      --teal:       #0D9488;
       --bg:         #0A0F0D;
       --surface:    #111916;
       --surface2:   #182219;
@@ -68,6 +69,38 @@
     }
     .card:hover { border-color:var(--green); transform:translateY(-3px); background:var(--surface2); }
 
+    /* Card destacada para documentación ML */
+    .card.featured {
+      border-color: rgba(13,148,136,0.45);
+      background: linear-gradient(145deg, rgba(13,148,136,0.07), var(--surface));
+      position: relative;
+      overflow: hidden;
+    }
+    .card.featured::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 90% 10%, rgba(13,148,136,0.12), transparent 55%);
+      pointer-events: none;
+    }
+    .card.featured:hover {
+      border-color: rgba(13,148,136,0.8);
+      transform: translateY(-3px);
+    }
+    .featured-badge {
+      position: absolute;
+      top: 18px; right: 18px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: rgba(13,148,136,0.12);
+      border: 1px solid rgba(13,148,136,0.3);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
     .card-icon {
       width:48px; height:48px; border-radius:12px;
       display:flex; align-items:center; justify-content:center; font-size:24px;
@@ -76,6 +109,7 @@
     .card-icon.amber  { background:rgba(239,159,39,0.15); }
     .card-icon.blue   { background:rgba(74,144,217,0.15); }
     .card-icon.purple { background:rgba(139,92,246,0.15); }
+    .card-icon.teal   { background:rgba(13,148,136,0.15); }
 
     .card-tag { font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.1em;
                 text-transform:uppercase; }
@@ -83,6 +117,7 @@
     .card-tag.amber  { color:var(--amber); }
     .card-tag.blue   { color:var(--blue);  }
     .card-tag.purple { color:var(--purple); }
+    .card-tag.teal   { color:var(--teal); }
 
     .card h3 { font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; }
     .card p  { font-size:0.86rem; color:var(--muted); line-height:1.65; flex:1; }
@@ -92,7 +127,9 @@
     .card-chips  { display:flex; gap:6px; flex-wrap:wrap; }
     .chip { font-family:'DM Mono',monospace; font-size:0.65rem; padding:3px 8px;
             border-radius:6px; background:var(--border); color:var(--muted); }
+    .chip.teal { background:rgba(13,148,136,0.12); color:var(--teal); border:1px solid rgba(13,148,136,0.25); }
     .card-arrow { font-size:1.1rem; color:var(--green); transition:transform .2s; }
+    .card.featured .card-arrow { color: var(--teal); }
     .card:hover .card-arrow { transform:translateX(4px); }
 
     /* ── Divider ── */
@@ -122,10 +159,11 @@
     </div>
   </div>
   <nav class="nav-pills">
-    <a href="/menu"          class="nav-pill active">Inicio</a>
-    <a href="/docs"          class="nav-pill">Docs</a>
-    <a href="/metrics/forraje" class="nav-pill">Métricas Forraje</a>
-    <a href="/metrics/dane"    class="nav-pill">Métricas DANE</a>
+    <a href="/menu"                      class="nav-pill active">Inicio</a>
+    <a href="/recommendation/ml_docs"    class="nav-pill">ML Docs</a>
+    <a href="/recommendation/docs"       class="nav-pill">Docs</a>
+    <a href="/metrics/forraje"           class="nav-pill">Métricas Forraje</a>
+    <a href="/metrics/dane"              class="nav-pill">Métricas DANE</a>
   </nav>
 </header>
 
@@ -179,6 +217,23 @@
 <section class="cards-section">
   <p class="section-label">Análisis y documentación</p>
   <div class="cards-grid">
+
+    <!-- ★ NUEVA CARD: Documentación ML Pipeline ★ -->
+    <a href="/recommendation/ml_docs" class="card featured" style="position:relative;">
+      <span class="featured-badge">Nuevo</span>
+      <div class="card-icon teal">🧠</div>
+      <span class="card-tag teal">Pipeline ML · CRISP-DM</span>
+      <h3>Documentación ML Pipeline</h3>
+      <p>Documentación técnica completa de los 5 modelos: Business Understanding, Data Engineering, Model Engineering, Evaluación y sistema de predicción.</p>
+      <div class="card-footer">
+        <div class="card-chips">
+          <span class="chip teal">6 fases</span>
+          <span class="chip teal">5 modelos</span>
+          <span class="chip teal">CRISP-DM</span>
+        </div>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
 
     <a href="/recommendation/docs" class="card">
       <div class="card-icon blue">📄</div>

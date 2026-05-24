@@ -10,6 +10,10 @@ def recommendationM():
 def recommendationMM(): 
     return render_template("recommendation/menu_metrics.html")
 
+@recommendation.route("/ml_docs", methods=["GET", "POST"])
+def recommendationMLd(): 
+    return render_template("recommendation/ml_docs.html")
+
 @recommendation.route("/docs", methods=["GET", "POST"])
 def recommendationDs(): 
     return render_template("recommendation/docs.html")
