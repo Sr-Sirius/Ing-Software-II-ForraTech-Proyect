@@ -1,0 +1,37 @@
+.home-hero {
+    height: calc(100vh - 80px); /* ajusta si tu navbar cambia */
+
+    background: url("../../images/tractor.png") center/cover no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+/* overlay oscuro */
+.home-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* contenido centrado */
+.home-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+}
+
+.home-content h1 {
+    font-size: 52px;
+    margin: 0;
+}
+
+.home-content p {
+    font-size: 20px;
+    margin-top: 10px;
+}

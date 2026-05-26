@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block body_class %}auth-bg{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/register.css') }}">
+
+<div class="login-container">
+
+    <div class="card">
+
+        <div class="hero">
+            <div class="bg"></div>
+        </div>
+
+        <form class="register-form" method="POST">
+
+            <h2>ForraTech 🌱</h2>
+            <h3>Create your account</h3>
+
+            <input 
+                type="text"
+                name="fullname"
+                placeholder="Full name"
+                required
+            >
+
+            <input 
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+            >
+
+            <input 
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+            >
+
+            <input 
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+
+            <input 
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm password"
+                required
+            >
+
+            <select name="user_type" required>
+                <option value="">Select user type</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Rancher">Rancher</option>
+                <option value="Researcher">Researcher</option>
+            </select>
+
+            <input 
+                type="tel"
+                name="phone"
+                placeholder="Phone number (optional)"
+            >
+
+            <input 
+                type="text"
+                name="location"
+                placeholder="Location (optional)"
+            >
+
+            <button type="submit">Register</button>
+
+            <p class="register-link">
+                Already have an account?
+                <a href="{{ url_for('auth.login') }}">Login</a>
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

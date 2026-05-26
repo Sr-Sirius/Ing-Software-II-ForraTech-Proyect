@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/encyclopedia.css') }}">
+
+<div class="encyclopedia-hero">
+
+    <h2>Encyclopedia</h2>
+
+    <div class="menu-container">
+
+        <a href="{{ url_for('encyclopedia.sheep') }}" class="menu-card sheep">
+            <div class="menu-title">Sheep</div>
+        </a>
+
+        <a href="{{ url_for('encyclopedia.goats') }}" class="menu-card goats">
+            <div class="menu-title">Goats</div>
+        </a>
+
+        <a href="{{ url_for('encyclopedia.fodder') }}" class="menu-card fodder">
+            <div class="menu-title">Fodder</div>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

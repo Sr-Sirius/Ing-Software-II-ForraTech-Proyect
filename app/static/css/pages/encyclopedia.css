@@ -1,0 +1,152 @@
+/* =========================
+   HERO / FONDO PRINCIPAL
+========================= */
+.encyclopedia-hero {
+    min-height: 100vh;
+    background: url("/static/images/enci.png") center/cover no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    text-align: center;
+    color: rgb(255, 255, 255);
+}
+
+/* overlay oscuro */
+.encyclopedia-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 0;
+}
+
+.encyclopedia-hero h2 {
+    position: relative;
+    z-index: 2;
+    font-size: 42px;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   MENÚ (CARDS CON IMAGENES)
+========================= */
+.menu-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    position: relative;
+    z-index: 2;
+}
+
+.menu-card {
+    width: 240px;
+    height: 300px;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    text-decoration: none;
+    color: white;
+
+    position: relative;
+
+    transition: 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* overlay interno */
+.menu-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+}
+
+/* texto menú */
+.menu-title {
+    position: relative;
+    z-index: 2;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+/* imágenes del menú */
+.menu-card.sheep {
+    background: url("/static/images/obeja.jpg") center/cover no-repeat;
+}
+
+.menu-card.goats {
+    background: url("/static/images/cabra.jpg") center/cover no-repeat;
+}
+
+.menu-card.fodder {
+    background: url("/static/images/forra.jpg") center/cover no-repeat;
+}
+
+.menu-card:hover {
+    transform: scale(1.08);
+}
+
+/* =========================
+   BASE DE DATOS (NO TOCAR)
+========================= */
+.container {
+    padding: 40px;
+}
+
+.container h1 {
+    color: rgb(0, 0, 0);
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 42px;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+/* CARD BD */
+.encyclopedia-card {
+    background: rgba(20,20,20,0.95);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 25px;
+    color: white;
+    transition: 0.3s;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.encyclopedia-card:hover {
+    transform: translateY(-5px);
+    border-color: #4CAF50;
+}
+
+.encyclopedia-card h2 {
+    color: #4CAF50;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.encyclopedia-card p {
+    margin: 10px 0;
+    line-height: 1.5;
+    color: #dcdcdc;
+}
+
+.encyclopedia-card strong {
+    color: white;
+}

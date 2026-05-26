@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/encyclopedia.css') }}">
+
+<div class="container">
+
+    <h1>Welcome to the Forratech sheep encyclopedia</h1>
+
+    <div class="cards-container">
+
+        {% for item in data %}
+
+        <div class="card encyclopedia-card">
+
+            <h2>{{ item[1] }}</h2>
+
+            <p>
+                <strong>Origin:</strong>
+                {{ item[2] }}
+            </p>
+
+            <p>
+                <strong>Wool Type:</strong>
+                {{ item[3] }}
+            </p>
+
+            <p>
+                <strong>Average Weight:</strong>
+                {{ item[4] }}
+            </p>
+
+            <p>
+                <strong>Purpose:</strong>
+                {{ item[5] }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ item[6] }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

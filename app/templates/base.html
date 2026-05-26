@@ -1,12 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>ForraTech</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
-    {% block content %}
-    {% endblock %}
+    <nav>
+        <div class="logo-container">
+
+    <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="ForraTech Logo"
+        class="logo"
+    >
+
+</div>
+
+        <ul>
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="{{ url_for('recommendation.recommend') }}">Recommendation</a></li>
+            <li><a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+        </ul>
+    </nav>
+
+     <!-- 🔥 FLASH AQUÍ -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
 </body>
 </html>

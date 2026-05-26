@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Forage Recommendation</h2>
+
+<form method="POST">
+    <label>Altitude:</label>
+    <input type="number" name="altitude"><br>
+
+    <label>Climate:</label>
+    <input type="text" name="climate"><br>
+
+    <button type="submit">Get Recommendation</button>
+</form>
+
+{% if result %}
+    <h3>Result:</h3>
+    <p>{{ result }}</p>
+{% endif %}
+{% endblock %}
