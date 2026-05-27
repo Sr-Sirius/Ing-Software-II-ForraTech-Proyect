@@ -1,17 +1,38 @@
-import io, base64, os, gc
-import pandas as pd
+# app/ml/DANE_real_dataset_model/random_f_Dane.py
+
+import gc
 import numpy as np
+import pandas as pd
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from sklearn.model_selection import cross_val_score, StratifiedKFold, train_test_split
-from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,accuracy_score,precision_score,recall_score,f1_score,roc_curve,roc_auc_score, classification_report, precision_recall_curve
-from sklearn.preprocessing import label_binarize
+
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.model_selection import cross_val_score, StratifiedKFold
-from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import cross_val_score, StratifiedKFold, train_test_split
+from sklearn.metrics import (
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_curve,
+    roc_auc_score,
+    classification_report,
+    precision_recall_curve,
+)
+
+from app.ml.utils.utils_dane.dane_features import (
+    FEATURES,
+    build_user_vector,
+)
+from app.ml.pipelines.pipelines_dane.dane_preprocessing import (
+    prepare_dane_training_data,
+)
+from app.ml.utils.utils_dane.plot_utils import fig_to_base64
+
 
 # ─────────────────────────────────────────────
 # Variables globales
@@ -49,16 +70,6 @@ _threshold_optimal = None
 # ─────────────────────────────────────────────
 N_ESTIMATORS = 200
 
-FEATURES = [
-    "log_area",
-    "score_proteina",
-    "clima_num",
-    "prop_pastoreo_continuo",
-    "prop_pastoreo_rotacional",
-    "prop_corte",
-    "prop_banco_proteina",
-]
-
 
 # ─────────────────────────────────────────────
 # 1. Cargar dataset y entrenar modelos
@@ -66,18 +77,9 @@ FEATURES = [
 def load_model_RF(data_path: str = None):
     """
     Carga el dataset DANE y entrena dos modelos:
-
-    1. Random Forest multiclase:
-       Predice la variedad de forraje recomendada.
-
-    2. Random Forest binario:
-       Evalúa si la aptitud proteica es Alta o Baja.
-       Este modelo se usa para métricas, matriz de confusión y curva ROC.
-
-    Esta separación evita mezclar un problema multiclase
-    con métricas binarias.
+    1. Random Forest multiclase para recomendar variedad.
+    2. Random Forest binario para evaluar Alta/Baja aptitud.
     """
-
     global _df, _scaler
     global _model, _label_encoder, _feat_importances, _cv_scores
     global X_test_eval, y_test_eval, y_pred_eval, y_prob_eval, train_acc, test_acc
@@ -88,51 +90,16 @@ def load_model_RF(data_path: str = None):
     if _model is not None and _binary_model is not None:
         return
 
-    if data_path is None:
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "..", ".."))
-        data_path = os.path.join(ROOT_DIR, "data", "DANE_ena_2019_pastos.csv")
-
-    if not os.path.exists(data_path):
-        raise FileNotFoundError(f"No se encontró el archivo: {data_path}")
-
-    _df = pd.read_csv(data_path)
-
-    # ─────────────────────────────────────────────
-    # Feature engineering
-    # ─────────────────────────────────────────────
-    _df["score_proteina"] = (
-        0.50 * _df["prop_banco_proteina"] +
-        0.30 * _df["prop_corte"] +
-        0.10 * _df["prop_pastoreo_rotacional"] +
-        0.10 * _df["prop_pastoreo_continuo"]
+    data = prepare_dane_training_data(
+        data_path=data_path,
+        target_method="median",
+        with_pca=False,
     )
 
-    _df["log_area"] = np.log1p(_df["area_sembrada_ha"])
-
-    _df["clima_num"] = (
-        _df["clima"]
-        .astype(str)
-        .str.lower()
-        .map({"frio": 1, "calido": 0})
-        .fillna(0)
-        .astype(int)
-    )
-
-    # Target binario para aptitud
-    # 1 = Alta aptitud proteica
-    # 0 = Baja aptitud proteica
-    # Se usa la mediana para que el umbral sea más robusto que la media.
-    _threshold_optimal = float(_df["score_proteina"].quantile(0.50))
-
-    _df["optimal"] = (
-        _df["score_proteina"] >= _threshold_optimal
-    ).astype(int)
-
-    X = _df[FEATURES].values
-
-    _scaler = StandardScaler()
-    X_scaled = _scaler.fit_transform(X)
+    _df = data["df"]
+    X_scaled = data["X_scaled"]
+    _scaler = data["scaler"]
+    _threshold_optimal = data["threshold"]
 
     # ─────────────────────────────────────────────
     # Modelo 1: Random Forest multiclase para variedad
@@ -159,7 +126,6 @@ def load_model_RF(data_path: str = None):
         random_state=42,
         n_jobs=-1,
     )
-
     _model.fit(X_train, y_train)
 
     y_pred_eval = _model.predict(X_test_eval)
@@ -168,12 +134,8 @@ def load_model_RF(data_path: str = None):
     train_acc = accuracy_score(y_train, _model.predict(X_train))
     test_acc = accuracy_score(y_test_eval, y_pred_eval)
 
-    _feat_importances = pd.Series(
-        _model.feature_importances_,
-        index=FEATURES,
-    )
+    _feat_importances = pd.Series(_model.feature_importances_, index=FEATURES)
 
-    # Cross-validation multiclase segura
     try:
         min_samples_per_class = counts_var.min()
 
@@ -218,14 +180,9 @@ def load_model_RF(data_path: str = None):
         random_state=42,
         n_jobs=-1,
     )
-
     _binary_model.fit(X_train_b, y_train_b)
 
     y_prob_train_b = _binary_model.predict_proba(X_train_b)[:, 1]
-
-    # Umbral corregido:
-    # En vez de usar siempre 0.5, se busca el umbral que mejora el F1
-    # en entrenamiento. Esto ayuda cuando el modelo tiende a predecir todo 0.
     _binary_threshold = _find_best_threshold(y_train_b, y_prob_train_b)
 
     y_prob_binary_eval = _binary_model.predict_proba(X_test_binary_eval)[:, 1]
@@ -235,20 +192,16 @@ def load_model_RF(data_path: str = None):
         y_train_b,
         (y_prob_train_b >= _binary_threshold).astype(int),
     )
-    binary_test_acc = accuracy_score(
-        y_test_binary_eval,
-        y_pred_binary_eval,
-    )
+    binary_test_acc = accuracy_score(y_test_binary_eval, y_pred_binary_eval)
 
     gc.collect()
 
 
 def _find_best_threshold(y_true, y_prob):
     """
-    Calcula un umbral óptimo usando F1 en el conjunto de entrenamiento.
+    Calcula un umbral óptimo usando F1 en entrenamiento.
     Si no hay suficientes clases, retorna 0.5.
     """
-
     if len(np.unique(y_true)) < 2:
         return 0.5
 
@@ -264,7 +217,6 @@ def _find_best_threshold(y_true, y_prob):
     best_idx = int(np.nanargmax(f1_values))
     best_threshold = float(thresholds[best_idx])
 
-    # Evita umbrales extremos que puedan generar todo 0 o todo 1
     return float(np.clip(best_threshold, 0.20, 0.80))
 
 
@@ -272,10 +224,7 @@ def _find_best_threshold(y_true, y_prob):
 # 2. Funciones auxiliares
 # ─────────────────────────────────────────────
 def getThreshold():
-    """
-    Retorna el umbral binario de alta aptitud usado por el modelo.
-    """
-
+    """Retorna el umbral binario de alta aptitud usado por el modelo."""
     if _binary_model is None:
         load_model_RF()
 
@@ -283,39 +232,8 @@ def getThreshold():
 
 
 def buildUserVector(area_ha, ganancia_proteina_pct, clima):
-    """
-    Construye el vector de entrada del usuario con las mismas variables
-    usadas durante el entrenamiento.
-    """
-
-    gp = ganancia_proteina_pct / 100.0
-
-    prop_banco = min(gp * 0.60, 0.60)
-    prop_corte = min(gp * 0.40, 0.40)
-    prop_rot = max(1.0 - prop_banco - prop_corte - 0.05, 0.0)
-    prop_cont = max(0.05, 1.0 - prop_banco - prop_corte - prop_rot)
-
-    clima_lower = clima.strip().lower()
-    clima_num = 1 if clima_lower == "frio" else 0
-
-    log_area = np.log1p(area_ha)
-
-    score_p = (
-        0.50 * prop_banco +
-        0.30 * prop_corte +
-        0.10 * prop_rot +
-        0.10 * prop_cont
-    )
-
-    return np.array([
-        log_area,
-        score_p,
-        clima_num,
-        prop_cont,
-        prop_rot,
-        prop_corte,
-        prop_banco,
-    ])
+    """Wrapper compatible. La lógica vive en utils/dane_features.py."""
+    return build_user_vector(area_ha, ganancia_proteina_pct, clima)
 
 
 # ─────────────────────────────────────────────
@@ -324,11 +242,9 @@ def buildUserVector(area_ha, ganancia_proteina_pct, clima):
 def predictCropCategory(area_ha, ganancia_proteina_pct, clima):
     """
     Predicción Random Forest corregida:
-
-    - El modelo multiclase recomienda la variedad.
-    - El modelo binario decide si la aptitud es alta o baja.
+    - Modelo multiclase recomienda variedad.
+    - Modelo binario decide Alta/Baja aptitud.
     """
-
     global _model, _binary_model, _scaler, _label_encoder, _df
 
     if _model is None or _binary_model is None:
@@ -338,12 +254,10 @@ def predictCropCategory(area_ha, ganancia_proteina_pct, clima):
     uv_scaled = _scaler.transform([uv])
 
     probs = _model.predict_proba(uv_scaled)[0]
-    clima_lower = clima.strip().lower()
+    clima_lower = str(clima).strip().lower()
 
     adjusted = []
 
-    # Importante:
-    # _model.classes_ contiene las clases realmente aprendidas por el modelo.
     for class_id, p in zip(_model.classes_, probs):
         var_name = _label_encoder.inverse_transform([class_id])[0]
         var_row = _df[_df["variedad"].astype(str) == str(var_name)]
@@ -357,7 +271,6 @@ def predictCropCategory(area_ha, ganancia_proteina_pct, clima):
         adjusted.append((var_name, float(p * factor)))
 
     adjusted.sort(key=lambda x: x[1], reverse=True)
-
     best_var, _ = adjusted[0]
 
     prob_aptitud_alta = float(_binary_model.predict_proba(uv_scaled)[0][1])
@@ -367,10 +280,7 @@ def predictCropCategory(area_ha, ganancia_proteina_pct, clima):
 
 
 def getBestCrops(area_ha, ganancia_proteina_pct, clima, top_n=10):
-    """
-    Ranking de variedades por probabilidad ajustada por clima.
-    """
-
+    """Ranking de variedades por probabilidad ajustada por clima."""
     global _model, _scaler, _label_encoder, _df
 
     if _model is None:
@@ -380,7 +290,7 @@ def getBestCrops(area_ha, ganancia_proteina_pct, clima, top_n=10):
     uv_scaled = _scaler.transform([uv])
 
     probs = _model.predict_proba(uv_scaled)[0]
-    clima_lower = clima.strip().lower()
+    clima_lower = str(clima).strip().lower()
 
     records = []
 
@@ -412,16 +322,15 @@ def getBestCrops(area_ha, ganancia_proteina_pct, clima, top_n=10):
 
 
 # ─────────────────────────────────────────────
-# 4. Gráficas del modelo
+# 4. Gráficas
 # ─────────────────────────────────────────────
 def generatePlot(area_ha, ganancia_proteina_pct, clima):
     """
     Gráfica principal:
-    - Votos de árboles.
+    - Votos por árbol.
     - Importancia de variables.
     - Ranking de variedades.
     """
-
     global _model, _feat_importances, _df, _scaler, _label_encoder
 
     if _model is None:
@@ -481,11 +390,7 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
 
     ax.set_xlabel("Árbol de decisión", fontsize=11)
     ax.set_ylabel("Probabilidad por árbol", fontsize=11)
-    ax.set_title(
-        "Random Forest – Votos por árbol\nTop 5 variedades",
-        fontsize=12,
-        fontweight="bold",
-    )
+    ax.set_title("Random Forest – Votos por árbol\nTop 5 variedades", fontsize=12, fontweight="bold")
     ax.legend(fontsize=7)
     ax.grid(True, alpha=0.3)
 
@@ -522,11 +427,7 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
         )
 
     ax2.set_xlabel("Importancia (%)", fontsize=11)
-    ax2.set_title(
-        "Importancia de variables\nImpureza Gini",
-        fontsize=12,
-        fontweight="bold",
-    )
+    ax2.set_title("Importancia de variables\nImpureza Gini", fontsize=12, fontweight="bold")
     ax2.legend()
     ax2.grid(True, axis="x", alpha=0.3)
 
@@ -537,12 +438,12 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
 
     bar_cols = [
         "#1D9E75" if row["variedad"] == best_var
-        else ("#4A90D9" if row["clima"] == clima.lower() else "#EF9F27")
+        else ("#4A90D9" if row["clima"] == str(clima).lower() else "#EF9F27")
         for _, row in ranking.iterrows()
     ]
 
     bars3 = ax3.barh(
-        ranking["variedad"].str[:28][::-1],
+        ranking["variedad"].astype(str).str[:28][::-1],
         ranking["probabilidad"][::-1] * 100,
         color=bar_cols[::-1],
         edgecolor="white",
@@ -569,30 +470,14 @@ def generatePlot(area_ha, ganancia_proteina_pct, clima):
     p1 = mpatches.Patch(color="#1D9E75", label="Recomendada")
     p2 = mpatches.Patch(color="#4A90D9", label=f"Clima {clima}")
     p3 = mpatches.Patch(color="#EF9F27", label="Otro clima")
-
     ax3.legend(handles=[p1, p2, p3], fontsize=8)
 
     plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
-    plt.close(fig)
-    plt.close("all")
-
-    buf.seek(0)
-    result_base64 = base64.b64encode(buf.getvalue()).decode()
-    buf.close()
-
-    gc.collect()
-
-    return result_base64
+    return fig_to_base64(fig, plt)
 
 
 def generateFeatureImportancePlot():
-    """
-    Genera una gráfica independiente de importancia de variables.
-    """
-
+    """Genera una gráfica independiente de importancia de variables."""
     global _feat_importances
 
     if _feat_importances is None:
@@ -638,49 +523,21 @@ def generateFeatureImportancePlot():
     ax.grid(True, axis="x", alpha=0.3)
 
     plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
-    plt.close(fig)
-    plt.close("all")
-
-    buf.seek(0)
-    result = base64.b64encode(buf.getvalue()).decode()
-    buf.close()
-
-    gc.collect()
-
-    return result
+    return fig_to_base64(fig, plt)
 
 
 # ─────────────────────────────────────────────
 # 5. Métricas binarias corregidas
 # ─────────────────────────────────────────────
 def getModelMetrics():
-    """
-    Retorna métricas binarias reales:
-    Baja aptitud vs Alta aptitud.
-    """
-
+    """Retorna métricas binarias reales: Baja aptitud vs Alta aptitud."""
     if _binary_model is None:
         load_model_RF()
 
     accuracy = accuracy_score(y_test_binary_eval, y_pred_binary_eval)
-    precision = precision_score(
-        y_test_binary_eval,
-        y_pred_binary_eval,
-        zero_division=0,
-    )
-    recall = recall_score(
-        y_test_binary_eval,
-        y_pred_binary_eval,
-        zero_division=0,
-    )
-    f1 = f1_score(
-        y_test_binary_eval,
-        y_pred_binary_eval,
-        zero_division=0,
-    )
+    precision = precision_score(y_test_binary_eval, y_pred_binary_eval, zero_division=0)
+    recall = recall_score(y_test_binary_eval, y_pred_binary_eval, zero_division=0)
+    f1 = f1_score(y_test_binary_eval, y_pred_binary_eval, zero_division=0)
 
     try:
         auc = roc_auc_score(y_test_binary_eval, y_prob_binary_eval)
@@ -700,6 +557,8 @@ def getModelMetrics():
         "confusion_matrix": cm.tolist(),
         "threshold_optimal": float(_threshold_optimal),
         "classification_threshold": float(_binary_threshold),
+        "cv_mean": float(_cv_scores.mean()) if _cv_scores is not None else "—",
+        "cv_std": float(_cv_scores.std()) if _cv_scores is not None else "—",
         "n_real_bajas": int(np.sum(y_test_binary_eval == 0)),
         "n_real_altas": int(np.sum(y_test_binary_eval == 1)),
         "n_pred_bajas": int(np.sum(y_pred_binary_eval == 0)),
@@ -708,10 +567,7 @@ def getModelMetrics():
 
 
 def getClassificationReport():
-    """
-    Retorna el reporte de clasificación binaria.
-    """
-
+    """Retorna el reporte de clasificación binaria."""
     if _binary_model is None:
         load_model_RF()
 
@@ -725,10 +581,7 @@ def getClassificationReport():
 
 
 def generateConfusionMatrixPlot():
-    """
-    Genera matriz de confusión binaria.
-    """
-
+    """Genera matriz de confusión binaria."""
     if _binary_model is None:
         load_model_RF()
 
@@ -740,54 +593,23 @@ def generateConfusionMatrixPlot():
         confusion_matrix=cm,
         display_labels=["Baja aptitud", "Alta aptitud"],
     )
+    disp.plot(ax=ax, cmap="Greens", colorbar=False, values_format="d")
 
-    disp.plot(
-        ax=ax,
-        cmap="Greens",
-        colorbar=False,
-        values_format="d",
-    )
-
-    ax.set_title(
-        "Matriz de Confusión – Random Forest Binario",
-        fontsize=13,
-        fontweight="bold",
-    )
-
+    ax.set_title("Matriz de Confusión – Random Forest Binario", fontsize=13, fontweight="bold")
     ax.set_xlabel("Predicción")
     ax.set_ylabel("Valor real")
 
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
-    plt.close(fig)
-    plt.close("all")
-
-    buf.seek(0)
-    result = base64.b64encode(buf.getvalue()).decode()
-    buf.close()
-
-    gc.collect()
-
-    return result
+    return fig_to_base64(fig, plt)
 
 
 def generateROCPlot():
-    """
-    Genera curva ROC binaria.
-    """
-
+    """Genera curva ROC binaria."""
     if _binary_model is None:
         load_model_RF()
 
     try:
-        fpr, tpr, thresholds = roc_curve(
-            y_test_binary_eval,
-            y_prob_binary_eval,
-        )
-        auc = roc_auc_score(
-            y_test_binary_eval,
-            y_prob_binary_eval,
-        )
+        fpr, tpr, _ = roc_curve(y_test_binary_eval, y_prob_binary_eval)
+        auc = roc_auc_score(y_test_binary_eval, y_prob_binary_eval)
     except ValueError:
         fpr = [0, 1]
         tpr = [0, 1]
@@ -812,12 +634,7 @@ def generateROCPlot():
         label="Clasificador aleatorio",
     )
 
-    ax.set_title(
-        "Curva ROC – Random Forest Binario",
-        fontsize=13,
-        fontweight="bold",
-    )
-
+    ax.set_title("Curva ROC – Random Forest Binario", fontsize=13, fontweight="bold")
     ax.set_xlabel("Tasa de Falsos Positivos")
     ax.set_ylabel("Tasa de Verdaderos Positivos")
     ax.set_xlim(0, 1)
@@ -825,15 +642,4 @@ def generateROCPlot():
     ax.grid(True, alpha=0.3)
     ax.legend(loc="lower right")
 
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
-    plt.close(fig)
-    plt.close("all")
-
-    buf.seek(0)
-    result = base64.b64encode(buf.getvalue()).decode()
-    buf.close()
-
-    gc.collect()
-
-    return result
+    return fig_to_base64(fig, plt)

@@ -1,5 +1,14 @@
 from flask import Blueprint, render_template, request
-from app.services.recommendation_service import get_recommendation, get_recommendationR, get_recommendationB, get_recommendation_KmeansD, get_recommendation_KNN, get_recommendation_RandomFD, get_recommendation_BayesianDane
+
+from app.services import (
+    get_recommendation,
+    get_recommendationR,
+    get_recommendationB,
+    get_recommendation_KmeansD,
+    get_recommendation_KNN,
+    get_recommendation_RandomFD,
+    get_recommendation_BayesianDane
+)
 recommendation = Blueprint('recommendation',__name__)
 
 @recommendation.route("/Menu", methods=["GET"])

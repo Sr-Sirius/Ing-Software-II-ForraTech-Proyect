@@ -276,7 +276,8 @@
     }
 
     .ranking-section,
-    .plot-card {
+    .plot-card,
+    .metrics-section {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -343,6 +344,83 @@
     .plot-card img {
       width: 100%;
       display: block;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      padding: 20px 24px 24px;
+    }
+
+    .metric-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .metric-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric-help {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .metrics-visual-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      padding: 20px 24px 24px;
+    }
+
+    .metric-plot-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .metric-plot-title {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .metric-plot-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .metrics-note {
+      padding: 0 24px 20px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .metrics-note strong {
+      color: var(--text);
     }
 
     .empty-state {
@@ -644,6 +722,148 @@
         src="data:image/png;base64,{{ plot }}"
         alt="Bayesian visualization"
       >
+
+    </div>
+
+    {% endif %}
+
+    {% if metrics %}
+
+    <div class="metrics-section">
+
+      <div class="section-header">
+        📈 Model Performance Metrics - Bayesian DANE
+      </div>
+
+      <div class="metrics-grid">
+
+        <div class="metric-card">
+          <div class="metric-label">Exactitud / Accuracy</div>
+          <div class="metric-value">
+            {{ "%.1f"|format((metrics.exactitud if metrics.exactitud is defined else metrics.accuracy) * 100) }}%
+          </div>
+          <div class="metric-help">
+            Proporción total de predicciones correctas.
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Precisión / Precision</div>
+          <div class="metric-value">
+            {{ "%.1f"|format(metrics.precision * 100) }}%
+          </div>
+          <div class="metric-help">
+            Confiabilidad cuando el modelo predice alta aptitud.
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Sensibilidad / Recall</div>
+          <div class="metric-value">
+            {{ "%.1f"|format(metrics.recall * 100) }}%
+          </div>
+          <div class="metric-help">
+            Capacidad para detectar casos de alta aptitud.
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">F1-Score</div>
+          <div class="metric-value">
+            {{ "%.3f"|format(metrics.f1_score if metrics.f1_score is defined else metrics.f1) }}
+          </div>
+          <div class="metric-help">
+            Balance entre precisión y sensibilidad.
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">ROC AUC</div>
+          <div class="metric-value">
+            {{ "%.3f"|format(metrics.roc_auc) }}
+          </div>
+          <div class="metric-help">
+            Capacidad discriminativa entre baja y alta aptitud.
+          </div>
+        </div>
+
+        {% if metrics.train_accuracy is defined %}
+        <div class="metric-card">
+          <div class="metric-label">Train Accuracy</div>
+          <div class="metric-value">
+            {{ "%.1f"|format(metrics.train_accuracy * 100) }}%
+          </div>
+          <div class="metric-help">
+            Rendimiento sobre datos de entrenamiento.
+          </div>
+        </div>
+        {% endif %}
+
+        {% if metrics.test_accuracy is defined %}
+        <div class="metric-card">
+          <div class="metric-label">Test Accuracy</div>
+          <div class="metric-value">
+            {{ "%.1f"|format(metrics.test_accuracy * 100) }}%
+          </div>
+          <div class="metric-help">
+            Rendimiento sobre datos de prueba.
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+
+      <div class="metrics-note">
+        <strong>Interpretación:</strong>
+        estas métricas evalúan el desempeño supervisado del modelo Gaussian Naive Bayes
+        para separar casos de baja y alta aptitud proteica sobre el dataset DANE.
+      </div>
+
+    </div>
+
+    {% endif %}
+
+    {% if confusion_matrix_plot or roc_plot %}
+
+    <div class="metrics-section">
+
+      <div class="section-header">
+        🎯 Visual Performance Evaluation
+      </div>
+
+      <div class="metrics-visual-grid">
+
+        {% if confusion_matrix_plot %}
+        <div class="metric-plot-card">
+
+          <div class="metric-plot-title">
+            Matriz de confusión - Bayes DANE
+          </div>
+
+          <img
+            src="data:image/png;base64,{{ confusion_matrix_plot }}"
+            alt="Matriz de confusión Bayes DANE"
+          >
+
+        </div>
+        {% endif %}
+
+        {% if roc_plot %}
+        <div class="metric-plot-card">
+
+          <div class="metric-plot-title">
+            Curva ROC - Bayes DANE
+          </div>
+
+          <img
+            src="data:image/png;base64,{{ roc_plot }}"
+            alt="Curva ROC Bayes DANE"
+          >
+
+        </div>
+        {% endif %}
+
+      </div>
 
     </div>
 
