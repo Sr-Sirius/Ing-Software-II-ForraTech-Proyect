@@ -64,6 +64,7 @@ def recommendationLR():
         temp_value=None,
         threshold=None
     )
+
 @recommendation.route("/RandomRF", methods=["GET", "POST"])
 def recommendationRF():
     
@@ -87,6 +88,7 @@ def recommendationRF():
         temp_value=20,
         threshold=getRFThreshold()
     )
+
 @recommendation.route("/TeoBayesian", methods=["GET", "POST"])
 def recommendationB():
     
@@ -113,6 +115,7 @@ def recommendationB():
         temp_value=20,
         threshold=getBayesThreshold()
     )
+
 @recommendation.route("/KmeansD", methods=["GET", "POST"])
 def recommendationKD():
     if request.method == "POST":
@@ -132,6 +135,7 @@ def recommendationKD():
         clima_value="calido",
         cluster_info=None,
     )
+
 @recommendation.route("/KNN", methods=["GET", "POST"])
 def recommendationKNN():
     """
@@ -158,6 +162,7 @@ def recommendationKNN():
         clima_value="calido",
         cluster_info=None,
     )
+
 @recommendation.route("/RandomFD", methods=["GET", "POST"])
 def recommendationBayesian():
     #Route for Naive Bayes model
@@ -181,6 +186,7 @@ def recommendationBayesian():
         proteina_value=70.0,
         clima_value="calido",
     )
+
 @recommendation.route("/DaneBayesian", methods=["GET", "POST"])
 def recommendationBayesianDane():
     # Route for Bayesian DANE forage recommendation model
