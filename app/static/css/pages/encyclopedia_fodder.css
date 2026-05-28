@@ -1,0 +1,1022 @@
+/* =========================
+   ENCYCLOPEDIA FODDER / FORAGE PAGE
+========================= */
+
+.encyclopedia-fodder-page {
+    background: #020617;
+}
+
+.encyclopedia-fodder-page main {
+    padding-top: 110px;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.fodder-shell {
+    position: relative;
+    min-height: calc(100vh - 110px);
+    padding: 26px 0 56px;
+    overflow: hidden;
+}
+
+.fodder-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -4;
+
+    background:
+        linear-gradient(rgba(2, 6, 23, 0.80), rgba(2, 6, 23, 0.98)),
+        url("/static/images/background.png") center/cover no-repeat;
+
+    filter: saturate(0.9) contrast(1.05);
+}
+
+.fodder-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 15% 12%, rgba(34, 197, 94, 0.14), transparent 28%),
+        radial-gradient(circle at 78% 30%, rgba(34, 197, 94, 0.10), transparent 30%),
+        radial-gradient(circle at 50% 88%, rgba(245, 158, 11, 0.05), transparent 35%),
+        linear-gradient(to bottom, rgba(2, 6, 23, 0.08), #020617 96%);
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.fodder-container {
+    width: min(1500px, calc(100% - 52px));
+    margin: 0 auto;
+}
+
+/* =========================
+   TOP
+========================= */
+
+.fodder-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 38px;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: rgba(226, 232, 240, 0.62);
+    font-size: 0.86rem;
+}
+
+.breadcrumb a {
+    color: rgba(226, 232, 240, 0.72);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover,
+.breadcrumb strong {
+    color: #22c55e;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 16px;
+
+    border-radius: 999px;
+
+    color: #f8fafc;
+    text-decoration: none;
+
+    background: rgba(15, 23, 42, 0.66);
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 0.82rem;
+    font-weight: 800;
+    transition: 0.25s ease;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(74, 222, 128, 0.28);
+    box-shadow: 0 12px 30px rgba(34, 197, 94, 0.12);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.fodder-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+
+    margin-bottom: 28px;
+}
+
+.hero-main {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.hero-icon {
+    width: 118px;
+    height: 118px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #f8fafc;
+    background: rgba(22, 101, 52, 0.30);
+    border: 1px solid rgba(74, 222, 128, 0.36);
+
+    font-size: 4rem;
+
+    box-shadow: 0 18px 60px rgba(34, 197, 94, 0.14);
+}
+
+.fodder-hero h1 {
+    color: #f8fafc;
+
+    font-size: clamp(2.5rem, 4vw, 4.2rem);
+    line-height: 1;
+    letter-spacing: -0.07em;
+    font-weight: 900;
+}
+
+.fodder-hero p {
+    margin-top: 14px;
+
+    color: rgba(226, 232, 240, 0.72);
+    font-size: 1.05rem;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 180px);
+    gap: 18px;
+}
+
+.hero-stats article {
+    padding: 22px;
+
+    border-radius: 14px;
+
+    background: rgba(15, 23, 42, 0.60);
+    border: 1px solid rgba(255,255,255,.08);
+
+    text-align: center;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.hero-stats span {
+    display: block;
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+.hero-stats strong {
+    display: block;
+
+    color: #22c55e;
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.hero-stats small {
+    display: block;
+
+    margin-top: 8px;
+
+    color: rgba(226, 232, 240, 0.64);
+}
+
+/* =========================
+   SPECIES CAROUSEL
+========================= */
+
+.species-carousel-wrapper {
+    position: relative;
+
+    padding: 32px 64px 50px;
+
+    border-radius: 22px;
+
+    background: rgba(15, 23, 42, 0.56);
+    border: 1px solid rgba(255, 255, 255, 0.075);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    margin-bottom: 24px;
+}
+
+.species-carousel-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.09), transparent 40%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025), transparent);
+}
+
+.species-carousel {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.species-card {
+    position: relative;
+    min-height: 430px;
+
+    border-radius: 10px;
+    overflow: hidden;
+
+    background: rgba(15, 23, 42, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.075);
+
+    transition: 0.25s ease;
+}
+
+.species-card.featured {
+    border-color: rgba(74, 222, 128, 0.66);
+    transform: translateY(-8px);
+    box-shadow: 0 18px 50px rgba(34, 197, 94, 0.10);
+}
+
+.species-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(74, 222, 128, 0.38);
+}
+
+.species-image {
+    position: absolute;
+    inset: 0;
+
+    background-size: cover;
+    background-position: center;
+
+    transition: transform 0.35s ease;
+}
+
+.species-card:hover .species-image {
+    transform: scale(1.06);
+}
+
+.brachiaria-image {
+    background-image:
+        linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
+        url("/static/images/forage_brachiaria.jpg");
+}
+
+.panicum-image {
+    background-image:
+        linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
+        url("/static/images/forage_panicum.jpg");
+}
+
+.cynodon-image {
+    background-image:
+        linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
+        url("/static/images/forage_cynodon.jpg");
+}
+
+.megathyrsus-image {
+    background-image:
+        linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
+        url("/static/images/forage_megathyrsus.jpg");
+}
+
+.medicago-image {
+    background-image:
+        linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
+        url("/static/images/forage_medicago.jpg");
+}
+
+.species-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(to bottom, rgba(2, 6, 23, 0.02), rgba(2, 6, 23, 0.12) 35%, rgba(2, 6, 23, 0.86) 88%),
+        radial-gradient(circle at 50% 70%, rgba(34, 197, 94, 0.10), transparent 40%);
+}
+
+.species-content {
+    position: absolute;
+    z-index: 2;
+    left: 24px;
+    right: 24px;
+    bottom: 36px;
+}
+
+.species-content h2 {
+    color: #f8fafc;
+
+    font-size: 1.25rem;
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+}
+
+.species-content p {
+    color: rgba(226, 232, 240, 0.72);
+    line-height: 1.45;
+    font-size: 0.92rem;
+}
+
+.species-badge,
+.popular-badge {
+    display: inline-flex;
+
+    margin-bottom: 12px;
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    color: #f8fafc;
+
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.species-badge.tropical {
+    background: rgba(99, 102, 241, 0.72);
+}
+
+.species-badge.legume {
+    background: rgba(180, 83, 9, 0.74);
+}
+
+.popular-badge {
+    margin-top: 18px;
+    margin-bottom: 0;
+
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.85), rgba(21, 128, 61, 0.75));
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    transform: translateY(-50%);
+
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.10);
+
+    color: #f8fafc;
+    background: rgba(15, 23, 42, 0.72);
+
+    font-size: 2.2rem;
+    cursor: pointer;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition: 0.25s ease;
+}
+
+.carousel-arrow:hover {
+    color: #4ade80;
+    border-color: rgba(74,222,128,.25);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-arrow.left {
+    left: -6px;
+}
+
+.carousel-arrow.right {
+    right: -6px;
+}
+
+.carousel-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    z-index: 3;
+
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    transform: translateX(-50%);
+}
+
+.carousel-dots span {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.18);
+}
+
+.carousel-dots span.active {
+    background: #22c55e;
+    box-shadow: 0 0 18px rgba(34,197,94,.45);
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.overview-panel,
+.info-card,
+.articles-panel,
+.dynamic-data-panel,
+.source-banner {
+    position: relative;
+
+    padding: 26px;
+
+    border-radius: 18px;
+
+    background: rgba(15, 23, 42, 0.58);
+    border: 1px solid rgba(255,255,255,.075);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.overview-panel::before,
+.info-card::before,
+.articles-panel::before,
+.dynamic-data-panel::before,
+.source-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 90% 0%, rgba(34, 197, 94, 0.08), transparent 36%),
+        linear-gradient(to bottom, rgba(255,255,255,.02), transparent);
+}
+
+.section-heading {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.section-heading > span {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #4ade80;
+    background: rgba(34,197,94,.10);
+    border: 1px solid rgba(74,222,128,.18);
+}
+
+.section-heading h2 {
+    color: #f8fafc;
+
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+}
+
+.section-heading p {
+    margin-top: 4px;
+
+    color: rgba(226, 232, 240, 0.58);
+    font-size: 0.82rem;
+}
+
+/* =========================
+   OVERVIEW
+========================= */
+
+.overview-grid {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: 0.9fr 1fr 0.72fr;
+    gap: 34px;
+    align-items: center;
+}
+
+.overview-image {
+    min-height: 300px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(rgba(2, 6, 23, 0.06), rgba(2, 6, 23, 0.18)),
+        url("/static/images/forage_overview.jpg") center/cover no-repeat;
+
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.overview-text p {
+    color: rgba(248,250,252,.84);
+    line-height: 1.65;
+    margin-bottom: 22px;
+}
+
+.check-list {
+    list-style: none;
+
+    display: grid;
+    gap: 13px;
+}
+
+.check-list li {
+    position: relative;
+
+    padding-left: 28px;
+
+    color: rgba(226, 232, 240, 0.78);
+    line-height: 1.45;
+    font-size: 0.9rem;
+}
+
+.check-list li::before {
+    content: "✓";
+
+    position: absolute;
+    left: 0;
+    top: 1px;
+
+    width: 18px;
+    height: 18px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #052e16;
+    background: #22c55e;
+
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+.check-list.compact {
+    margin-top: 26px;
+}
+
+.key-facts {
+    padding: 24px;
+
+    border-radius: 14px;
+
+    background: rgba(15,23,42,.54);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.key-facts h3 {
+    color: #f8fafc;
+    margin-bottom: 22px;
+}
+
+.fact-row {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.fact-row:last-child {
+    margin-bottom: 0;
+}
+
+.fact-row span {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #4ade80;
+    background: rgba(34,197,94,.09);
+    border: 1px solid rgba(74,222,128,.18);
+}
+
+.fact-row strong {
+    display: block;
+
+    color: #4ade80;
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+}
+
+.fact-row p {
+    color: rgba(226,232,240,.68);
+    font-size: 0.84rem;
+}
+
+/* =========================
+   INFO CARDS
+========================= */
+
+.info-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+
+    margin-bottom: 24px;
+}
+
+.card-title {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.card-title > span {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #4ade80;
+    background: rgba(34,197,94,.10);
+    border: 1px solid rgba(74,222,128,.18);
+}
+
+.card-title h2 {
+    color: #f8fafc;
+
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+}
+
+.card-title p {
+    color: rgba(226,232,240,.58);
+    font-size: 0.82rem;
+}
+
+.use-list {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    gap: 18px;
+}
+
+.use-row {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 14px;
+}
+
+.use-row > span {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.use-row strong {
+    display: block;
+
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.use-row p {
+    color: rgba(226,232,240,.68);
+    line-height: 1.45;
+    font-size: 0.85rem;
+}
+
+/* =========================
+   ARTICLES
+========================= */
+
+.article-grid {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+}
+
+.article-card {
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    background: rgba(15,23,42,.55);
+    border: 1px solid rgba(255,255,255,.08);
+
+    transition: 0.25s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(74,222,128,.28);
+}
+
+.article-image {
+    height: 140px;
+
+    background-size: cover;
+    background-position: center;
+}
+
+.article-management {
+    background-image: url("/static/images/forage_article_management.jpg");
+}
+
+.article-nutrition {
+    background-image: url("/static/images/forage_article_nutrition.jpg");
+}
+
+.article-conservation {
+    background-image: url("/static/images/forage_article_conservation.jpg");
+}
+
+.article-sustainability {
+    background-image: url("/static/images/forage_article_sustainability.jpg");
+}
+
+.article-species {
+    background-image: url("/static/images/forage_article_species.jpg");
+}
+
+.article-body {
+    padding: 18px;
+}
+
+.article-tag {
+    display: inline-flex;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    color: #f8fafc;
+    font-size: 0.66rem;
+    font-weight: 900;
+    text-transform: uppercase;
+
+    margin-bottom: 14px;
+}
+
+.article-tag.green {
+    background: rgba(34,197,94,.78);
+}
+
+.article-tag.blue {
+    background: rgba(59,130,246,.76);
+}
+
+.article-tag.purple {
+    background: rgba(139,92,246,.76);
+}
+
+.article-tag.orange {
+    background: rgba(245,158,11,.80);
+}
+
+.article-tag.lime {
+    background: rgba(132,204,22,.75);
+}
+
+.article-body h3 {
+    color: #f8fafc;
+
+    font-size: 0.95rem;
+    line-height: 1.35;
+
+    margin-bottom: 10px;
+}
+
+.article-body p {
+    color: rgba(226,232,240,.68);
+
+    line-height: 1.45;
+    font-size: 0.82rem;
+
+    margin-bottom: 16px;
+}
+
+.article-body small {
+    color: rgba(134,239,172,.72);
+}
+
+/* =========================
+   DYNAMIC DATA
+========================= */
+
+.dynamic-grid {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.dynamic-card {
+    padding: 20px;
+
+    border-radius: 14px;
+
+    background: rgba(15,23,42,.46);
+    border: 1px solid rgba(255,255,255,.075);
+}
+
+.dynamic-card h3 {
+    color: #4ade80;
+    margin-bottom: 10px;
+}
+
+.dynamic-card p {
+    color: rgba(226,232,240,.72);
+    line-height: 1.55;
+}
+
+/* =========================
+   SOURCE
+========================= */
+
+.source-banner {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 18px;
+    align-items: center;
+
+    border-color: rgba(245, 158, 11, 0.22);
+    background: rgba(245, 158, 11, 0.055);
+}
+
+.source-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #f59e0b;
+    background: rgba(245,158,11,.10);
+    border: 1px solid rgba(245,158,11,.24);
+}
+
+.source-banner strong {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+
+    color: #fde68a;
+    margin-bottom: 4px;
+}
+
+.source-banner p {
+    position: relative;
+    z-index: 2;
+
+    color: rgba(226,232,240,.64);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1320px) {
+
+    .fodder-hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hero-stats {
+        width: 100%;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .species-carousel {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .species-card {
+        min-height: 380px;
+    }
+
+    .overview-grid,
+    .info-card-grid,
+    .article-grid,
+    .dynamic-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+
+    .fodder-container {
+        width: calc(100% - 28px);
+    }
+
+    .fodder-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .hero-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .species-carousel-wrapper {
+        padding: 20px 20px 48px;
+    }
+
+    .species-carousel {
+        grid-template-columns: 1fr;
+    }
+
+    .carousel-arrow {
+        display: none;
+    }
+
+    .overview-panel,
+    .info-card,
+    .articles-panel,
+    .dynamic-data-panel,
+    .source-banner {
+        padding: 20px;
+    }
+
+    .source-banner {
+        grid-template-columns: 1fr;
+    }
+}

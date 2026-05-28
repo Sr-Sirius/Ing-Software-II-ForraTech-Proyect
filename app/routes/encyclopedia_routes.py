@@ -9,19 +9,19 @@ encyclopedia = Blueprint('encyclopedia', __name__)
 
 @encyclopedia.route("/")
 def index():
-    return render_template("encyclopedia/index.html")
+    return render_template("encyclopedia/index.html",show_footer=False)
 
 @encyclopedia.route("/sheep")
 def sheep():
     data = get_all_sheep()
-    return render_template("encyclopedia/sheep.html", data=data)
+    return render_template("encyclopedia/sheep.html", data=data,show_footer=False)
 
 @encyclopedia.route("/goats")
 def goats():
     data = get_all_goats()
-    return render_template("encyclopedia/goats.html", data=data)
+    return render_template("encyclopedia/goats.html", data=data,show_footer=False)
 
 @encyclopedia.route("/fodder")
 def fodder():
     data = get_all_fodder()
-    return render_template("encyclopedia/fodder.html", data=data)
+    return render_template("encyclopedia/fodder.html", data=data,show_footer=False)
