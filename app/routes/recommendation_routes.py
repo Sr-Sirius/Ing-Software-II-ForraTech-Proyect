@@ -13,35 +13,35 @@ recommendation = Blueprint('recommendation',__name__)
 
 @recommendation.route("/Menu", methods=["GET"])
 def recommendationM(): 
-    return render_template("recommendation/recomendation_menu.html")
+    return render_template("recommendation/recomendation_menu.html", show_footer=False)
 
 @recommendation.route("/menu_M", methods=["GET", "POST"])
 def recommendationMM(): 
-    return render_template("recommendation/menu_metrics.html")
+    return render_template("recommendation/menu_metrics.html", show_footer=False)
 
 @recommendation.route("/ml_docs", methods=["GET", "POST"])
 def recommendationMLd(): 
-    return render_template("recommendation/ml_docs.html")
+    return render_template("recommendation/ml_docs.html", show_footer=False)
 
 @recommendation.route("/docs", methods=["GET", "POST"])
 def recommendationDs(): 
-    return render_template("recommendation/docs.html")
+    return render_template("recommendation/docs.html", show_footer=False)
 
 @recommendation.route("/Mforraje", methods=["GET", "POST"])
 def recommendationMTF(): 
-    return render_template("recommendation/metrics_forraje.html")
+    return render_template("recommendation/metrics_forraje.html",show_footer=False)
 
 @recommendation.route("/Mdane", methods=["GET", "POST"])
 def recommendationMTD(): 
-    return render_template("recommendation/metrics_dane.html")
+    return render_template("recommendation/metrics_dane.html",show_footer=False)
 
 @recommendation.route("/menu_F", methods=["GET", "POST"])
 def recommendationMF(): 
-    return render_template("recommendation/menu_Models_F.html")
+    return render_template("recommendation/menu_Models_F.html",show_footer=False)
 
 @recommendation.route("/menu_D", methods=["GET", "POST"])
 def recommendationMD(): 
-    return render_template("recommendation/menu_Models_D.html")
+    return render_template("recommendation/menu_Models_D.html",show_footer=False)
 
 
 @recommendation.route("/regression", methods=["GET", "POST"])
@@ -50,9 +50,10 @@ def recommendationLR():
     if request.method == "POST":
         data = request.form.to_dict()
         result_data = get_recommendation(data)  #This function returns data; it does not render
-        return render_template("recommendation/regression.html", **result_data)  #Populate the template with the data
+        return render_template("recommendation/regression.html", **result_data,show_footer=False)  #Populate the template with the data
     return render_template(
         "recommendation/regression.html",
+        show_footer=False,
         result=None,
         probability=None,
         plot=None,
@@ -71,12 +72,13 @@ def recommendationRF():
     if request.method == "POST":
         data = request.form.to_dict()
         result_data = get_recommendationR(data)  # This function returns data; it does not render
-        return render_template("recommendation/RandomRF.html", **result_data)  # Populate the template with the data
+        return render_template("recommendation/RandomRF.html", **result_data,show_footer=False)  # Populate the template with the data
     from app.ml.sintetyc_dataset_model.random_forest_forraje import generatePlot as generateRFPlot, getThreshold as getRFThreshold
     #GET request - display an empty chart with no forecast points
     empty_plot = generateRFPlot()  # No parameters = base curve only
     return render_template(
         "recommendation/RandomRF.html",
+        show_footer=False,
         result=None,
         probability=None,
         plot=empty_plot,
@@ -95,7 +97,7 @@ def recommendationB():
     if request.method == "POST":
         data = request.form.to_dict()
         result_data = get_recommendationB(data)  # This function returns data; it does not render
-        return render_template("recommendation/TeoBayesian.html", **result_data)  # Populate the template with the data
+        return render_template("recommendation/TeoBayesian.html", **result_data,show_footer=False)  # Populate the template with the data
     
     # GET request - display an empty chart with no forecast points
     from app.ml.sintetyc_dataset_model.Bayesian_Forraje import generatePlot as generateBayesPlot, getThreshold as getBayesThreshold
@@ -103,6 +105,7 @@ def recommendationB():
     empty_plot = generateBayesPlot()  # No parameters = base curve only
     return render_template(
         "recommendation/TeoBayesian.html",
+        show_footer=False,
         result=None,
         probability=None,
         plot=empty_plot,
@@ -121,9 +124,10 @@ def recommendationKD():
     if request.method == "POST":
         data = request.form.to_dict()
         result_data = get_recommendation_KmeansD(data)
-        return render_template("recommendation/KmeansD.html", **result_data)
+        return render_template("recommendation/KmeansD.html", **result_data,show_footer=False)
     return render_template(
         "recommendation/KmeansD.html",
+        show_footer=False,
         result=None,
         cluster=None,
         afinidad=None,
@@ -144,11 +148,12 @@ def recommendationKNN():
     if request.method == "POST":
         data = request.form.to_dict()
         result_data = get_recommendation_KNN(data)
-        return render_template("recommendation/KNN.html", **result_data)
+        return render_template("recommendation/KNN.html", **result_data,show_footer=False)
     
     # GET request - mostrar formulario vacío
     return render_template(
         "recommendation/KNN.html",
+        show_footer=False,
         result=None,
         categoria=None,
         distancia=None,
@@ -170,11 +175,12 @@ def recommendationBayesian():
     if request.method == "POST":
         data = request.form.to_dict()
         result_data = get_recommendation_RandomFD(data)
-        return render_template("recommendation/RandomFD.html", **result_data)
+        return render_template("recommendation/RandomFD.html", **result_data, show_footer=False)
     
     # GET request - show empty form
     return render_template(
         "recommendation/RandomFD.html",
+        show_footer=False,
         result=None,
         categoria=None,
         probabilidad=None,
@@ -195,14 +201,12 @@ def recommendationBayesianDane():
         data = request.form.to_dict()
         result_data = get_recommendation_BayesianDane(data)
 
-        return render_template(
-            "recommendation/DaneBayesian.html",
-            **result_data
-        )
+        return render_template("recommendation/DaneBayesian.html",**result_data, show_footer=False)
 
     # GET request
     return render_template(
         "recommendation/DaneBayesian.html",
+        show_footer=False,
         result=None,
         categoria=None,
         probabilidad=None,

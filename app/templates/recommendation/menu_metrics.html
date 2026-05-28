@@ -1,290 +1,308 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sistema de Recomendación de Forrajes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green:      #1D9E75;
-      --green-dark: #0F6E56;
-      --amber:      #EF9F27;
-      --blue:       #4A90D9;
-      --purple:     #8B5CF6;
-      --teal:       #0D9488;
-      --bg:         #0A0F0D;
-      --surface:    #111916;
-      --surface2:   #182219;
-      --border:     #1E2E26;
-      --text:       #E8F0EB;
-      --muted:      #6B8A78;
-      --radius:     12px;
-    }
-    body { font-family:'Syne',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+{% extends "base.html" %}
 
-    /* ── Header ── */
-    header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:24px 48px; border-bottom:1px solid var(--border);
-      background:var(--surface);
-    }
-    .logo-wrap { display:flex; align-items:center; gap:14px; }
-    .logo { width:40px; height:40px; background:var(--green); border-radius:10px;
-            display:flex; align-items:center; justify-content:center; font-size:22px; }
-    header h1 { font-size:1.2rem; font-weight:700; letter-spacing:-0.02em; }
-    header p  { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace; }
-    .nav-pills { display:flex; gap:8px; }
-    .nav-pill { font-family:'DM Mono',monospace; font-size:0.72rem; padding:6px 14px;
-                border-radius:20px; border:1px solid var(--border); color:var(--muted);
-                text-decoration:none; transition:all .2s; }
-    .nav-pill:hover { border-color:var(--green); color:var(--green); }
-    .nav-pill.active { background:var(--green); color:#fff; border-color:var(--green); }
+{% block body_class %}recommendation-hub-page{% endblock %}
 
-    /* ── Hero ── */
-    .hero { text-align:center; padding:72px 48px 48px; }
-    .hero-tag { display:inline-block; font-family:'DM Mono',monospace; font-size:0.72rem;
-                color:var(--green); background:rgba(29,158,117,0.12);
-                padding:4px 14px; border-radius:20px; margin-bottom:20px; letter-spacing:0.1em; }
-    .hero h2 { font-size:3rem; font-weight:800; letter-spacing:-0.04em; line-height:1.1;
-               margin-bottom:16px; }
-    .hero h2 span { color:var(--green); }
-    .hero p { font-size:1rem; color:var(--muted); max-width:500px; margin:0 auto 40px; line-height:1.7; }
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/recommendation_hub.css') }}">
+{% endblock %}
 
-    /* ── Section label ── */
-    .section-label { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted);
-                     letter-spacing:0.14em; text-transform:uppercase; margin-bottom:16px; }
+{% block content %}
 
-    /* ── Grid de cards ── */
-    .cards-section { padding:0 48px 64px; }
-    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+<section class="ml-hub-shell reveal">
 
-    .card {
-      background:var(--surface); border:1px solid var(--border);
-      border-radius:16px; padding:28px; display:flex; flex-direction:column; gap:16px;
-      text-decoration:none; color:var(--text);
-      transition:border-color .2s, transform .2s, background .2s;
-      cursor:pointer;
-    }
-    .card:hover { border-color:var(--green); transform:translateY(-3px); background:var(--surface2); }
+    <div class="ml-hub-bg"></div>
 
-    /* Card destacada para documentación ML */
-    .card.featured {
-      border-color: rgba(13,148,136,0.45);
-      background: linear-gradient(145deg, rgba(13,148,136,0.07), var(--surface));
-      position: relative;
-      overflow: hidden;
-    }
-    .card.featured::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 90% 10%, rgba(13,148,136,0.12), transparent 55%);
-      pointer-events: none;
-    }
-    .card.featured:hover {
-      border-color: rgba(13,148,136,0.8);
-      transform: translateY(-3px);
-    }
-    .featured-badge {
-      position: absolute;
-      top: 18px; right: 18px;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--teal);
-      background: rgba(13,148,136,0.12);
-      border: 1px solid rgba(13,148,136,0.3);
-      padding: 3px 9px;
-      border-radius: 999px;
-    }
+    <div class="ml-hub-container">
 
-    .card-icon {
-      width:48px; height:48px; border-radius:12px;
-      display:flex; align-items:center; justify-content:center; font-size:24px;
-    }
-    .card-icon.green  { background:rgba(29,158,117,0.15); }
-    .card-icon.amber  { background:rgba(239,159,39,0.15); }
-    .card-icon.blue   { background:rgba(74,144,217,0.15); }
-    .card-icon.purple { background:rgba(139,92,246,0.15); }
-    .card-icon.teal   { background:rgba(13,148,136,0.15); }
+        <!-- HERO -->
+        <section class="ml-hub-hero">
 
-    .card-tag { font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.1em;
-                text-transform:uppercase; }
-    .card-tag.green  { color:var(--green); }
-    .card-tag.amber  { color:var(--amber); }
-    .card-tag.blue   { color:var(--blue);  }
-    .card-tag.purple { color:var(--purple); }
-    .card-tag.teal   { color:var(--teal); }
+            <div class="ml-hub-copy">
 
-    .card h3 { font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; }
-    .card p  { font-size:0.86rem; color:var(--muted); line-height:1.65; flex:1; }
+                <div class="version-pill">
+                    <span></span>
+                    v1.0 · Active Models
+                </div>
 
-    .card-footer { display:flex; align-items:center; justify-content:space-between;
-                   border-top:1px solid var(--border); padding-top:14px; margin-top:4px; }
-    .card-chips  { display:flex; gap:6px; flex-wrap:wrap; }
-    .chip { font-family:'DM Mono',monospace; font-size:0.65rem; padding:3px 8px;
-            border-radius:6px; background:var(--border); color:var(--muted); }
-    .chip.teal { background:rgba(13,148,136,0.12); color:var(--teal); border:1px solid rgba(13,148,136,0.25); }
-    .card-arrow { font-size:1.1rem; color:var(--green); transition:transform .2s; }
-    .card.featured .card-arrow { color: var(--teal); }
-    .card:hover .card-arrow { transform:translateX(4px); }
+                <h1>
+                    Forrage Crop
+                    <span>ML Recommendations</span>
+                </h1>
 
-    /* ── Divider ── */
-    .divider { height:1px; background:var(--border); margin:0 48px 48px; }
+                <p>
+                    Select a module to analyze the suitability of your land
+                    or explore comparative metrics between models.
+                </p>
 
-    /* ── Footer ── */
-    footer { text-align:center; padding:28px; border-top:1px solid var(--border);
-             font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted); }
+            </div>
 
-    @media(max-width:768px) {
-      header { padding:20px 24px; flex-direction:column; align-items:flex-start; gap:14px; }
-      .hero  { padding:48px 24px 32px; }
-      .hero h2 { font-size:2rem; }
-      .cards-section { padding:0 24px 48px; }
-      .divider { margin:0 24px 40px; }
-    }
-  </style>
-</head>
-<body>
+            <aside class="ml-status-stack">
 
-<header>
-  <div class="logo-wrap">
-    <div class="logo">🌿</div>
-    <div>
-      <h1>AgroML · Sistema de Recomendación</h1>
-      <p>Machine Learning aplicado a cultivos forrajeros · ENA 2019 DANE</p>
+                <div class="ml-status-card">
+                    <div class="ml-status-icon">⌁</div>
+
+                    <div>
+                        <span>System Status</span>
+                        <strong>Active</strong>
+                        <p><i></i> All systems operational</p>
+                    </div>
+                </div>
+
+                <div class="ml-status-card">
+                    <div class="ml-status-icon">▧</div>
+
+                    <div>
+                        <span>Current Input</span>
+                        <strong>Crop Data</strong>
+                        <p>Agronomic variables loaded</p>
+                    </div>
+                </div>
+
+                <div class="ml-status-card">
+                    <div class="ml-status-icon">∅</div>
+
+                    <div>
+                        <span>Active Module</span>
+                        <strong>Ready for Recommendations</strong>
+                        <p>Select a module to continue</p>
+                    </div>
+                </div>
+
+            </aside>
+
+        </section>
+
+        <!-- RECOMMENDATION MODULES -->
+        <section class="hub-section">
+
+            <div class="hub-section-title">
+                <span>🌿</span>
+                <h2>Recommendation Modules</h2>
+            </div>
+
+            <div class="recommendation-grid">
+
+                <a href="/recommendation/menu_F" class="hub-card hub-card-large glow-hover reveal">
+
+                    <div class="hub-card-icon green">
+                        📈
+                    </div>
+
+                    <div class="hub-card-content">
+                        <span class="hub-tag green">
+                            Forage · Synthetic Dataset
+                        </span>
+
+                        <h3>Forage Recommendation</h3>
+
+                        <p>
+                            Predict the optimal crop using logistic regression on the
+                            forraje_1000 dataset. Enter pH, humidity, altitude and temperature.
+                        </p>
+
+                        <div class="hub-card-footer">
+                            <div class="hub-chips">
+                                <span>Logistic Regression</span>
+                                <span>1,000 records</span>
+                            </div>
+
+                            <div class="hub-arrow">→</div>
+                        </div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/menu_D" class="hub-card hub-card-large dane glow-hover reveal">
+
+                    <div class="hub-card-icon amber">
+                        🌾
+                    </div>
+
+                    <div class="hub-card-content">
+                        <span class="hub-tag amber">
+                            DANE · ENA 2019
+                        </span>
+
+                        <h3>DANE Recommendation</h3>
+
+                        <p>
+                            Full suite of 4 ML models trained on real ENA data.
+                            Enter area, protein yield and climate to obtain the best variety.
+                        </p>
+
+                        <div class="hub-card-footer">
+                            <div class="hub-chips amber">
+                                <span>K-Means</span>
+                                <span>KNN</span>
+                                <span>RF</span>
+                                <span>Naive Bayes</span>
+                            </div>
+
+                            <div class="hub-arrow">→</div>
+                        </div>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- ANALYSIS AND DOCUMENTATION -->
+        <section class="hub-section">
+
+            <div class="hub-section-title">
+                <span>▧</span>
+                <h2>Analysis & Documentation</h2>
+            </div>
+
+            <div class="analysis-grid">
+
+                <a href="/recommendation/ml_docs" class="hub-card glow-hover reveal">
+
+                    <div class="new-badge">New</div>
+
+                    <div class="hub-card-icon pink">
+                        🧠
+                    </div>
+
+                    <span class="hub-tag green">
+                        Pipeline ML · CRISP-DM
+                    </span>
+
+                    <h3>ML Pipeline Documentation</h3>
+
+                    <p>
+                        Complete documentation of the 5 models: Business Understanding,
+                        Data Engineering, Model Engineering, Evaluation and Prediction System.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips">
+                            <span>5 phases</span>
+                            <span>5 models</span>
+                            <span>CRISP-DM</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/docs" class="hub-card blue-card glow-hover reveal">
+
+                    <div class="hub-card-icon blue">
+                        📄
+                    </div>
+
+                    <span class="hub-tag blue">
+                        Documentation
+                    </span>
+
+                    <h3>Technical Documentation</h3>
+
+                    <p>
+                        Description of datasets, variables, project architecture,
+                        ML pipelines and the Flask application structure.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips blue">
+                            <span>Datasets</span>
+                            <span>Architecture</span>
+                            <span>Variables</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/Mforraje" class="hub-card glow-hover reveal">
+
+                    <div class="hub-card-icon green">
+                        📊
+                    </div>
+
+                    <span class="hub-tag green">
+                        Metrics · Forage
+                    </span>
+
+                    <h3>Forage Model Comparison</h3>
+
+                    <p>
+                        Comparative table of accuracy, precision and recall between
+                        Logistic Regression, Bayesian Theory and Random Forest on the synthetic dataset.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips">
+                            <span>Log. Reg.</span>
+                            <span>Naive Bayes</span>
+                            <span>Random Forest</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/Mdane" class="hub-card purple-card glow-hover reveal">
+
+                    <div class="hub-card-icon purple">
+                        🔬
+                    </div>
+
+                    <span class="hub-tag purple">
+                        Metrics · DANE
+                    </span>
+
+                    <h3>DANE Model Comparison</h3>
+
+                    <p>
+                        Comparative analysis of the 4 models trained on ENA 2019 data:
+                        K-Means, KNN, Naive Bayes and Random Forest.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips purple">
+                            <span>K-Means</span>
+                            <span>KNN</span>
+                            <span>Bayes</span>
+                            <span>RF</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- LOCAL FOOTER -->
+        <section class="hub-local-footer reveal">
+
+            <div class="hub-footer-brand">
+                <span>🌿</span>
+                <strong>ForraTech</strong>
+            </div>
+
+            <p>© 2026 All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+
+        </section>
+
     </div>
-  </div>
-  <nav class="nav-pills">
-    <a href="/menu"                      class="nav-pill active">Inicio</a>
-    <a href="/recommendation/ml_docs"    class="nav-pill">ML Docs</a>
-    <a href="/recommendation/docs"       class="nav-pill">Docs</a>
-    <a href="/metrics/forraje"           class="nav-pill">Métricas Forraje</a>
-    <a href="/metrics/dane"              class="nav-pill">Métricas DANE</a>
-  </nav>
-</header>
 
-<section class="hero">
-  <div class="hero-tag">v1.0 · Modelos activos</div>
-  <h2>Recomendación de<br/><span>Forrajes con ML</span></h2>
-  <p>Selecciona un módulo para analizar la aptitud de tu terreno o explorar las métricas comparativas de los modelos.</p>
 </section>
 
-<!-- ── Bloque 1: Recomendación ── -->
-<section class="cards-section">
-  <p class="section-label">Módulos de recomendación</p>
-  <div class="cards-grid">
-
-    <a href="/recommendation/menu_F" class="card">
-      <div class="card-icon green">📈</div>
-      <span class="card-tag green">Forraje · Dataset sintético</span>
-      <h3>Recomendación Forraje</h3>
-      <p>Predicción de cultivo óptimo usando regresión logística sobre el dataset forrajeo_1000. Ingresa pH, humedad, altitud y temperatura.</p>
-      <div class="card-footer">
-        <div class="card-chips">
-          <span class="chip">Regresión Logística</span>
-          <span class="chip">1 000 registros</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
-
-    <a href="/recommendation/menu_D" class="card">
-      <div class="card-icon amber">🌾</div>
-      <span class="card-tag amber">DANE · ENA 2019</span>
-      <h3>Recomendación DANE</h3>
-      <p>Suite completa de 4 modelos ML sobre datos reales del DANE. Ingresa área, ganancia de proteína y clima para obtener la variedad óptima.</p>
-      <div class="card-footer">
-        <div class="card-chips">
-          <span class="chip">K-Means</span>
-          <span class="chip">KNN</span>
-          <span class="chip">RF</span>
-          <span class="chip">Bayes</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── Bloque 2: Análisis ── -->
-<section class="cards-section">
-  <p class="section-label">Análisis y documentación</p>
-  <div class="cards-grid">
-
-    <!-- ★ NUEVA CARD: Documentación ML Pipeline ★ -->
-    <a href="/recommendation/ml_docs" class="card featured" style="position:relative;">
-      <span class="featured-badge">Nuevo</span>
-      <div class="card-icon teal">🧠</div>
-      <span class="card-tag teal">Pipeline ML · CRISP-DM</span>
-      <h3>Documentación ML Pipeline</h3>
-      <p>Documentación técnica completa de los 5 modelos: Business Understanding, Data Engineering, Model Engineering, Evaluación y sistema de predicción.</p>
-      <div class="card-footer">
-        <div class="card-chips">
-          <span class="chip teal">6 fases</span>
-          <span class="chip teal">5 modelos</span>
-          <span class="chip teal">CRISP-DM</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
-
-    <a href="/recommendation/docs" class="card">
-      <div class="card-icon blue">📄</div>
-      <span class="card-tag blue">Documentación</span>
-      <h3>Documentación técnica</h3>
-      <p>Descripción de los datasets, variables, arquitectura del proyecto, pipelines ML y estructura de capas Flask.</p>
-      <div class="card-footer">
-        <div class="card-chips">
-          <span class="chip">Datasets</span>
-          <span class="chip">Arquitectura</span>
-          <span class="chip">Variables</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
-
-    <a href="/recommendation/Mforraje" class="card">
-      <div class="card-icon green">📊</div>
-      <span class="card-tag green">Métricas · Forraje</span>
-      <h3>Comparación Forraje</h3>
-      <p>Tabla comparativa de accuracy, precisión y recall entre Regresión Logística, Teoría Bayesiana y Random Forest sobre el dataset sintético.</p>
-      <div class="card-footer">
-        <div class="card-chips">
-          <span class="chip">Log. Reg.</span>
-          <span class="chip">Naive Bayes</span>
-          <span class="chip">Random Forest</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
-
-    <a href="/recommendation/Mdane" class="card">
-      <div class="card-icon purple">🔬</div>
-      <span class="card-tag purple">Métricas · DANE</span>
-      <h3>Comparación DANE</h3>
-      <p>Análisis comparativo de los 4 modelos entrenados sobre datos ENA 2019: K-Means, KNN, Naive Bayes y Random Forest.</p>
-      <div class="card-footer">
-        <div class="card-chips">
-          <span class="chip">K-Means</span>
-          <span class="chip">KNN</span>
-          <span class="chip">Bayes</span>
-          <span class="chip">RF</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<footer>AgroML · ENA 2019 DANE · Dataset sintético forrajeo_1000 · Flask + scikit-learn</footer>
-
-</body>
-</html>
+{% endblock %}

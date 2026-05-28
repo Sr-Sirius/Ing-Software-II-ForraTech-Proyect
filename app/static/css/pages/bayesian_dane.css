@@ -1,0 +1,1061 @@
+/* =========================
+   BAYESIAN DANE PAGE
+========================= */
+
+.bayesian-dane-page {
+    background: #020617;
+}
+
+.bayesian-dane-page main {
+    padding-top: 110px;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.bayesian-dane-shell {
+    position: relative;
+    min-height: calc(100vh - 110px);
+    padding: 26px 0 44px;
+    overflow: hidden;
+}
+
+.bayesian-dane-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -4;
+
+    background:
+        linear-gradient(rgba(2, 6, 23, 0.72), rgba(2, 6, 23, 0.96)),
+        url("/static/images/background.png") center/cover no-repeat;
+
+    filter: saturate(0.86) contrast(1.05);
+}
+
+.bayesian-dane-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 16% 10%, rgba(34, 197, 94, 0.15), transparent 32%),
+        radial-gradient(circle at 70% 24%, rgba(34, 197, 94, 0.14), transparent 34%),
+        radial-gradient(circle at 86% 72%, rgba(74, 222, 128, 0.08), transparent 34%),
+        linear-gradient(to bottom, rgba(2, 6, 23, 0.08), #020617 96%);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.bayesian-dane-layout {
+    width: min(1500px, calc(100% - 44px));
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 24px;
+}
+
+.bayesian-dane-content {
+    min-width: 0;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.bayesian-dane-sidebar {
+    position: sticky;
+    top: 120px;
+
+    height: fit-content;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.075);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.bayesian-dane-sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    border-radius: inherit;
+
+    background:
+        radial-gradient(circle at 90% 90%, rgba(34, 197, 94, 0.09), transparent 36%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02), transparent);
+}
+
+.bayesian-dane-form {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    gap: 20px;
+}
+
+.field-card {
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.field-card label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    color: #f8fafc;
+    font-size: 0.88rem;
+}
+
+.field-card label span {
+    min-width: 54px;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    color: #4ade80;
+    background: rgba(34, 197, 94, 0.13);
+
+    text-align: center;
+    font-weight: 900;
+}
+
+.field-card input[type="range"] {
+    -webkit-appearance: none;
+
+    width: 100%;
+    height: 6px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.10);
+    outline: none;
+    cursor: pointer;
+}
+
+.field-card input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: #f8fafc;
+    border: 2px solid rgba(34,197,94,.8);
+
+    box-shadow: 0 0 14px rgba(34,197,94,.45);
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 12px;
+
+    color: rgba(226,232,240,.56);
+    font-size: 0.74rem;
+}
+
+.climate-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.climate-option {
+    position: relative;
+    margin: 0 !important;
+}
+
+.climate-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.climate-option span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 42px;
+
+    border-radius: 9px;
+
+    color: rgba(248,250,252,.82);
+    background: rgba(15,23,42,.50);
+    border: 1px solid rgba(255,255,255,.08);
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.climate-option input:checked + span {
+    color: #f8fafc;
+    background: linear-gradient(145deg, rgba(34,197,94,.74), rgba(15,118,110,.50));
+    border-color: rgba(74,222,128,.30);
+}
+
+.analyze-button {
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border: none;
+    border-radius: 11px;
+
+    color: #f8fafc;
+    background: linear-gradient(145deg, rgba(34,197,94,.72), rgba(15,118,110,.48));
+    border: 1px solid rgba(74,222,128,.30);
+
+    font-weight: 900;
+    cursor: pointer;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analyze-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(34,197,94,.18);
+}
+
+.bayesian-info-card {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 16px;
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: rgba(15,23,42,.48);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.bayesian-info-card strong {
+    display: block;
+
+    color: #4ade80;
+    margin-bottom: 10px;
+}
+
+.bayesian-info-card ul {
+    padding-left: 18px;
+    color: rgba(226,232,240,.64);
+    line-height: 1.55;
+    font-size: 0.78rem;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.bayesian-dane-hero {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 0.95fr 1fr;
+    align-items: center;
+    gap: 44px;
+
+    min-height: 250px;
+    margin-bottom: 24px;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 26px;
+
+    color: rgba(226, 232, 240, 0.58);
+    font-size: 0.82rem;
+}
+
+.breadcrumb a {
+    color: rgba(226, 232, 240, 0.70);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover,
+.breadcrumb strong {
+    color: #4ade80;
+}
+
+.hero-copy h1 {
+    color: #f8fafc;
+
+    font-size: clamp(2.4rem, 4.2vw, 4.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.075em;
+    font-weight: 900;
+}
+
+.hero-copy h2 {
+    margin-top: 12px;
+
+    color: rgba(248, 250, 252, 0.92);
+
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    letter-spacing: -0.04em;
+}
+
+.hero-copy p {
+    max-width: 650px;
+
+    margin-top: 22px;
+
+    color: rgba(226, 232, 240, 0.72);
+
+    line-height: 1.7;
+    font-size: 0.98rem;
+}
+
+.hero-note {
+    margin-top: 12px !important;
+    color: rgba(226, 232, 240, 0.58) !important;
+    font-size: 0.85rem !important;
+}
+
+.hero-visual {
+    position: relative;
+
+    min-height: 230px;
+
+    border-radius: 24px;
+
+    background:
+        radial-gradient(circle at 46% 48%, rgba(34, 197, 94, 0.16), transparent 24%),
+        linear-gradient(90deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.50));
+
+    overflow: hidden;
+}
+
+.hero-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+
+    background-size: 44px 44px;
+    opacity: 0.42;
+}
+
+.gaussian-shape {
+    position: absolute;
+    left: 34%;
+    top: 26%;
+
+    width: 240px;
+    height: 140px;
+
+    border-radius: 50% 50% 0 0;
+
+    border-top: 4px solid #22c55e;
+    border-left: 1px solid rgba(34,197,94,.25);
+    border-right: 1px solid rgba(34,197,94,.25);
+
+    filter: drop-shadow(0 0 22px rgba(34,197,94,.55));
+}
+
+.gaussian-shape::before,
+.gaussian-shape::after {
+    content: "";
+    position: absolute;
+    inset: 8px 32px 0;
+
+    border-radius: 50% 50% 0 0;
+    border-top: 2px solid rgba(74,222,128,.75);
+}
+
+.gaussian-shape::after {
+    inset: 18px 64px 0;
+    border-top-color: rgba(134,239,172,.85);
+}
+
+.bar-visual {
+    position: absolute;
+    right: 12%;
+    bottom: 26%;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.bar-visual span {
+    width: 12px;
+    display: block;
+
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(to top, #15803d, #22c55e);
+    box-shadow: 0 0 14px rgba(34,197,94,.28);
+}
+
+.bar-visual span:nth-child(1) { height: 24px; }
+.bar-visual span:nth-child(2) { height: 42px; }
+.bar-visual span:nth-child(3) { height: 66px; }
+.bar-visual span:nth-child(4) { height: 96px; }
+.bar-visual span:nth-child(5) { height: 52px; }
+
+.back-button {
+    position: absolute;
+    right: 0;
+    top: 6px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 15px;
+
+    border-radius: 999px;
+
+    color: #f8fafc;
+    text-decoration: none;
+
+    background: rgba(15, 23, 42, 0.66);
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.bayesian-panel,
+.bayesian-result-card,
+.empty-panel,
+.info-banner {
+    position: relative;
+    overflow: hidden;
+
+    padding: 26px;
+
+    border-radius: 18px;
+
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.075);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    margin-bottom: 24px;
+}
+
+.bayesian-panel::before,
+.bayesian-result-card::before,
+.empty-panel::before,
+.info-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 90% 90%, rgba(34, 197, 94, 0.09), transparent 36%),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02), transparent);
+}
+
+/* =========================
+   SECTION HEADING
+========================= */
+
+.section-heading {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+.section-heading.compact {
+    margin-bottom: 20px;
+}
+
+.section-heading > span {
+    color: #4ade80;
+    font-weight: 900;
+    font-size: 1.25rem;
+}
+
+.section-heading h2 {
+    color: #f8fafc;
+
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+.section-heading h2 small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: rgba(226, 232, 240, 0.70);
+    font-size: 0.82rem;
+}
+
+/* =========================
+   RESULT CARD
+========================= */
+
+.bayesian-result-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 28px;
+    align-items: center;
+
+    border-color: rgba(74,222,128,.26);
+}
+
+.result-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 104px;
+    height: 104px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #4ade80;
+    background: rgba(34,197,94,.12);
+
+    font-size: 4rem;
+}
+
+.result-main {
+    position: relative;
+    z-index: 2;
+}
+
+.status-pill {
+    display: inline-flex;
+
+    margin-bottom: 12px;
+    padding: 7px 13px;
+
+    border-radius: 7px;
+
+    color: #f8fafc;
+    background: rgba(34,197,94,.75);
+
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.status-pill.suboptimal {
+    color: #451a03;
+    background: rgba(239,159,39,.75);
+}
+
+.result-main h2 {
+    color: #f8fafc;
+
+    font-size: 1.55rem;
+    margin-bottom: 20px;
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.result-stats div {
+    padding: 18px 22px 0 0;
+
+    border-right: 1px solid rgba(255,255,255,.07);
+}
+
+.result-stats div:last-child {
+    border-right: none;
+}
+
+.result-stats small {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: rgba(226,232,240,.58);
+
+    text-transform: uppercase;
+    font-size: 0.72rem;
+}
+
+.result-stats strong {
+    display: block;
+
+    color: #f8fafc;
+
+    font-size: 1.65rem;
+}
+
+.result-stats span {
+    color: rgba(226,232,240,.58);
+    font-size: 0.75rem;
+}
+
+.green-text {
+    color: #4ade80 !important;
+}
+
+.amber-text {
+    color: #f59e0b !important;
+}
+
+.blue-text {
+    color: #60a5fa !important;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.ranking-table-wrap {
+    position: relative;
+    z-index: 2;
+
+    border-radius: 14px;
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ranking-table th {
+    padding: 12px 14px;
+
+    color: rgba(226,232,240,.58);
+    background: rgba(255,255,255,.04);
+
+    font-size: 0.72rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.ranking-table td {
+    padding: 13px 14px;
+
+    color: rgba(248,250,252,.88);
+
+    border-top: 1px solid rgba(255,255,255,.055);
+    font-size: 0.86rem;
+}
+
+.ranking-table td:first-child {
+    color: #f59e0b;
+    font-weight: 900;
+}
+
+.prob-value {
+    color: #f8fafc;
+    font-weight: 800;
+}
+
+.prob-bar {
+    width: 180px;
+    height: 8px;
+
+    margin-top: 8px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.07);
+    overflow: hidden;
+}
+
+.prob-bar i {
+    display: block;
+    height: 100%;
+
+    border-radius: inherit;
+    background: linear-gradient(90deg, #15803d, #22c55e, #4ade80);
+}
+
+/* =========================
+   CHARTS
+========================= */
+
+.chart-image {
+    position: relative;
+    z-index: 2;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background: rgba(15,23,42,.40);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.chart-image img {
+    width: 100%;
+    display: block;
+}
+
+/* =========================
+   METRICS
+========================= */
+
+.optional-metrics-grid {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+.optional-metrics-grid article {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 14px;
+    align-items: center;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    background: rgba(15,23,42,.44);
+    border: 1px dashed rgba(74,222,128,.24);
+}
+
+.optional-metrics-grid span {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    color: #93c5fd;
+    background: rgba(59,130,246,.10);
+    border: 1px solid rgba(59,130,246,.18);
+}
+
+.optional-metrics-grid strong {
+    color: #f8fafc;
+}
+
+.optional-metrics-grid p {
+    margin-top: 5px;
+
+    color: rgba(226,232,240,.62);
+    line-height: 1.5;
+    font-size: 0.82rem;
+}
+
+.metric-cards {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.metric-cards article {
+    padding: 18px;
+
+    border-radius: 14px;
+
+    background: rgba(15,23,42,.46);
+    border: 1px solid rgba(255,255,255,.075);
+
+    text-align: center;
+}
+
+.metric-cards small {
+    display: block;
+
+    color: #f8fafc;
+
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.metric-cards strong {
+    display: block;
+
+    color: #4ade80;
+
+    font-size: 1.75rem;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.metric-cards p {
+    color: rgba(226,232,240,.58);
+    font-size: 0.72rem;
+}
+
+/* =========================
+   BOTTOM / EXPLANATION
+========================= */
+
+.bayesian-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.bayesian-explanation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.check-list {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    gap: 12px;
+
+    list-style: none;
+}
+
+.check-list li {
+    position: relative;
+
+    padding-left: 26px;
+
+    color: rgba(226,232,240,.74);
+    line-height: 1.55;
+    font-size: 0.86rem;
+}
+
+.check-list li::before {
+    content: "✓";
+
+    position: absolute;
+    left: 0;
+    top: 2px;
+
+    width: 17px;
+    height: 17px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #052e16;
+    background: #4ade80;
+
+    font-size: 0.65rem;
+    font-weight: 900;
+}
+
+/* =========================
+   EMPTY / INFO
+========================= */
+
+.empty-panel {
+    display: grid;
+    place-items: center;
+    text-align: center;
+
+    min-height: 300px;
+}
+
+.empty-icon {
+    position: relative;
+    z-index: 2;
+
+    color: #4ade80;
+
+    font-size: 4rem;
+    margin-bottom: 12px;
+}
+
+.empty-panel h2 {
+    position: relative;
+    z-index: 2;
+
+    color: #f8fafc;
+    margin-bottom: 10px;
+}
+
+.empty-panel p {
+    position: relative;
+    z-index: 2;
+
+    max-width: 620px;
+
+    color: rgba(226,232,240,.70);
+    line-height: 1.6;
+}
+
+.empty-panel small {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 14px;
+
+    color: rgba(134,239,172,.75);
+    font-weight: 800;
+}
+
+.info-banner {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
+    align-items: center;
+}
+
+.info-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    color: #93c5fd;
+    border: 1px solid rgba(74, 144, 217, 0.30);
+    background: rgba(74, 144, 217, 0.12);
+
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.info-banner p {
+    position: relative;
+    z-index: 2;
+
+    color: rgba(226,232,240,.72);
+    line-height: 1.6;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1320px) {
+
+    .bayesian-dane-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .bayesian-dane-sidebar {
+        position: relative;
+        top: auto;
+    }
+
+    .bayesian-dane-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analyze-button,
+    .bayesian-info-card {
+        grid-column: span 2;
+    }
+
+    .bayesian-dane-hero,
+    .bayesian-bottom-grid,
+    .bayesian-explanation-grid,
+    .optional-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metric-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+
+    .bayesian-dane-layout {
+        width: calc(100% - 28px);
+    }
+
+    .hero-copy h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .back-button {
+        position: static;
+        width: fit-content;
+        margin-top: 16px;
+    }
+
+    .bayesian-dane-form,
+    .result-stats,
+    .metric-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .analyze-button,
+    .bayesian-info-card {
+        grid-column: auto;
+    }
+
+    .bayesian-result-card {
+        grid-template-columns: 1fr;
+    }
+
+    .prob-bar {
+        width: 100%;
+    }
+
+    .bayesian-panel,
+    .bayesian-result-card,
+    .empty-panel,
+    .info-banner,
+    .bayesian-dane-sidebar {
+        padding: 20px;
+    }
+}

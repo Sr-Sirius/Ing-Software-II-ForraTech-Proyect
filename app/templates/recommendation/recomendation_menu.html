@@ -1,352 +1,207 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menú de Recomendaciones</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+{% extends "base.html" %}
 
-:root {
-  --green:      #1D9E75;
-  --green-dark: #0F6E56;
-  --amber:      #EF9F27;
-  --bg:         #0A0F0D;
-  --surface:    #111916;
-  --surface2:   #182219;
-  --border:     #1E2E26;
-  --text:       #E8F0EB;
-  --muted:      #6B8A78;
-  --radius:     12px;
-}
+{% block body_class %}recommendation-menu-page{% endblock %}
 
-body {
-  font-family: 'Syne', sans-serif;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(29,158,117,.18), transparent 28%),
-    radial-gradient(circle at 85% 80%, rgba(239,159,39,.10), transparent 26%),
-    var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/recommendation_menu.css') }}">
+{% endblock %}
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-  background-size: 38px 38px;
-  mask-image: linear-gradient(to bottom, black, transparent 80%);
-}
+{% block content %}
 
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 28px 40px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(17,25,22,.82);
-  backdrop-filter: blur(14px);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+<section class="recommendation-shell reveal">
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
+    <div class="recommendation-background"></div>
 
-.logo {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--green), var(--green-dark));
-  display: grid;
-  place-items: center;
-  box-shadow: 0 0 30px rgba(29,158,117,.22);
-}
+    <div class="recommendation-panel">
 
-.logo svg {
-  width: 25px;
-  height: 25px;
-  fill: none;
-  stroke: white;
-  stroke-width: 2.2;
-}
+        <!-- HERO -->
+        <section class="recommendation-hero">
 
-.brand h1 {
-  font-size: clamp(1.3rem, 2.4vw, 2rem);
-  font-weight: 800;
-  letter-spacing: -.04em;
-}
+            <div class="hero-left">
 
-.badge {
-  font-family: 'DM Mono', monospace;
-  color: var(--amber);
-  border: 1px solid rgba(239,159,39,.35);
-  background: rgba(239,159,39,.08);
-  padding: 9px 12px;
-  border-radius: 999px;
-  font-size: .82rem;
-}
+                <div class="hero-icon">
+                    <span>Ø</span>
+                </div>
 
-main {
-  width: min(1160px, calc(100% - 34px));
-  margin: 0 auto;
-  padding: 54px 0;
-}
+                <div class="hero-copy">
 
-.hero {
-  display: grid;
-  grid-template-columns: 1.05fr .95fr;
-  gap: 28px;
-  align-items: stretch;
-  margin-bottom: 30px;
-}
+                    <div class="system-pill">
+                        <span></span>
+                        System · AgroData
+                    </div>
 
-.hero-card {
-  background: linear-gradient(145deg, rgba(17,25,22,.98), rgba(24,34,25,.92));
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) + 10px);
-  padding: clamp(28px, 5vw, 54px);
-  box-shadow: 0 24px 70px rgba(0,0,0,.28);
-  position: relative;
-  overflow: hidden;
-}
+                    <h1>
+                        Recommendation
+                        <span>Menu</span>
+                    </h1>
 
-.hero-card::after {
-  content: "";
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  right: -90px;
-  top: -90px;
-  background: radial-gradient(circle, rgba(29,158,117,.22), transparent 68%);
-}
+                    <p class="hero-kicker">
+                        FORAGE CROP CLASSIFIER
+                    </p>
 
-.eyebrow {
-  font-family: 'DM Mono', monospace;
-  color: var(--green);
-  text-transform: uppercase;
-  letter-spacing: .16em;
-  font-size: .82rem;
-  margin-bottom: 14px;
-}
+                    <p class="hero-description">
+                        Select a module to continue with the analysis, recommendation or classification.
+                        The interface combines technical, agricultural, and premium aesthetics.
+                    </p>
 
-.hero h2 {
-  font-size: clamp(2.2rem, 6vw, 5rem);
-  line-height: .92;
-  letter-spacing: -.08em;
-  max-width: 780px;
-}
+                </div>
 
-.hero p {
-  margin-top: 20px;
-  color: var(--muted);
-  font-size: 1.02rem;
-  line-height: 1.7;
-  max-width: 650px;
-}
+            </div>
 
-.status-panel {
-  background: rgba(17,25,22,.74);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) + 10px);
-  padding: 26px;
-  display: grid;
-  gap: 16px;
-}
+            <div class="hero-status">
 
-.metric {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-}
+                <div class="status-card">
+                    <div class="status-icon">⌁</div>
+                    <div>
+                        <span>System Status</span>
+                        <strong>Active</strong>
+                        <p><i></i> All systems operational</p>
+                    </div>
+                </div>
 
-.metric span {
-  display: block;
-  font-family: 'DM Mono', monospace;
-  color: var(--muted);
-  font-size: .78rem;
-  margin-bottom: 8px;
-}
+                <div class="status-card">
+                    <div class="status-icon">▧</div>
+                    <div>
+                        <span>Current Input</span>
+                        <strong>Crop Data</strong>
+                        <p>Agronomic variables loaded</p>
+                    </div>
+                </div>
 
-.metric strong {
-  font-size: 1.65rem;
-  color: var(--text);
-}
+                <div class="status-card">
+                    <div class="status-icon">∅</div>
+                    <div>
+                        <span>Active Module</span>
+                        <strong>Ready for Recommendations</strong>
+                        <p>Select a module to continue</p>
+                    </div>
+                </div>
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
+            </div>
 
-.grid.four {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
+        </section>
 
-.card {
-  min-height: 230px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(24,34,25,.96), rgba(17,25,22,.98));
-  border-radius: calc(var(--radius) + 8px);
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-  cursor: pointer;
-}
+        <!-- MODULES -->
+        <section class="module-grid">
 
-.card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(29,158,117,.62);
-  box-shadow: 0 18px 45px rgba(0,0,0,.32), 0 0 0 1px rgba(29,158,117,.14);
-}
+            <article class="module-card glow-hover reveal">
 
-.card::before {
-  content: attr(data-index);
-  position: absolute;
-  right: 20px;
-  top: 18px;
-  font-family: 'DM Mono', monospace;
-  font-size: .82rem;
-  color: rgba(232,240,235,.22);
-}
+                <div class="module-number">01</div>
 
-.icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 26px;
-  background: rgba(29,158,117,.12);
-  border: 1px solid rgba(29,158,117,.35);
-}
+                <div class="module-icon">
+                    <span>▣</span>
+                </div>
 
-.icon svg {
-  width: 27px;
-  height: 27px;
-  fill: none;
-  stroke: var(--green);
-  stroke-width: 2.2;
-}
+                <div class="module-visual seedling"></div>
 
-.card h3 {
-  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
-  line-height: 1;
-  letter-spacing: -.05em;
-  margin-bottom: 12px;
-}
+                <h2>Overview</h2>
 
-.card p {
-  color: var(--muted);
-  line-height: 1.55;
-  font-size: .96rem;
-}
+                <p>
+                    Introduction module to present the system, objectives, variables,
+                    and scope of the classifier.
+                </p>
 
-.card a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 20px;
-  text-decoration: none;
-  color: var(--amber);
-  font-family: 'DM Mono', monospace;
-  font-size: .82rem;
-}
+                <a href="/recommendation/menu_M" class="module-btn">
+                    Open Module
+                    <span>→</span>
+                </a>
 
-footer {
-  width: min(1160px, calc(100% - 34px));
-  margin: 0 auto;
-  padding: 18px 0 38px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  font-size: .78rem;
-  border-top: 1px solid var(--border);
-}
+            </article>
 
-@media (max-width: 880px) {
-  header { padding: 22px 18px; flex-direction: column; align-items: flex-start; }
-  .hero { grid-template-columns: 1fr; }
-  .grid, .grid.four { grid-template-columns: 1fr; }
-}
-</style>
-</head>
-<body>
-  <header>
-    <div class="brand">
-      <div class="logo"><svg viewBox="0 0 24 24"><path d="M20 4C12 4 5 8.5 5 15a5 5 0 0 0 5 5c6.5 0 10-8 10-16Z"/><path d="M5 19c3-6 7-9 13-12"/></svg></div>
-      <div>
-        <h1>Menú de Recomendaciones</h1>
-        <div class="eyebrow">Clasificador de cultivos forrajeros</div>
-      </div>
+            <article class="module-card glow-hover reveal">
+
+                <div class="module-number">02</div>
+
+                <div class="module-icon">
+                    <span>♒</span>
+                </div>
+
+                <div class="module-visual grass"></div>
+
+                <h2>Forage Recommendation</h2>
+
+                <p>
+                    Suggests the most suitable forage crop based on productive conditions
+                    and terrain characteristics.
+                </p>
+
+                <a href="/recommendation/menu_F" class="module-btn">
+                    Open Module
+                    <span>→</span>
+                </a>
+
+            </article>
+
+            <article class="module-card glow-hover reveal">
+
+                <div class="module-number">03</div>
+
+                <div class="module-icon">
+                    <span>⌾</span>
+                </div>
+
+                <div class="module-visual map"></div>
+
+                <h2>DANE Recommendation</h2>
+
+                <p>
+                    Integrates DANE criteria to guide recommendations with territorial
+                    and productive focus.
+                </p>
+
+                <a href="/recommendation/menu_D" class="module-btn">
+                    Open Module
+                    <span>→</span>
+                </a>
+
+            </article>
+
+        </section>
+
+        <!-- INFO STRIP -->
+        <section class="info-strip reveal">
+
+            <div class="info-item">
+                <div class="info-icon">◌</div>
+                <div>
+                    <strong>Academic Interface</strong>
+                    <p>
+                        Designed for advanced analysis, forage classification models,
+                        and high-level metrics.
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-divider"></div>
+
+            <div class="info-item">
+                <div class="info-icon">♧</div>
+                <div>
+                    <strong>ForraTech</strong>
+                    <p>
+                        Artificial intelligence applied to animal nutrition
+                        and sustainable agriculture.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- PAGE FOOTER -->
+        <div class="recommendation-footer">
+            <p>© 2026 ForraTech. All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+        </div>
+
     </div>
-    <div class="badge">Sistema · AgroData</div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-card">
-        <div class="eyebrow">Panel principal</div>
-        <h2>Recomendaciones forrajeras inteligentes</h2>
-        <p>Selecciona un módulo para continuar con el análisis, recomendación o clasificación. La interfaz conserva una estética técnica, agrícola y premium con alto contraste.</p>
-      </div>
+</section>
 
-      <aside class="status-panel">
-        <div class="metric">
-          <span>ESTADO</span>
-          <strong>Activo</strong>
-        </div>
-        <div class="metric">
-          <span>ENTRADA</span>
-          <strong>Datos de cultivo</strong>
-        </div>
-        <div class="metric">
-          <span>SALIDA</span>
-          <strong>Recomendación</strong>
-        </div>
-      </aside>
-    </section>
-
-    <section class="grid">
-      
-      <article class="card" data-index="01">
-        <div class="icon"><svg viewBox="0 0 24 24"><path d="M20 4C12 4 5 8.5 5 15a5 5 0 0 0 5 5c6.5 0 10-8 10-16Z"/><path d="M5 19c3-6 7-9 13-12"/></svg></div>
-        <h3>Preséntame</h3>
-        <p>Módulo introductorio para presentar el sistema, objetivo, variables y alcance del clasificador.</p>
-        <a href="/recommendation/menu_M">Abrir módulo →</a>
-      </article>
-
-      <article class="card" data-index="02">
-        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M8 10h8M8 14h5"/></svg></div>
-        <h3>Recomendación Forraje</h3>
-        <p>Sugiere el cultivo forrajero más adecuado según condiciones productivas y características del terreno.</p>
-        <a href="/recommendation/menu_F">Abrir módulo →</a>
-      </article>
-
-      <article class="card" data-index="03">
-        <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 8a4 4 0 0 1 8 0v8a4 4 0 0 1-8 0Z"/><path d="M8 12H5m14 0h-3M12 4v16"/></svg></div>
-        <h3>Recomendación Dane</h3>
-        <p>Integra criterios tipo DANE para orientar recomendaciones con enfoque territorial y productivo.</p>
-        <a href="/recommendation/menu_D">Abrir módulo →</a>
-      </article>
-      
-    </section>
-  </main>
-
-  <footer>
-    © 2026 · Interfaz académica para modelos de recomendación y clasificación forrajera.
-  </footer>
-</body>
-</html>
+{% endblock %}

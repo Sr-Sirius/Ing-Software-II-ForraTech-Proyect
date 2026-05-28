@@ -1,407 +1,515 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Clasificador de Cultivos Forrajeros - Random Forest</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green:      #1D9E75;
-      --green-dark: #0F6E56;
-      --amber:      #EF9F27;
-      --bg:         #0A0F0D;
-      --surface:    #111916;
-      --surface2:   #182219;
-      --border:     #1E2E26;
-      --text:       #E8F0EB;
-      --muted:      #6B8A78;
-      --radius:     12px;
-    }
-    body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+{% extends "base.html" %}
 
-    /* ── Header ── */
-    header {
-      display: flex; align-items: center; gap: 14px;
-      padding: 28px 40px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .logo { width:40px; height:40px; background:var(--green); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; }
-    header h1 { font-size:1.25rem; font-weight:700; letter-spacing:-0.02em; }
-    header p  { font-size:0.78rem; color:var(--muted); font-family:'DM Mono',monospace; }
+{% block body_class %}random-forest-page{% endblock %}
 
-    /* ── Layout ── */
-    .container { display:grid; grid-template-columns:340px 1fr; min-height:calc(100vh - 81px); }
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/random_rf.css') }}">
+{% endblock %}
 
-    /* ── Sidebar ── */
-    aside {
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 32px 28px;
-      display: flex; flex-direction: column; gap: 24px;
-    }
-    aside h2 { font-size:0.72rem; font-family:'DM Mono',monospace; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; }
+{% block content %}
 
-    .field { display:flex; flex-direction:column; gap:8px; }
-    .field label { font-size:0.88rem; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
-    .field label span { font-family:'DM Mono',monospace; font-size:0.82rem; color:var(--green); background:rgba(29,158,117,0.12); padding:2px 8px; border-radius:6px; }
-    .field input[type="range"] { -webkit-appearance:none; width:100%; height:6px; background:var(--border); border-radius:3px; outline:none; cursor:pointer; }
-    .field input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--green); border:2px solid var(--bg); cursor:pointer; transition:transform .15s,box-shadow .15s; }
-    .field input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.25); box-shadow:0 0 0 6px rgba(29,158,117,0.2); }
-    .range-labels { display:flex; justify-content:space-between; font-size:0.72rem; color:var(--muted); font-family:'DM Mono',monospace; }
+<section class="rf-shell">
 
-    .btn-predict {
-      margin-top:8px; background:var(--green); color:#fff;
-      font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-      letter-spacing:0.04em; border:none; border-radius:var(--radius);
-      padding:14px; cursor:pointer; width:100%;
-      transition:background .2s,transform .15s;
-    }
-    .btn-predict:hover  { background:var(--green-dark); transform:translateY(-1px); }
-    .btn-predict:active { transform:translateY(0); }
+    <div class="rf-bg"></div>
 
-    /* ── Main ── */
-    main { padding:32px 40px; display:flex; flex-direction:column; gap:28px; }
+    <main class="rf-layout">
 
-    /* ── Result Banner ── */
-    .result-banner {
-      border-radius:var(--radius); padding:20px 24px; border:1px solid;
-    }
-    .result-banner.optimal    { background:rgba(29,158,117,0.1); border-color:var(--green); }
-    .result-banner.suboptimal { background:rgba(239,159,39,0.1);  border-color:var(--amber); }
-    .banner-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-    .badge { padding:4px 14px; border-radius:20px; font-size:0.78rem; font-family:'DM Mono',monospace; font-weight:500; }
-    .badge.optimal    { background:var(--green); color:#fff; }
-    .badge.suboptimal { background:var(--amber);  color:#000; }
-    .banner-title { font-size:1.1rem; font-weight:700; }
-    .banner-stats { display:flex; gap:28px; flex-wrap:wrap; }
-    .stat { display:flex; flex-direction:column; gap:3px; }
-    .stat-label { font-size:0.72rem; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; }
-    .stat-value { font-size:1.4rem; font-weight:800; }
-    .stat-value.green { color:var(--green); }
-    .stat-value.amber { color:var(--amber); }
+        <!-- SIDEBAR INPUT -->
+        <aside class="rf-sidebar reveal">
 
-    /* ── Top Crops ── */
-    .crops-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
-    .section-header { padding:16px 24px; border-bottom:1px solid var(--border); font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace; }
-    .crops-grid { padding:16px 24px; display:flex; flex-direction:column; gap:10px; }
-    .crop-row { display:grid; grid-template-columns:24px 1fr auto 120px; align-items:center; gap:12px; }
-    .crop-rank { font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--muted); text-align:center; }
-    .crop-name { font-size:0.9rem; font-weight:600; }
-    .crop-pct  { font-family:'DM Mono',monospace; font-size:0.85rem; font-weight:500; }
-    .crop-pct.green { color:var(--green); }
-    .crop-pct.amber { color:var(--amber); }
-    .crop-bar-wrap { height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
-    .crop-bar { height:100%; border-radius:4px; }
-    .crop-bar.green { background:var(--green); }
-    .crop-bar.amber { background:var(--amber); }
-
-    /* ── Plots ── */
-    .plots-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-    .plot-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
-    .plot-card img { width:100%; display:block; filter:brightness(0.97); }
-
-    /* ── Empty State ── */
-    .empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; min-height:300px; color:var(--muted); text-align:center; }
-    .empty-state .icon { font-size:3.5rem; opacity:0.4; }
-    .empty-state p { font-size:0.9rem; max-width:280px; line-height:1.6; }
-
-    /* ── Model Info ── */
-    .model-info {
-      background: var(--surface2);
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      font-size: 0.7rem;
-      font-family: 'DM Mono', monospace;
-      color: var(--muted);
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-
-    @media(max-width:900px) {
-      .container { grid-template-columns:1fr; }
-      aside { border-right:none; border-bottom:1px solid var(--border); }
-      .plots-grid { grid-template-columns:1fr; }
-      header { padding:20px 24px; }
-      main { padding:24px; }
-    }
-  </style>
-</head>
-<body>
-
-<header>
-  <div class="logo">🌲</div>
-  <div>
-    <h1>Clasificador de Cultivos Forrajeros</h1>
-    <p>Random Forest · 100 Árboles · Análisis de Aptitud del Terreno</p>
-  </div>
-</header>
-
-<div class="container">
-
-  <!-- ── Sidebar (form POST) ── -->
-  <aside>
-    <h2>Parámetros del Terreno</h2>
-
-    <form action="/recommendation/RandomRF" method="POST" style="display:contents">
-
-      <div class="field">
-        <label>pH del Suelo <span id="ph-val">{{ ph_value or 6.5 }}</span></label>
-        <input type="range" name="ph" id="ph" min="3" max="9" step="0.1"
-               value="{{ ph_value or 6.5 }}"
-               oninput="document.getElementById('ph-val').textContent=this.value"/>
-        <div class="range-labels"><span>3.0</span><span>9.0</span></div>
-      </div>
-
-      <div class="field">
-        <label>Humedad (%) <span id="hum-val">{{ hum_value or 60 }}</span></label>
-        <input type="range" name="humedad" id="humedad" min="0" max="100" step="1"
-               value="{{ hum_value or 60 }}"
-               oninput="document.getElementById('hum-val').textContent=this.value"/>
-        <div class="range-labels"><span>0%</span><span>100%</span></div>
-      </div>
-
-      <div class="field">
-        <label>Altitud (m) <span id="alt-val">{{ alt_value or 1500 }}</span></label>
-        <input type="range" name="altitud" id="altitud" min="0" max="4000" step="10"
-               value="{{ alt_value or 1500 }}"
-               oninput="document.getElementById('alt-val').textContent=this.value"/>
-        <div class="range-labels"><span>0 m</span><span>4000 m</span></div>
-      </div>
-
-      <div class="field">
-        <label>Temperatura (°C) <span id="temp-val">{{ temp_value or 20 }}</span></label>
-        <input type="range" name="temperatura" id="temperatura" min="0" max="45" step="0.5"
-               value="{{ temp_value or 20 }}"
-               oninput="document.getElementById('temp-val').textContent=this.value"/>
-        <div class="range-labels"><span>0°C</span><span>45°C</span></div>
-      </div>
-
-      <button type="submit" class="btn-predict">Analizar Terreno 🌿</button>
-
-    </form>
-    
-    <div class="model-info">
-      🌲 Random Forest · 100 árboles de decisión<br>
-      📊 Importancia de features integrada
-    </div>
-  </aside>
-
-  <!-- ── Main ── -->
-  <main>
-
-    {% if result is not none %}
-
-      <!-- Result banner -->
-      {% set is_optimal = (result == 1) %}
-      <div class="result-banner {{ 'optimal' if is_optimal else 'suboptimal' }}">
-        <div class="banner-header">
-          <span class="badge {{ 'optimal' if is_optimal else 'suboptimal' }}">
-            {{ 'ÓPTIMO' if is_optimal else 'SUBÓPTIMO' }}
-          </span>
-          <span class="banner-title">
-            {{ 'El terreno es apto para cultivos forrajeros' if is_optimal else 'El terreno no es óptimo para cultivos forrajeros' }}
-          </span>
-        </div>
-        <div class="banner-stats">
-          <div class="stat">
-            <span class="stat-label">Probabilidad (voto árboles)</span>
-            <span class="stat-value {{ 'green' if is_optimal else 'amber' }}">
-              {{ "%.1f"|format(probability * 100) }}%
-            </span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Umbral del modelo</span>
-            <span class="stat-value">{{ "%.1f"|format(threshold * 100) }}%</span>
-          </div>
-          {% if top_crops %}
-          <div class="stat">
-            <span class="stat-label">Mejor cultivo</span>
-            <span class="stat-value" style="font-size:1rem;padding-top:4px;">
-              {{ top_crops[0].nombre }} ({{ "%.0f"|format(top_crops[0].affinity * 100) }}%)
-            </span>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- Top crops -->
-      {% if top_crops %}
-      <div class="crops-section">
-        <div class="section-header">🌾 Top 10 cultivos por afinidad</div>
-        <div class="crops-grid">
-          {% for crop in top_crops %}
-            {% set is_g = crop.affinity >= 0.5 %}
-            <div class="crop-row">
-              <span class="crop-rank">{{ loop.index }}</span>
-              <span class="crop-name">{{ crop.nombre }}</span>
-              <span class="crop-pct {{ 'green' if is_g else 'amber' }}">
-                {{ "%.0f"|format(crop.affinity * 100) }}%
-              </span>
-              <div class="crop-bar-wrap">
-                <div class="crop-bar {{ 'green' if is_g else 'amber' }}"
-                     style="width:{{ "%.1f"|format(crop.affinity * 100) }}%"></div>
-              </div>
+            <div class="section-heading compact">
+                <span>1.</span>
+                <h2>Input Data <small>Adjust Terrain Variables</small></h2>
             </div>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
 
-      <!-- Plots -->
-      <div class="plots-grid">
-        {% if plot %}
-        <div class="plot-card">
-          <div class="section-header">🌲 Random Forest – Curva de Probabilidad (100 árboles)</div>
-          <img src="data:image/png;base64,{{ plot }}" alt="Random Forest probability curve"/>
-        </div>
-        {% endif %}
-        {% if ranking_plot %}
-        <div class="plot-card">
-          <div class="section-header">📊 Ranking de Afinidad por Cultivo</div>
-          <img src="data:image/png;base64,{{ ranking_plot }}" alt="Ranking plot"/>
-        </div>
-        {% endif %}
-      </div>
+            <form action="/recommendation/RandomRF" method="POST" class="rf-form">
 
-    {% else %}
+                <div class="field-card">
+                    <label>
+                        <strong>🌿 Soil pH</strong>
+                        <span id="ph-val">{{ ph_value or 6.5 }}</span>
+                    </label>
 
-      <!-- Empty / GET state: show only RF curve with no prediction point -->
-      <div class="empty-state">
-        <div class="icon">🌲</div>
-        <p>Ajusta los parámetros del terreno y presiona <strong>Analizar Terreno</strong> para obtener la clasificación de aptitud mediante <strong>Random Forest (100 árboles)</strong> y los mejores cultivos forrajeros.</p>
-      </div>
-      {% if plot %}
-      <div class="plot-card" style="max-width:700px">
-        <div class="section-header">🌲 Random Forest – Curva de Probabilidad Base</div>
-        <img src="data:image/png;base64,{{ plot }}" alt="Random Forest base curve"/>
-      </div>
-      {% endif %}
+                    <input
+                        type="range"
+                        name="ph"
+                        id="ph"
+                        min="3"
+                        max="9"
+                        step="0.1"
+                        value="{{ ph_value or 6.5 }}"
+                        oninput="document.getElementById('ph-val').textContent=this.value"
+                    >
 
-    {% endif %}
-       <!-- Metrics Section - Model Performance Evaluation -->
-      {% if metrics %}
-      <div class="metrics-section" style="margin-top: 28px;">
-        <div class="section-header" style="margin-bottom: 20px;">
-          📊 Métricas de Rendimiento - Random Forest
-          <span style="font-size: 0.7rem; margin-left: 12px; color: var(--muted);">
-            Evaluación en test set (20% de los datos)
-          </span>
-        </div>
-        
-        <!-- Metrics Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px;">
-          <!-- Accuracy Card -->
-          <div class="plot-card" style="padding: 20px;">
-            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-              Exactitud (Accuracy)
-            </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-              {{ "%.1f"|format(metrics.exactitud * 100) }}%
-            </div>
-            <div style="font-size: 0.75rem; color: var(--muted); margin-top: 8px; line-height: 1.4;">
-              Entrenamiento: {{ "%.1f"|format(metrics.train_accuracy * 100) }}%
-            </div>
-            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 4px;">
-              Proporción de aciertos totales
-            </div>
-          </div>
-          
-          <!-- Precision Card -->
-          <div class="plot-card" style="padding: 20px;">
-            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-              Precisión (Precision)
-            </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-              {{ "%.1f"|format(metrics.precision * 100) }}%
-            </div>
-            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
-              VP / (VP + FP) - ¿Cuántos "Óptimos" predichos son correctos?
-            </div>
-          </div>
-          
-          <!-- Recall Card -->
-          <div class="plot-card" style="padding: 20px;">
-            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-              Sensibilidad (Recall)
-            </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-              {{ "%.1f"|format(metrics.recall * 100) }}%
-            </div>
-            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
-              VP / (VP + FN) - ¿Cuántos "Óptimos" reales detectó?
-            </div>
-          </div>
-          
-          <!-- F1-Score Card -->
-          <div class="plot-card" style="padding: 20px;">
-            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-              F1-Score
-            </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-              {{ "%.3f"|format(metrics.f1_score) }}
-            </div>
-            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
-              Media armónica entre precisión y recall
-            </div>
-          </div>
-          
-          <!-- ROC AUC Card -->
-          <div class="plot-card" style="padding: 20px;">
-            <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-              ROC AUC
-            </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-              {{ "%.3f"|format(metrics.roc_auc) }}
-            </div>
-            <div style="font-size: 0.7rem; color: var(--muted); margin-top: 8px;">
-              1.0 = perfecto · 0.5 = aleatorio
-            </div>
-          </div>
-        </div>
-        
-        <!-- Confusion Matrix and ROC plots -->
-        <div class="plots-grid">
-          {% if confusion_matrix_plot %}
-          <div class="plot-card">
-            <div class="section-header">🎯 Matriz de Confusión - Random Forest</div>
-            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix" style="width: 100%;"/>
-            <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
-              VP = Verdaderos Positivos (Óptimo correcto)<br>
-              VN = Verdaderos Negativos (No óptimo correcto)<br>
-              FP = Falsos Positivos (Falsa alarma)<br>
-              FN = Falsos Negativos (Omisión)
-            </div>
-          </div>
-          {% endif %}
-          
-          {% if roc_plot %}
-          <div class="plot-card">
-            <div class="section-header">📈 Curva ROC - Random Forest</div>
-            <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve" style="width: 100%;"/>
-            <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
-              AUC = Área bajo la curva · Mayor AUC = Mejor capacidad discriminativa
-            </div>
-          </div>
-          {% endif %}
-        </div>
-        
-        <!-- Feature Importance Plot (already existing) -->
-        {% if importance_plot %}
-        <div class="plot-card" style="margin-top: 20px;">
-          <div class="section-header">🌲 Importancia de Características (Random Forest)</div>
-          <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature Importance" style="width: 100%;"/>
-          <div style="padding: 12px 24px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border);">
-            Mide cuánto contribuye cada variable a la reducción de impureza en los árboles
-          </div>
-        </div>
-        {% endif %}
-      </div>
-      {% endif %}
-  </main>
-</div>
+                    <div class="range-labels">
+                        <span>3.0</span>
+                        <span>9.0</span>
+                    </div>
+                </div>
 
-</body>
-</html>
+                <div class="field-card">
+                    <label>
+                        <strong>💧 Relative Humidity (%)</strong>
+                        <span id="hum-val">{{ hum_value or 60 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="humedad"
+                        id="humedad"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ hum_value or 60 }}"
+                        oninput="document.getElementById('hum-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>⛰ Altitude (m)</strong>
+                        <span id="alt-val">{{ alt_value or 1500 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="altitud"
+                        id="altitud"
+                        min="0"
+                        max="4000"
+                        step="10"
+                        value="{{ alt_value or 1500 }}"
+                        oninput="document.getElementById('alt-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 m</span>
+                        <span>4000 m</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>🌡 Temperature (°C)</strong>
+                        <span id="temp-val">{{ temp_value or 20 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="temperatura"
+                        id="temperatura"
+                        min="0"
+                        max="45"
+                        step="0.5"
+                        value="{{ temp_value or 20 }}"
+                        oninput="document.getElementById('temp-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 °C</span>
+                        <span>45 °C</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    Analyze Terrain
+                    <span>♧</span>
+                </button>
+
+            </form>
+
+            <div class="rf-info-card">
+                <span>♧</span>
+                <div>
+                    <strong>Random Forest Model</strong>
+                    <small>100 decision trees</small>
+                </div>
+            </div>
+
+            <div class="rf-info-card">
+                <span>▥</span>
+                <div>
+                    <strong>Integrated feature</strong>
+                    <small>importance analysis</small>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="rf-content">
+
+            <!-- HERO -->
+            <section class="rf-hero reveal">
+
+                <div class="hero-copy">
+
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('main.home') }}">Analysis</a>
+                        <span>›</span>
+                        <a href="/recommendation/Menu">Predictive Models</a>
+                        <span>›</span>
+                        <a href="/recommendation/MF">Random Forest</a>
+                        <span>›</span>
+                        <strong>Recommendation</strong>
+                    </div>
+
+                    <h1>Random Forest</h1>
+
+                    <h2>Forage Productivity Recommendation</h2>
+
+                    <p>
+                        Adjust the terrain variables and get an immediate analysis and crop recommendation
+                        using our Random Forest model with 100 decision trees.
+                    </p>
+
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="tree-glow">♧</div>
+                    <div class="hero-icon">♧</div>
+                </div>
+
+                <a href="/recommendation/MF" class="back-button">
+                    ← Back to Model Selection
+                </a>
+
+            </section>
+
+            {% if result is not none %}
+
+                {% set is_optimal = (result == 1) %}
+
+                <!-- RESULT HERO CARD -->
+                <section class="rf-result-card reveal {{ 'optimal' if is_optimal else 'suboptimal' }}">
+
+                    <div class="result-icon">♧</div>
+
+                    <div class="result-main">
+
+                        <span class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Optimal' if is_optimal else 'Suboptimal' }}
+                        </span>
+
+                        <h2>
+                            {{ 'The terrain is suitable for forage crops' if is_optimal else 'The terrain is not optimal for forage crops' }}
+                        </h2>
+
+                        <div class="result-stats">
+
+                            <div>
+                                <small>Probability (vote of trees)</small>
+                                <strong class="{{ 'green-text' if is_optimal else 'amber-text' }}">
+                                    {{ "%.1f"|format(probability * 100) }}%
+                                </strong>
+                                <span>(vote of trees)</span>
+                            </div>
+
+                            <div>
+                                <small>Model Threshold</small>
+                                <strong>{{ "%.1f"|format(threshold * 100) }}%</strong>
+                            </div>
+
+                            <div>
+                                <small>Best Crop</small>
+
+                                {% if top_crops %}
+                                    <strong class="green-text">
+                                        {{ top_crops[0].nombre }}
+                                        <em>({{ "%.0f"|format(top_crops[0].affinity * 100) }}%)</em>
+                                    </strong>
+                                {% else %}
+                                    <strong class="green-text">—</strong>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- TOP CROPS -->
+                {% if top_crops %}
+                <section class="rf-panel reveal">
+
+                    <div class="section-heading">
+                        <span>2.</span>
+                        <h2>Top 10 Crops by Affinity</h2>
+                    </div>
+
+                    <div class="top-crops-layout">
+
+                        <div class="crop-list">
+
+                            {% for crop in top_crops %}
+                                {% set affinity_pct = crop.affinity * 100 %}
+                                {% set is_g = crop.affinity >= 0.50 %}
+
+                                <div class="crop-row">
+                                    <span class="rank">{{ loop.index }}</span>
+                                    <strong>{{ crop.nombre }}</strong>
+
+                                    <div class="bar-track">
+                                        <i class="{{ 'green' if is_g else 'amber' }}"
+                                           style="width: {{ '%.1f'|format(affinity_pct) }}%">
+                                        </i>
+                                    </div>
+
+                                    <span class="crop-pct">{{ "%.1f"|format(affinity_pct) }}%</span>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <aside class="crop-legend">
+
+                            <div>
+                                <span class="legend-dot green"></span>
+                                <strong>Optimal</strong>
+                                <small>≥50%</small>
+                            </div>
+
+                            <div>
+                                <span class="legend-dot amber"></span>
+                                <strong>Suboptimal</strong>
+                                <small>&lt;50%</small>
+                            </div>
+
+                            <p>
+                                Scores represent the estimated affinity of each crop with the given
+                                terrain conditions.
+                            </p>
+
+                            <div class="legend-tree">♧</div>
+
+                        </aside>
+
+                    </div>
+
+                </section>
+                {% endif %}
+
+                <!-- CHARTS -->
+                <section class="rf-grid reveal">
+
+                    {% if plot %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>3.</span>
+                            <h2>Random Forest <small>— Probability Curve (100 Trees)</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ plot }}" alt="Random Forest probability curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if top_crops %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>4.</span>
+                            <h2>Ranking by Crop Affinity</h2>
+                        </div>
+
+                        <div class="ranking-table-wrap">
+
+                            <table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Crop</th>
+                                        <th>Affinity (%)</th>
+                                        <th>Level</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for crop in top_crops %}
+                                        {% set affinity_pct = crop.affinity * 100 %}
+                                        {% set level = 'Optimal' if crop.affinity >= 0.50 else 'Suboptimal' %}
+                                        {% set level_class = 'optimal' if crop.affinity >= 0.50 else 'suboptimal' %}
+
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ crop.nombre }}</td>
+                                            <td>
+                                                <div class="heat-cell {{ level_class }}">
+                                                    {{ "%.1f"|format(affinity_pct) }}%
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="level-pill {{ level_class }}">
+                                                    {{ level }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+            {% else %}
+
+                <!-- ESTADO INICIAL SIN GRÁFICA -->
+                <section class="empty-panel reveal">
+
+                    <div class="empty-icon">♧</div>
+
+                    <h2>Ready for Random Forest analysis</h2>
+
+                    <p>
+                        Adjust the terrain variables and press <strong>Analyze Terrain</strong> to obtain
+                        aptitude classification, probability, and crop affinity ranking.
+                    </p>
+
+                </section>
+
+            {% endif %}
+
+            <!-- METRICS -->
+            {% if metrics and result is not none %}
+            <section class="rf-panel reveal">
+
+                <div class="section-heading">
+                    <span>5.</span>
+                    <h2>Model Performance <small>(Test set — 20% of data)</small></h2>
+                </div>
+
+                <div class="metric-cards">
+
+                    <article>
+                        <span>🌱</span>
+                        <div>
+                            <small>Accuracy</small>
+                            <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                            <p>Correct predictions</p>
+                        </div>
+                    </article>
+
+                    <article>
+                        <span>⌁</span>
+                        <div>
+                            <small>Precision</small>
+                            <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                            <p>True positives / Predicted positives</p>
+                        </div>
+                    </article>
+
+                    <article>
+                        <span>♧</span>
+                        <div>
+                            <small>Recall</small>
+                            <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                            <p>True positives / Actual positives</p>
+                        </div>
+                    </article>
+
+                    <article>
+                        <span>◉</span>
+                        <div>
+                            <small>F1-Score</small>
+                            <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                            <p>Harmonic mean of Precision & Recall</p>
+                        </div>
+                    </article>
+
+                    <article>
+                        <span>▧</span>
+                        <div>
+                            <small>ROC AUC</small>
+                            <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                            <p>Model discrimination capacity</p>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+            {% endif %}
+
+            <!-- BOTTOM CHARTS -->
+            {% if result is not none %}
+            <section class="rf-bottom-grid reveal">
+
+                {% if confusion_matrix_plot %}
+                <article class="rf-panel">
+
+                    <div class="section-heading">
+                        <span>6.</span>
+                        <h2>Confusion Matrix <small>— Random Forest</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix">
+                    </div>
+
+                </article>
+                {% endif %}
+
+                {% if roc_plot %}
+                <article class="rf-panel">
+
+                    <div class="section-heading">
+                        <span>7.</span>
+                        <h2>ROC Curve <small>— Random Forest</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve">
+                    </div>
+
+                </article>
+                {% endif %}
+
+                {% if importance_plot %}
+                <article class="rf-panel">
+
+                    <div class="section-heading">
+                        <span>8.</span>
+                        <h2>Feature Importance <small>— Random Forest</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature Importance">
+                    </div>
+
+                </article>
+                {% endif %}
+
+            </section>
+            {% endif %}
+
+            <section class="info-banner reveal">
+
+                <div class="info-icon">i</div>
+
+                <p>
+                    The recommendation is based on the input variables and the Random Forest model.
+                    Adjust the terrain parameters and generate a new analysis to explore different scenarios.
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

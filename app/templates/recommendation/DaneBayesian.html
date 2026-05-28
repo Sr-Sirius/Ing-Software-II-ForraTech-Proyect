@@ -1,899 +1,483 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bayesian DANE - Forage Crops</title>
+{% extends "base.html" %}
 
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+{% block body_class %}bayesian-dane-page{% endblock %}
 
-  <style>
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/bayesian_dane.css') }}">
+{% endblock %}
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+{% block content %}
 
-    :root {
-      --green:      #1D9E75;
-      --green-dark: #0F6E56;
-      --amber:      #EF9F27;
-      --blue:       #3B82F6;
-      --red:        #D85A30;
-      --bg:         #0A0F0D;
-      --surface:    #111916;
-      --surface2:   #182219;
-      --border:     #1E2E26;
-      --text:       #E8F0EB;
-      --muted:      #6B8A78;
-      --radius:     12px;
-    }
+<section class="bayesian-dane-shell">
 
-    body {
-      font-family: 'Syne', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+    <div class="bayesian-dane-bg"></div>
 
-    header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 28px 40px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
+    <main class="bayesian-dane-layout">
 
-    .logo {
-      width: 40px;
-      height: 40px;
-      background: var(--green);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
+        <!-- SIDEBAR INPUT -->
+        <aside class="bayesian-dane-sidebar reveal">
 
-    header h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+            <div class="section-heading compact">
+                <span>1.</span>
+                <h2>Input Data <small>Adjust terrain parameters</small></h2>
+            </div>
 
-    header p {
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-    }
+            <form action="/recommendation/DaneBayesian" method="POST" class="bayesian-dane-form">
 
-    .container {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      min-height: calc(100vh - 81px);
-    }
+                <div class="field-card">
+                    <label>
+                        <strong>Area (ha)</strong>
+                        <span id="area-val">{{ area_value or 50.0 }}</span>
+                    </label>
 
-    aside {
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
+                    <input
+                        type="range"
+                        name="area_ha"
+                        id="area_ha"
+                        min="0.5"
+                        max="500"
+                        step="0.5"
+                        value="{{ area_value or 50.0 }}"
+                        oninput="document.getElementById('area-val').textContent=this.value"
+                    >
 
-    aside h2 {
-      font-size: 0.72rem;
-      font-family: 'DM Mono', monospace;
-      color: var(--muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .field label {
-      font-size: 0.88rem;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .field label span {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.82rem;
-      background: rgba(29,158,117,0.12);
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-
-    .field input[type="range"] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 6px;
-      background: var(--border);
-      border-radius: 3px;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .field input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--green);
-      border: 2px solid var(--bg);
-      cursor: pointer;
-      transition: transform .15s, box-shadow .15s;
-    }
-
-    .field input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.25);
-      box-shadow: 0 0 0 6px rgba(29,158,117,0.2);
-    }
-
-    .range-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-    }
-
-    .radio-group {
-      display: flex;
-      gap: 16px;
-      margin-top: 4px;
-    }
-
-    .radio-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    .radio-option input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-      accent-color: var(--green);
-    }
-
-    .btn-predict {
-      margin-top: 8px;
-      background: var(--green);
-      color: #fff;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      border: none;
-      border-radius: var(--radius);
-      padding: 14px;
-      cursor: pointer;
-      width: 100%;
-      transition: background .2s, transform .15s;
-    }
-
-    .btn-predict:hover {
-      background: var(--green-dark);
-      transform: translateY(-1px);
-    }
-
-    main {
-      padding: 32px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    .result-banner {
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      border: 1px solid;
-    }
-
-    .result-banner.optimal {
-      background: rgba(29,158,117,0.1);
-      border-color: var(--green);
-    }
-
-    .result-banner.suboptimal {
-      background: rgba(239,159,39,0.1);
-      border-color: var(--amber);
-    }
-
-    .banner-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      font-family: 'DM Mono', monospace;
-    }
-
-    .badge.optimal {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .badge.suboptimal {
-      background: var(--amber);
-      color: #000;
-    }
-
-    .variety-name {
-      font-size: 1.3rem;
-      font-weight: 800;
-    }
-
-    .banner-stats {
-      display: flex;
-      gap: 32px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      text-transform: uppercase;
-    }
-
-    .stat-value {
-      font-size: 1.3rem;
-      font-weight: 800;
-    }
-
-    .stat-value.green {
-      color: var(--green);
-    }
-
-    .stat-value.amber {
-      color: var(--amber);
-    }
-
-    .ranking-section,
-    .plot-card,
-    .metrics-section {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .section-header {
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-family: 'DM Mono', monospace;
-    }
-
-    .ranking-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .ranking-table th,
-    .ranking-table td {
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
-    }
-
-    .ranking-table th {
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-    }
-
-    .rank-number {
-      font-family: 'DM Mono', monospace;
-      font-weight: 600;
-    }
-
-    .rank-1 {
-      color: var(--amber);
-      font-weight: 800;
-    }
-
-    .prob-bar {
-      height: 6px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-top: 6px;
-      width: 100px;
-    }
-
-    .prob-fill {
-      height: 100%;
-      background: var(--green);
-    }
-
-    .prob-value {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-    }
-
-    .plot-card img {
-      width: 100%;
-      display: block;
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      padding: 20px 24px 24px;
-    }
-
-    .metric-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-    }
-
-    .metric-label {
-      font-size: 0.68rem;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-
-    .metric-value {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--green);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .metric-help {
-      font-size: 0.72rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .metrics-visual-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      padding: 20px 24px 24px;
-    }
-
-    .metric-plot-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .metric-plot-title {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .metric-plot-card img {
-      width: 100%;
-      display: block;
-    }
-
-    .metrics-note {
-      padding: 0 24px 20px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .metrics-note strong {
-      color: var(--text);
-    }
-
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      min-height: 300px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .empty-state .icon {
-      font-size: 3.5rem;
-      opacity: 0.4;
-    }
-
-    .model-info {
-      background: var(--surface2);
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      font-size: 0.7rem;
-      font-family: 'DM Mono', monospace;
-      color: var(--muted);
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-
-    @media(max-width:900px) {
-
-      .container {
-        grid-template-columns: 1fr;
-      }
-
-      aside {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-
-      header {
-        padding: 20px 24px;
-      }
-
-      main {
-        padding: 24px;
-      }
-
-    }
-
-  </style>
-</head>
-
-<body>
-
-<header>
-
-  <div class="logo">📊</div>
-
-  <div>
-    <h1>Bayesian DANE - Forage Recommendation</h1>
-    <p>Gaussian Naive Bayes · Posterior Probability · DANE Agricultural Data</p>
-  </div>
-
-</header>
-
-<div class="container">
-
-  <aside>
-
-    <h2>Terrain Parameters</h2>
-
-    <form action="/recommendation/DaneBayesian" method="POST" style="display:contents">
-
-      <div class="field">
-
-        <label>
-          Area (ha)
-          <span id="area-val">{{ area_value or 50.0 }}</span>
-        </label>
-
-        <input
-          type="range"
-          name="area_ha"
-          id="area_ha"
-          min="0.5"
-          max="500"
-          step="0.5"
-          value="{{ area_value or 50.0 }}"
-          oninput="document.getElementById('area-val').textContent=this.value"
-        >
-
-        <div class="range-labels">
-          <span>0.5 ha</span>
-          <span>500 ha</span>
-        </div>
-
-      </div>
-
-      <div class="field">
-
-        <label>
-          Target Protein (%)
-          <span id="proteina-val">{{ proteina_value or 70 }}</span>
-        </label>
-
-        <input
-          type="range"
-          name="ganancia_proteina_pct"
-          id="ganancia_proteina_pct"
-          min="0"
-          max="100"
-          step="1"
-          value="{{ proteina_value or 70 }}"
-          oninput="document.getElementById('proteina-val').textContent=this.value"
-        >
-
-        <div class="range-labels">
-          <span>0%</span>
-          <span>100%</span>
-        </div>
-
-      </div>
-
-      <div class="field">
-
-        <label>Climate</label>
-
-        <div class="radio-group">
-
-          <label class="radio-option">
-            <input
-              type="radio"
-              name="clima"
-              value="calido"
-              {% if clima_value == 'calido' or clima_value is none %}checked{% endif %}
-            >
-            <span>🌞 Warm</span>
-          </label>
-
-          <label class="radio-option">
-            <input
-              type="radio"
-              name="clima"
-              value="frio"
-              {% if clima_value == 'frio' %}checked{% endif %}
-            >
-            <span>❄️ Cold</span>
-          </label>
-
-        </div>
-
-      </div>
-
-      <button type="submit" class="btn-predict">
-        Analyze Terrain 📊
-      </button>
-
-    </form>
-
-    <div class="model-info">
-      📊 Gaussian Naive Bayes<br>
-      📈 Posterior probability estimation<br>
-      🌾 DANE agricultural forage dataset
-    </div>
-
-  </aside>
-
-  <main>
-
-    {% if result is not none %}
-
-    <div class="result-banner {{ 'optimal' if categoria == 'ÓPTIMO' else 'suboptimal' }}">
-
-      <div class="banner-header">
-
-        <span class="badge {{ 'optimal' if categoria == 'ÓPTIMO' else 'suboptimal' }}">
-          {{ categoria }}
-        </span>
-
-        <span class="variety-name">
-          🌿 {{ result }}
-        </span>
-
-      </div>
-
-      <div class="banner-stats">
-
-        <div class="stat">
-          <span class="stat-label">Posterior Probability</span>
-          <span class="stat-value {{ 'green' if categoria == 'ÓPTIMO' else 'amber' }}">
-            {{ probabilidad }}%
-          </span>
-        </div>
-
-        <div class="stat">
-          <span class="stat-label">Threshold</span>
-          <span class="stat-value">
-            {{ threshold }}%
-          </span>
-        </div>
-
-        <div class="stat">
-          <span class="stat-label">Area</span>
-          <span class="stat-value">
-            {{ "%.1f"|format(area_value) }} ha
-          </span>
-        </div>
-
-        <div class="stat">
-          <span class="stat-label">Climate</span>
-          <span class="stat-value">
-            {{ '🌞 Warm' if clima_value == 'calido' else '❄️ Cold' }}
-          </span>
-        </div>
-
-      </div>
-
-    </div>
-
-    {% if ranking %}
-
-    <div class="ranking-section">
-
-      <div class="section-header">
-        🌾 Top 10 Bayesian posterior probabilities
-      </div>
-
-      <table class="ranking-table">
-
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Variety</th>
-            <th>Posterior</th>
-            <th>Climate</th>
-            <th>Protein Score</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          {% for crop in ranking %}
-
-          <tr>
-
-            <td class="rank-number {% if loop.index == 1 %}rank-1{% endif %}">
-              {{ loop.index }}
-            </td>
-
-            <td style="font-weight:500;">
-              {{ crop.variedad }}
-            </td>
-
-            <td>
-
-              <span class="prob-value">
-                {{ "%.1f"|format(crop.posterior * 100) }}%
-              </span>
-
-              <div class="prob-bar">
-                <div
-                  class="prob-fill"
-                  style="width:{{ "%.1f"|format(crop.posterior * 100) }}%">
+                    <div class="range-labels">
+                        <span>0.5 ha</span>
+                        <span>500 ha</span>
+                    </div>
                 </div>
-              </div>
 
-            </td>
+                <div class="field-card">
+                    <label>
+                        <strong>Target Protein (%)</strong>
+                        <span id="proteina-val">{{ proteina_value or 70 }}</span>
+                    </label>
 
-            <td>
-              {{ '🌞' if crop.clima == 'calido' else '❄️' }}
-            </td>
+                    <input
+                        type="range"
+                        name="ganancia_proteina_pct"
+                        id="ganancia_proteina_pct"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ proteina_value or 70 }}"
+                        oninput="document.getElementById('proteina-val').textContent=this.value"
+                    >
 
-            <td class="prob-value">
-              {{ "%.1f"|format(crop.score_proteina * 100) }}%
-            </td>
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
 
-          </tr>
+                <div class="field-card">
+                    <label>
+                        <strong>Climate</strong>
+                    </label>
 
-          {% endfor %}
+                    <div class="climate-toggle">
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="calido"
+                                {% if clima_value == 'calido' or clima_value is none %}checked{% endif %}
+                            >
+                            <span>☀️ Warm</span>
+                        </label>
 
-        </tbody>
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="frio"
+                                {% if clima_value == 'frio' %}checked{% endif %}
+                            >
+                            <span>❄️ Cold</span>
+                        </label>
+                    </div>
+                </div>
 
-      </table>
+                <button type="submit" class="analyze-button">
+                    Analyze Terrain
+                    <span>▥</span>
+                </button>
 
-    </div>
+            </form>
 
-    {% endif %}
+            <div class="bayesian-info-card">
+                <strong>Bayesian DANE</strong>
+                <ul>
+                    <li>Gaussian Naive Bayes</li>
+                    <li>Posterior probability estimation</li>
+                    <li>DANE agricultural forage dataset</li>
+                </ul>
+            </div>
 
-    {% if plot %}
+        </aside>
 
-    <div class="plot-card">
+        <!-- MAIN CONTENT -->
+        <section class="bayesian-dane-content">
 
-      <div class="section-header">
-        📊 Bayesian Posterior Analysis
-      </div>
+            <!-- HERO -->
+            <section class="bayesian-dane-hero reveal">
 
-      <img
-        src="data:image/png;base64,{{ plot }}"
-        alt="Bayesian visualization"
-      >
+                <div class="hero-copy">
 
-    </div>
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('main.home') }}">Analysis</a>
+                        <span>›</span>
+                        <a href="/recommendation/Menu">Predictive Models</a>
+                        <span>›</span>
+                        <a href="/recommendation/MD">Bayesian DANE</a>
+                        <span>›</span>
+                        <strong>Recommendation</strong>
+                    </div>
 
-    {% endif %}
+                    <h1>Bayesian DANE - Forage Recommendation</h1>
 
-    {% if metrics %}
+                    <h2>Gaussian Naive Bayes • Posterior Probability • DANE Agricultural Data</h2>
 
-    <div class="metrics-section">
+                    <p>
+                        Adjust terrain parameters and press Analyze Terrain to get forage recommendations
+                        using Gaussian Naive Bayes and DANE agricultural data.
+                    </p>
 
-      <div class="section-header">
-        📈 Model Performance Metrics - Bayesian DANE
-      </div>
+                    <p class="hero-note">
+                        Posterior probability estimation • Bayesian inference • Agricultural classification
+                    </p>
 
-      <div class="metrics-grid">
+                </div>
 
-        <div class="metric-card">
-          <div class="metric-label">Exactitud / Accuracy</div>
-          <div class="metric-value">
-            {{ "%.1f"|format((metrics.exactitud if metrics.exactitud is defined else metrics.accuracy) * 100) }}%
-          </div>
-          <div class="metric-help">
-            Proporción total de predicciones correctas.
-          </div>
-        </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="gaussian-shape"></div>
+                    <div class="bar-visual">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
 
-        <div class="metric-card">
-          <div class="metric-label">Precisión / Precision</div>
-          <div class="metric-value">
-            {{ "%.1f"|format(metrics.precision * 100) }}%
-          </div>
-          <div class="metric-help">
-            Confiabilidad cuando el modelo predice alta aptitud.
-          </div>
-        </div>
+                <a href="/recommendation/MD" class="back-button">
+                    ← Back to Model Selection
+                </a>
 
-        <div class="metric-card">
-          <div class="metric-label">Sensibilidad / Recall</div>
-          <div class="metric-value">
-            {{ "%.1f"|format(metrics.recall * 100) }}%
-          </div>
-          <div class="metric-help">
-            Capacidad para detectar casos de alta aptitud.
-          </div>
-        </div>
+            </section>
 
-        <div class="metric-card">
-          <div class="metric-label">F1-Score</div>
-          <div class="metric-value">
-            {{ "%.3f"|format(metrics.f1_score if metrics.f1_score is defined else metrics.f1) }}
-          </div>
-          <div class="metric-help">
-            Balance entre precisión y sensibilidad.
-          </div>
-        </div>
+            {% if result is not none %}
 
-        <div class="metric-card">
-          <div class="metric-label">ROC AUC</div>
-          <div class="metric-value">
-            {{ "%.3f"|format(metrics.roc_auc) }}
-          </div>
-          <div class="metric-help">
-            Capacidad discriminativa entre baja y alta aptitud.
-          </div>
-        </div>
+                {% set is_optimal = categoria == 'ÓPTIMO' or categoria == 'OPTIMAL' or categoria == 'Optimal' %}
 
-        {% if metrics.train_accuracy is defined %}
-        <div class="metric-card">
-          <div class="metric-label">Train Accuracy</div>
-          <div class="metric-value">
-            {{ "%.1f"|format(metrics.train_accuracy * 100) }}%
-          </div>
-          <div class="metric-help">
-            Rendimiento sobre datos de entrenamiento.
-          </div>
-        </div>
-        {% endif %}
+                <!-- RESULT CARD -->
+                <section class="bayesian-result-card reveal {{ 'optimal' if is_optimal else 'suboptimal' }}">
 
-        {% if metrics.test_accuracy is defined %}
-        <div class="metric-card">
-          <div class="metric-label">Test Accuracy</div>
-          <div class="metric-value">
-            {{ "%.1f"|format(metrics.test_accuracy * 100) }}%
-          </div>
-          <div class="metric-help">
-            Rendimiento sobre datos de prueba.
-          </div>
-        </div>
-        {% endif %}
+                    <div class="result-icon">🌿</div>
 
-      </div>
+                    <div class="result-main">
 
-      <div class="metrics-note">
-        <strong>Interpretación:</strong>
-        estas métricas evalúan el desempeño supervisado del modelo Gaussian Naive Bayes
-        para separar casos de baja y alta aptitud proteica sobre el dataset DANE.
-      </div>
+                        <span class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Optimal' if is_optimal else 'Suboptimal' }}
+                        </span>
 
-    </div>
+                        <h2>{{ result }}</h2>
 
-    {% endif %}
+                        <div class="result-stats">
 
-    {% if confusion_matrix_plot or roc_plot %}
+                            <div>
+                                <small>Posterior Probability</small>
+                                <strong class="{{ 'green-text' if is_optimal else 'amber-text' }}">
+                                    {{ probabilidad }}%
+                                </strong>
+                                <span>Optimal variety</span>
+                            </div>
 
-    <div class="metrics-section">
+                            <div>
+                                <small>Threshold</small>
+                                <strong class="green-text">
+                                    {{ threshold }}%
+                                </strong>
+                                <span>Decision threshold</span>
+                            </div>
 
-      <div class="section-header">
-        🎯 Visual Performance Evaluation
-      </div>
+                            <div>
+                                <small>Area (ha)</small>
+                                <strong class="blue-text">
+                                    {{ "%.1f"|format(area_value) }} ha
+                                </strong>
+                            </div>
 
-      <div class="metrics-visual-grid">
+                            <div>
+                                <small>Climate</small>
+                                <strong>
+                                    {{ '☀️ Warm' if clima_value == 'calido' else '❄️ Cold' }}
+                                </strong>
+                            </div>
 
-        {% if confusion_matrix_plot %}
-        <div class="metric-plot-card">
+                        </div>
 
-          <div class="metric-plot-title">
-            Matriz de confusión - Bayes DANE
-          </div>
+                    </div>
 
-          <img
-            src="data:image/png;base64,{{ confusion_matrix_plot }}"
-            alt="Matriz de confusión Bayes DANE"
-          >
+                </section>
 
-        </div>
-        {% endif %}
+                <!-- RANKING -->
+                {% if ranking %}
+                <section class="bayesian-panel reveal">
 
-        {% if roc_plot %}
-        <div class="metric-plot-card">
+                    <div class="section-heading">
+                        <span>2.</span>
+                        <h2>Top 10 Bayesian Posterior Probabilities</h2>
+                    </div>
 
-          <div class="metric-plot-title">
-            Curva ROC - Bayes DANE
-          </div>
+                    <div class="ranking-table-wrap">
 
-          <img
-            src="data:image/png;base64,{{ roc_plot }}"
-            alt="Curva ROC Bayes DANE"
-          >
+                        <table class="ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Variety</th>
+                                    <th>Posterior Probability</th>
+                                    <th>Climate</th>
+                                    <th>Protein Score (%)</th>
+                                </tr>
+                            </thead>
 
-        </div>
-        {% endif %}
+                            <tbody>
+                                {% for crop in ranking %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <strong>{{ crop.variedad }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="prob-value">
+                                            {{ "%.1f"|format(crop.posterior * 100) }}%
+                                        </span>
 
-      </div>
+                                        <div class="prob-bar">
+                                            <i style="width: {{ '%.1f'|format(crop.posterior * 100) }}%"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ '☀️' if crop.clima == 'calido' else '❄️' }}
+                                    </td>
+                                    <td>
+                                        {{ "%.1f"|format(crop.score_proteina * 100) }}%
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
 
-    </div>
+                    </div>
 
-    {% endif %}
+                </section>
+                {% endif %}
 
-    {% else %}
+                <!-- BAYESIAN ANALYSIS -->
+                {% if plot %}
+                <section class="bayesian-panel reveal">
 
-    <div class="empty-state">
+                    <div class="section-heading">
+                        <span>3.</span>
+                        <h2>Bayesian Posterior Analysis</h2>
+                    </div>
 
-      <div class="icon">📊</div>
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ plot }}" alt="Bayesian posterior analysis">
+                    </div>
 
-      <p>
-        Adjust terrain parameters and press
-        <strong>Analyze Terrain</strong>
-        to get forage recommendations using
-        <strong>Gaussian Naive Bayes</strong>
-        and DANE agricultural data.
-      </p>
+                </section>
+                {% endif %}
 
-      <p style="font-size:0.8rem; margin-top:10px;">
-        Posterior probability estimation · Bayesian inference · Agricultural classification
-      </p>
+                <!-- METRICS OPTIONAL -->
+                {% if metrics %}
+                <section class="bayesian-panel reveal">
 
-    </div>
+                    <div class="section-heading">
+                        <span>4.</span>
+                        <h2>Model Performance <small>Optional evaluation</small></h2>
+                    </div>
 
-    {% endif %}
+                    <div class="optional-metrics-grid">
 
-  </main>
+                        <article>
+                            <span>⌁</span>
+                            <div>
+                                <strong>Performance metrics are optional for this model.</strong>
+                                <p>
+                                    Bayesian models focus on posterior probabilities and inference rather
+                                    than only predictive accuracy.
+                                </p>
+                            </div>
+                        </article>
 
-</div>
+                        <article>
+                            <span>▥</span>
+                            <div>
+                                <strong>Recommended evaluation method</strong>
+                                <p>
+                                    Use a holdout dataset and compare predicted versus actual classes
+                                    to evaluate classification performance.
+                                </p>
+                            </div>
+                        </article>
 
-</body>
-</html>
+                    </div>
+
+                    <div class="metric-cards">
+
+                        <article>
+                            <small>Accuracy</small>
+                            <strong>
+                                {{ "%.1f"|format((metrics.exactitud if metrics.exactitud is defined else metrics.accuracy) * 100) }}%
+                            </strong>
+                            <p>Correct predictions</p>
+                        </article>
+
+                        <article>
+                            <small>Precision</small>
+                            <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                            <p>True positives / predicted positives</p>
+                        </article>
+
+                        <article>
+                            <small>Recall</small>
+                            <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                            <p>True positives / actual positives</p>
+                        </article>
+
+                        <article>
+                            <small>F1-Score</small>
+                            <strong>{{ "%.3f"|format(metrics.f1_score if metrics.f1_score is defined else metrics.f1) }}</strong>
+                            <p>Balance between precision and recall</p>
+                        </article>
+
+                        <article>
+                            <small>ROC AUC</small>
+                            <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                            <p>Discriminative capacity</p>
+                        </article>
+
+                    </div>
+
+                </section>
+                {% endif %}
+
+                {% if confusion_matrix_plot or roc_plot %}
+                <section class="bayesian-bottom-grid reveal">
+
+                    {% if confusion_matrix_plot %}
+                    <article class="bayesian-panel">
+
+                        <div class="section-heading">
+                            <span>5.</span>
+                            <h2>Confusion Matrix <small>— Bayesian DANE</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Bayesian DANE confusion matrix">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if roc_plot %}
+                    <article class="bayesian-panel">
+
+                        <div class="section-heading">
+                            <span>6.</span>
+                            <h2>ROC Curve <small>— Bayesian DANE</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ roc_plot }}" alt="Bayesian DANE ROC curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+                {% endif %}
+
+                <!-- EXPLANATION -->
+                <section class="bayesian-explanation-grid reveal">
+
+                    <article class="bayesian-panel">
+
+                        <div class="section-heading">
+                            <span>7.</span>
+                            <h2>What do these results mean?</h2>
+                        </div>
+
+                        <ul class="check-list">
+                            <li>The terrain is highly suitable for warm-climate leguminous forages.</li>
+                            <li>The posterior probability indicates high confidence in the recommendation.</li>
+                            <li>Other varieties show lower posterior probability given the input conditions.</li>
+                            <li>Gaussian distributions model each variety’s protein score behavior.</li>
+                            <li>The ranking helps prioritize the best alternatives based on probability.</li>
+                        </ul>
+
+                    </article>
+
+                    <article class="bayesian-panel">
+
+                        <div class="section-heading">
+                            <span>8.</span>
+                            <h2>Corrections and assumptions applied</h2>
+                        </div>
+
+                        <ul class="check-list">
+                            <li>Gaussian Naive Bayes assumes normal distribution of features per class.</li>
+                            <li>Features are assumed conditionally independent given the variety.</li>
+                            <li>Laplace smoothing is applied to handle zero probabilities.</li>
+                            <li>Input values are normalized to ensure numerical stability.</li>
+                            <li>DANE dataset is cleaned and balanced to reduce bias and improve inference.</li>
+                        </ul>
+
+                    </article>
+
+                </section>
+
+            {% else %}
+
+                <!-- INITIAL STATE WITHOUT BASE GRAPHS -->
+                <section class="empty-panel reveal">
+
+                    <div class="empty-icon">📊</div>
+
+                    <h2>Ready for Bayesian DANE analysis</h2>
+
+                    <p>
+                        Adjust terrain parameters and press <strong>Analyze Terrain</strong> to get forage
+                        recommendations using Gaussian Naive Bayes and DANE agricultural data.
+                    </p>
+
+                    <small>
+                        Posterior probability estimation • Bayesian inference • Agricultural classification
+                    </small>
+
+                </section>
+
+            {% endif %}
+
+            <section class="info-banner reveal">
+
+                <div class="info-icon">i</div>
+
+                <p>
+                    Recommendations are based on Gaussian Naive Bayes posterior probabilities and the DANE
+                    agricultural dataset. You can adjust terrain parameters and re-run the analysis to explore
+                    different scenarios.
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

@@ -1,362 +1,492 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Clasificador de Cultivos Forrajeros</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green:      #1D9E75;
-      --green-dark: #0F6E56;
-      --amber:      #EF9F27;
-      --bg:         #0A0F0D;
-      --surface:    #111916;
-      --surface2:   #182219;
-      --border:     #1E2E26;
-      --text:       #E8F0EB;
-      --muted:      #6B8A78;
-      --radius:     12px;
-    }
-    body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+{% extends "base.html" %}
 
-    /* ── Header ── */
-    header {
-      display: flex; align-items: center; gap: 14px;
-      padding: 28px 40px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .logo { width:40px; height:40px; background:var(--green); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; }
-    header h1 { font-size:1.25rem; font-weight:700; letter-spacing:-0.02em; }
-    header p  { font-size:0.78rem; color:var(--muted); font-family:'DM Mono',monospace; }
+{% block body_class %}logistic-regression-page{% endblock %}
 
-    /* ── Layout ── */
-    .container { display:grid; grid-template-columns:340px 1fr; min-height:calc(100vh - 81px); }
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/regression.css') }}">
+{% endblock %}
 
-    /* ── Sidebar ── */
-    aside {
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 32px 28px;
-      display: flex; flex-direction: column; gap: 24px;
-    }
-    aside h2 { font-size:0.72rem; font-family:'DM Mono',monospace; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; }
+{% block content %}
 
-    .field { display:flex; flex-direction:column; gap:8px; }
-    .field label { font-size:0.88rem; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
-    .field label span { font-family:'DM Mono',monospace; font-size:0.82rem; color:var(--green); background:rgba(29,158,117,0.12); padding:2px 8px; border-radius:6px; }
-    .field input[type="range"] { -webkit-appearance:none; width:100%; height:6px; background:var(--border); border-radius:3px; outline:none; cursor:pointer; }
-    .field input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--green); border:2px solid var(--bg); cursor:pointer; transition:transform .15s,box-shadow .15s; }
-    .field input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.25); box-shadow:0 0 0 6px rgba(29,158,117,0.2); }
-    .range-labels { display:flex; justify-content:space-between; font-size:0.72rem; color:var(--muted); font-family:'DM Mono',monospace; }
+<section class="lr-shell">
 
-    .btn-predict {
-      margin-top:8px; background:var(--green); color:#fff;
-      font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
-      letter-spacing:0.04em; border:none; border-radius:var(--radius);
-      padding:14px; cursor:pointer; width:100%;
-      transition:background .2s,transform .15s;
-    }
-    .btn-predict:hover  { background:var(--green-dark); transform:translateY(-1px); }
-    .btn-predict:active { transform:translateY(0); }
+    <div class="lr-bg"></div>
 
-    /* ── Main ── */
-    main { padding:32px 40px; display:flex; flex-direction:column; gap:28px; }
+    <main class="lr-container">
 
-    /* ── Result Banner ── */
-    .result-banner {
-      border-radius:var(--radius); padding:20px 24px; border:1px solid;
-    }
-    .result-banner.optimal    { background:rgba(29,158,117,0.1); border-color:var(--green); }
-    .result-banner.suboptimal { background:rgba(239,159,39,0.1);  border-color:var(--amber); }
-    .banner-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-    .badge { padding:4px 14px; border-radius:20px; font-size:0.78rem; font-family:'DM Mono',monospace; font-weight:500; }
-    .badge.optimal    { background:var(--green); color:#fff; }
-    .badge.suboptimal { background:var(--amber);  color:#000; }
-    .banner-title { font-size:1.1rem; font-weight:700; }
-    .banner-stats { display:flex; gap:28px; flex-wrap:wrap; }
-    .stat { display:flex; flex-direction:column; gap:3px; }
-    .stat-label { font-size:0.72rem; color:var(--muted); font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; }
-    .stat-value { font-size:1.4rem; font-weight:800; }
-    .stat-value.green { color:var(--green); }
-    .stat-value.amber { color:var(--amber); }
+        <!-- HERO -->
+        <section class="lr-hero reveal">
 
-    /* ── Top Crops ── */
-    .crops-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
-    .section-header { padding:16px 24px; border-bottom:1px solid var(--border); font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace; }
-    .crops-grid { padding:16px 24px; display:flex; flex-direction:column; gap:10px; }
-    .crop-row { display:grid; grid-template-columns:24px 1fr auto 120px; align-items:center; gap:12px; }
-    .crop-rank { font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--muted); text-align:center; }
-    .crop-name { font-size:0.9rem; font-weight:600; }
-    .crop-pct  { font-family:'DM Mono',monospace; font-size:0.85rem; font-weight:500; }
-    .crop-pct.green { color:var(--green); }
-    .crop-pct.amber { color:var(--amber); }
-    .crop-bar-wrap { height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
-    .crop-bar { height:100%; border-radius:4px; }
-    .crop-bar.green { background:var(--green); }
-    .crop-bar.amber { background:var(--amber); }
+            <div class="hero-copy">
 
-    /* ── Plots ── */
-    .plots-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-    .plot-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
-    .plot-card img { width:100%; display:block; filter:brightness(0.97); }
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.home') }}">Analysis</a>
+                    <span>›</span>
+                    <a href="/recommendation/Menu">Predictive Models</a>
+                    <span>›</span>
+                    <a href="/recommendation/MF">Logistic Regression</a>
+                    <span>›</span>
+                    <strong>Recommendation</strong>
+                </div>
 
-    /* ── Empty State ── */
-    .empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; min-height:300px; color:var(--muted); text-align:center; }
-    .empty-state .icon { font-size:3.5rem; opacity:0.4; }
-    .empty-state p { font-size:0.9rem; max-width:280px; line-height:1.6; }
+                <h1>Logistic Regression</h1>
 
-    @media(max-width:900px) {
-      .container { grid-template-columns:1fr; }
-      aside { border-right:none; border-bottom:1px solid var(--border); }
-      .plots-grid { grid-template-columns:1fr; }
-      header { padding:20px 24px; }
-      main { padding:24px; }
-    }
-  </style>
-</head>
-<body>
+                <h2>Forage Productivity Recommendation</h2>
 
-<header>
-  <div class="logo">🌿</div>
-  <div>
-    <h1>Clasificador de Cultivos Forrajeros</h1>
-    <p>Regresión Logística · Análisis de Aptitud del Terreno</p>
-  </div>
-</header>
+                <p>
+                    Adjust the terrain variables and get an immediate analysis and crop recommendation
+                    using the Logistic Regression model.
+                </p>
 
-<div class="container">
-
-  <!-- ── Sidebar (form POST) ── -->
-  <aside>
-    <h2>Parámetros del Terreno</h2>
-
-    <form action="/recommendation/regression" method="POST" style="display:contents">
-
-      <div class="field">
-        <label>pH del Suelo <span id="ph-val">{{ ph_value or 6.5 }}</span></label>
-        <input type="range" name="ph" id="ph" min="3" max="9" step="0.1"
-               value="{{ ph_value or 6.5 }}"
-               oninput="document.getElementById('ph-val').textContent=this.value"/>
-        <div class="range-labels"><span>3.0</span><span>9.0</span></div>
-      </div>
-
-      <div class="field">
-        <label>Humedad (%) <span id="hum-val">{{ hum_value or 60 }}</span></label>
-        <input type="range" name="humedad" id="humedad" min="0" max="100" step="1"
-               value="{{ hum_value or 60 }}"
-               oninput="document.getElementById('hum-val').textContent=this.value"/>
-        <div class="range-labels"><span>0%</span><span>100%</span></div>
-      </div>
-
-      <div class="field">
-        <label>Altitud (m) <span id="alt-val">{{ alt_value or 1500 }}</span></label>
-        <input type="range" name="altitud" id="altitud" min="0" max="4000" step="10"
-               value="{{ alt_value or 1500 }}"
-               oninput="document.getElementById('alt-val').textContent=this.value"/>
-        <div class="range-labels"><span>0 m</span><span>4000 m</span></div>
-      </div>
-
-      <div class="field">
-        <label>Temperatura (°C) <span id="temp-val">{{ temp_value or 20 }}</span></label>
-        <input type="range" name="temperatura" id="temperatura" min="0" max="45" step="0.5"
-               value="{{ temp_value or 20 }}"
-               oninput="document.getElementById('temp-val').textContent=this.value"/>
-        <div class="range-labels"><span>0°C</span><span>45°C</span></div>
-      </div>
-
-      <button type="submit" class="btn-predict">Analizar Terreno</button>
-
-    </form>
-  </aside>
-
-  <!-- ── Main ── -->
-  <main>
-
-    {% if result is not none %}
-
-      <!-- Result banner -->
-      {% set is_optimal = (result == 1) %}
-      <div class="result-banner {{ 'optimal' if is_optimal else 'suboptimal' }}">
-        <div class="banner-header">
-          <span class="badge {{ 'optimal' if is_optimal else 'suboptimal' }}">
-            {{ 'ÓPTIMO' if is_optimal else 'SUBÓPTIMO' }}
-          </span>
-          <span class="banner-title">
-            {{ 'El terreno es apto para cultivos forrajeros' if is_optimal else 'El terreno no es óptimo para cultivos forrajeros' }}
-          </span>
-        </div>
-        <div class="banner-stats">
-          <div class="stat">
-            <span class="stat-label">Probabilidad</span>
-            <span class="stat-value {{ 'green' if is_optimal else 'amber' }}">
-              {{ "%.1f"|format(probability * 100) }}%
-            </span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Umbral del modelo</span>
-            <span class="stat-value">{{ "%.1f"|format(threshold * 100) }}%</span>
-          </div>
-          {% if top_crops %}
-          <div class="stat">
-            <span class="stat-label">Mejor cultivo</span>
-            <span class="stat-value" style="font-size:1rem;padding-top:4px;">
-              {{ top_crops[0].nombre }} ({{ "%.0f"|format(top_crops[0].affinity * 100) }}%)
-            </span>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- Top crops -->
-      {% if top_crops %}
-      <div class="crops-section">
-        <div class="section-header">Top 10 cultivos por afinidad</div>
-        <div class="crops-grid">
-          {% for crop in top_crops %}
-            {% set is_g = crop.affinity >= 0.5 %}
-            <div class="crop-row">
-              <span class="crop-rank">{{ loop.index }}</span>
-              <span class="crop-name">{{ crop.nombre }}</span>
-              <span class="crop-pct {{ 'green' if is_g else 'amber' }}">
-                {{ "%.0f"|format(crop.affinity * 100) }}%
-              </span>
-              <div class="crop-bar-wrap">
-                <div class="crop-bar {{ 'green' if is_g else 'amber' }}"
-                     style="width:{{ "%.1f"|format(crop.affinity * 100) }}%"></div>
-              </div>
             </div>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
 
-      <!-- Plots -->
-      <div class="plots-grid">
-        {% if plot %}
-        <div class="plot-card">
-          <div class="section-header">Curva Sigmoide – Regresión Logística</div>
-          <img src="data:image/png;base64,{{ plot }}" alt="Sigmoid plot"/>
-        </div>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="network-line line-1"></div>
+                <div class="network-line line-2"></div>
+                <div class="network-line line-3"></div>
+                <div class="sprout">🌱</div>
+                <div class="hero-icon">⌁</div>
+            </div>
+
+            <a href="/recommendation/MF" class="back-button">
+                ← Back to Model Selection
+            </a>
+
+        </section>
+
+        <!-- INPUT FORM -->
+        <section class="input-panel reveal">
+
+            <div class="section-heading">
+                <span>1.</span>
+                <h2>Input Data <small>— Adjust Terrain Variables</small></h2>
+            </div>
+
+            <form action="/recommendation/regression" method="POST" class="input-grid">
+
+                <!-- PH -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>🌿</span>
+                        <strong>Soil pH</strong>
+                    </div>
+
+                    <output id="ph-val">{{ ph_value or 6.5 }}</output>
+
+                    <input
+                        type="range"
+                        name="ph"
+                        id="ph"
+                        min="3"
+                        max="9"
+                        step="0.1"
+                        value="{{ ph_value or 6.5 }}"
+                        oninput="document.getElementById('ph-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>3.0</span>
+                        <span>9.0</span>
+                    </div>
+                </article>
+
+                <!-- HUMEDAD -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>💧</span>
+                        <strong>Relative Humidity (%)</strong>
+                    </div>
+
+                    <output id="hum-val">{{ hum_value or 60 }}%</output>
+
+                    <input
+                        type="range"
+                        name="humedad"
+                        id="humedad"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ hum_value or 60 }}"
+                        oninput="document.getElementById('hum-val').textContent=this.value + '%'"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </article>
+
+                <!-- ALTITUD -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>⛰</span>
+                        <strong>Altitude (m)</strong>
+                    </div>
+
+                    <output id="alt-val">{{ alt_value or 1500 }} m</output>
+
+                    <input
+                        type="range"
+                        name="altitud"
+                        id="altitud"
+                        min="0"
+                        max="4000"
+                        step="10"
+                        value="{{ alt_value or 1500 }}"
+                        oninput="document.getElementById('alt-val').textContent=this.value + ' m'"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 m</span>
+                        <span>4000 m</span>
+                    </div>
+                </article>
+
+                <!-- TEMPERATURA -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>🌡</span>
+                        <strong>Temperature (°C)</strong>
+                    </div>
+
+                    <output id="temp-val">{{ temp_value or 20 }} °C</output>
+
+                    <input
+                        type="range"
+                        name="temperatura"
+                        id="temperatura"
+                        min="0"
+                        max="45"
+                        step="0.5"
+                        value="{{ temp_value or 20 }}"
+                        oninput="document.getElementById('temp-val').textContent=this.value + ' °C'"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 °C</span>
+                        <span>45 °C</span>
+                    </div>
+                </article>
+
+                <!-- BUTTON -->
+                <button type="submit" class="generate-card">
+                    <span>⌁</span>
+                    <strong>Generate Analysis</strong>
+                    <small>Get recommendation in real time</small>
+                </button>
+
+            </form>
+
+        </section>
+
+        {% if result is not none %}
+
+            {% set is_optimal = (result == 1) %}
+
+            <!-- RESULTS GRID -->
+            <section class="results-grid reveal">
+
+                <!-- TERRAIN ASSESSMENT -->
+                <article class="result-panel assessment-panel">
+
+                    <div class="section-heading">
+                        <span>2.</span>
+                        <h2>Terrain Assessment</h2>
+
+                        <strong class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Optimal' if is_optimal else 'Suboptimal' }}
+                            <small>✓</small>
+                        </strong>
+                    </div>
+
+                    <p class="panel-lead">
+                        {{ 'The terrain is optimal for forage crops.' if is_optimal else 'The terrain is not optimal for forage crops.' }}
+                    </p>
+
+                    <div class="assessment-stats">
+
+                        <div>
+                            <span>Probability</span>
+                            <strong class="{{ 'green-text' if is_optimal else 'amber-text' }}">
+                                {{ "%.1f"|format(probability * 100) }}%
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Model Threshold</span>
+                            <strong>{{ "%.1f"|format(threshold * 100) }}%</strong>
+                        </div>
+
+                        <div>
+                            <span>Best Crop</span>
+
+                            {% if top_crops %}
+                                <strong class="green-text crop-name-highlight">
+                                    {{ top_crops[0].nombre }}
+                                </strong>
+                            {% else %}
+                                <strong class="green-text crop-name-highlight">—</strong>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <div class="probability-bar">
+                        <i style="left: {{ '%.1f'|format(probability * 100) }}%"></i>
+                    </div>
+
+                    <div class="probability-labels">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                    </div>
+
+                </article>
+
+                <!-- TOP CROPS -->
+                {% if top_crops %}
+                <article class="result-panel crops-panel">
+
+                    <div class="section-heading">
+                        <span>3.</span>
+                        <h2>Top 10 Crops by Affinity</h2>
+                    </div>
+
+                    <div class="crop-list">
+                        {% for crop in top_crops %}
+                            {% set affinity_pct = crop.affinity * 100 %}
+                            {% set level_class = 'optimal' if crop.affinity >= 0.80 else 'high' if crop.affinity >= 0.70 else 'medium' %}
+
+                            <div class="crop-row">
+                                <span class="rank">{{ loop.index }}</span>
+                                <strong>{{ crop.nombre }}</strong>
+
+                                <div class="bar-track">
+                                    <i style="width: {{ '%.1f'|format(affinity_pct) }}%"></i>
+                                </div>
+
+                                <span class="crop-pct">{{ "%.1f"|format(affinity_pct) }}%</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </article>
+                {% endif %}
+
+            </section>
+
+            <!-- CHARTS AND RANKING -->
+            <section class="charts-grid reveal">
+
+                {% if plot %}
+                <article class="chart-panel wide">
+
+                    <div class="section-heading">
+                        <span>4.</span>
+                        <h2>Logistic Regression <small>(Sigmoid Curve)</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ plot }}" alt="Logistic Regression Sigmoid Curve">
+                    </div>
+
+                </article>
+                {% endif %}
+
+                {% if top_crops %}
+                <article class="chart-panel ranking-panel">
+
+                    <div class="section-heading">
+                        <span>5.</span>
+                        <h2>Affinity Ranking</h2>
+                    </div>
+
+                    <div class="ranking-table-wrap">
+
+                        <table class="ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Crop</th>
+                                    <th>Affinity (%)</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for crop in top_crops %}
+                                    {% set affinity_pct = crop.affinity * 100 %}
+                                    {% set level = 'Optimal' if crop.affinity >= 0.80 else 'High' if crop.affinity >= 0.70 else 'Medium' %}
+                                    {% set level_class = 'optimal' if crop.affinity >= 0.80 else 'high' if crop.affinity >= 0.70 else 'medium' %}
+
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ crop.nombre }}</td>
+                                        <td>
+                                            <div class="heat-cell {{ level_class }}">
+                                                {{ "%.1f"|format(affinity_pct) }}%
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="level-pill {{ level_class }}">{{ level }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </article>
+                {% endif %}
+
+            </section>
+
+        {% else %}
+
+            <!-- EMPTY STATE -->
+            <section class="empty-panel reveal">
+
+                <div class="empty-icon">🌾</div>
+
+                <h2>Ready for terrain analysis</h2>
+
+                <p>
+                    Adjust the terrain variables and press <strong>Generate Analysis</strong> to obtain
+                    aptitude classification, probability, and the most suitable forage crops.
+                </p>
+
+            </section>
+
+            {% if plot %}
+            <section class="charts-grid single reveal">
+                <article class="chart-panel wide">
+                    <div class="section-heading">
+                        <span>4.</span>
+                        <h2>Logistic Regression <small>Preview</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ plot }}" alt="Logistic Regression Preview">
+                    </div>
+                </article>
+            </section>
+            {% endif %}
+
         {% endif %}
-        {% if ranking_plot %}
-        <div class="plot-card">
-          <div class="section-header">Ranking de Afinidad</div>
-          <img src="data:image/png;base64,{{ ranking_plot }}" alt="Ranking plot"/>
-        </div>
+
+        <!-- METRICS -->
+        {% if metrics %}
+        <section class="metrics-panel reveal">
+
+            <div class="section-heading">
+                <span>6.</span>
+                <h2>Model Performance <small>(Test set — 25% of data)</small></h2>
+            </div>
+
+            <div class="metric-cards">
+
+                <article>
+                    <span>🌱</span>
+                    <div>
+                        <small>Accuracy</small>
+                        <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                        <p>Correct predictions</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>⌁</span>
+                    <div>
+                        <small>Precision</small>
+                        <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                        <p>True positives / Predicted positives</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>♧</span>
+                    <div>
+                        <small>Recall</small>
+                        <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                        <p>True positives / Actual positives</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>◉</span>
+                    <div>
+                        <small>F1-Score</small>
+                        <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                        <p>Harmonic mean of Precision & Recall</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>▧</span>
+                    <div>
+                        <small>ROC AUC</small>
+                        <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                        <p>Model discrimination capacity</p>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
         {% endif %}
-      </div>
 
-    {% else %}
+        <!-- MATRIX / ROC -->
+        <section class="bottom-charts-grid reveal">
 
-      <!-- Empty / GET state: show only sigmoid with no prediction point -->
-      <div class="empty-state">
-        <div class="icon">🌾</div>
-        <p>Ajusta los parámetros del terreno y presiona <strong>Analizar Terreno</strong> para obtener la clasificación de aptitud y los mejores cultivos forrajeros.</p>
-      </div>
-      {% if plot %}
-      <div class="plot-card" style="max-width:700px">
-        <div class="section-header">Curva Sigmoide – Vista previa</div>
-        <img src="data:image/png;base64,{{ plot }}" alt="Sigmoid plot"/>
-      </div>
-      {% endif %}
-
-    {% endif %}
-      <!-- Metrics Section -->
-{% if metrics %}
-<div class="metrics-section" style="margin-top: 28px;">
-    <div class="section-header" style="margin-bottom: 20px;">
-        Métricas del Modelo
-        <span style="font-size: 0.7rem; margin-left: 12px; color: var(--muted);">
-            Evaluación en test set (25% de los datos)
-        </span>
-    </div>
-    
-        <!-- Metrics Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px;">
-            <div class="plot-card" style="padding: 20px;">
-                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-                    Exactitud
-                </div>
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-                    {{ "%.1f"|format(metrics.exactitud * 100) }}%
-                </div>
-                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
-                    Aciertos totales
-                </div>
-            </div>
-            
-            <div class="plot-card" style="padding: 20px;">
-                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-                    Precisión
-                </div>
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-                    {{ "%.1f"|format(metrics.precision * 100) }}%
-                </div>
-                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
-                    Verdaderos positivos / Total positivos predichos
-                </div>
-            </div>
-            
-            <div class="plot-card" style="padding: 20px;">
-                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-                    Recall
-                </div>
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-                    {{ "%.1f"|format(metrics.recall * 100) }}%
-                </div>
-                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
-                    Verdaderos positivos / Total positivos reales
-                </div>
-            </div>
-            
-            <div class="plot-card" style="padding: 20px;">
-                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-                    F1-Score
-                </div>
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-                    {{ "%.3f"|format(metrics.f1_score) }}
-                </div>
-                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
-                    Media armónica de precisión y recall
-                </div>
-            </div>
-            
-            <div class="plot-card" style="padding: 20px;">
-                <div style="font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;">
-                    ROC AUC
-                </div>
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--green); margin-top: 8px;">
-                    {{ "%.3f"|format(metrics.roc_auc) }}
-                </div>
-                <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
-                    Capacidad de discriminación del modelo
-                </div>
-            </div>
-        </div>
-        
-        <!-- Confusion Matrix and ROC plots -->
-        <div class="plots-grid">
             {% if confusion_matrix_plot %}
-            <div class="plot-card">
-                <div class="section-header">Matriz de Confusión</div>
-                <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix" style="width: 100%;"/>
-            </div>
-            {% endif %}
-            
-            {% if roc_plot %}
-            <div class="plot-card">
-                <div class="section-header">Curva ROC</div>
-                <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve" style="width: 100%;"/>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-  </main>
-</div>
+            <article class="chart-panel">
 
-</body>
-</html>
+                <div class="section-heading">
+                    <span>7.</span>
+                    <h2>Confusion Matrix</h2>
+                </div>
+
+                <div class="chart-image">
+                    <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix">
+                </div>
+
+            </article>
+            {% endif %}
+
+            {% if roc_plot %}
+            <article class="chart-panel">
+
+                <div class="section-heading">
+                    <span>8.</span>
+                    <h2>ROC Curve</h2>
+                </div>
+
+                <div class="chart-image">
+                    <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve">
+                </div>
+
+            </article>
+            {% endif %}
+
+        </section>
+
+        <!-- INFO -->
+        <section class="info-banner reveal">
+
+            <div class="info-icon">i</div>
+
+            <p>
+                The recommendation is based on the input variables and the Logistic Regression model.
+                Adjust the variables and generate a new analysis to explore different scenarios.
+            </p>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

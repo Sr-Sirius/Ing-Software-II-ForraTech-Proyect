@@ -1,355 +1,490 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Métricas Forraje · AgroML</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    :root {
-      --green:#1D9E75; --green-dark:#0F6E56; --amber:#EF9F27;
-      --blue:#4A90D9; --purple:#8B5CF6; --coral:#E8593C;
-      --bg:#0A0F0D; --surface:#111916; --surface2:#182219;
-      --border:#1E2E26; --text:#E8F0EB; --muted:#6B8A78; --radius:12px;
-    }
-    body { font-family:'Syne',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+{% extends "base.html" %}
 
-    /* ── Header ── */
-    header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:24px 48px; border-bottom:1px solid var(--border); background:var(--surface);
-    }
-    .logo-wrap { display:flex; align-items:center; gap:14px; }
-    .logo { width:40px; height:40px; background:var(--green); border-radius:10px;
-            display:flex; align-items:center; justify-content:center; font-size:22px; }
-    header h1 { font-size:1.2rem; font-weight:700; }
-    header p  { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace; }
-    .back-btn { font-family:'DM Mono',monospace; font-size:0.75rem; padding:8px 16px;
-                border-radius:20px; border:1px solid var(--border); color:var(--muted);
-                text-decoration:none; transition:all .2s; }
-    .back-btn:hover { border-color:var(--green); color:var(--green); }
+{% block body_class %}metrics-forraje-page{% endblock %}
 
-    /* ── Page ── */
-    .page { padding:40px 48px; max-width:1100px; }
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/metrics_forraje.css') }}">
+{% endblock %}
 
-    /* ── Page title ── */
-    .page-title { margin-bottom:40px; }
-    .page-title .tag { display:inline-block; font-family:'DM Mono',monospace; font-size:0.7rem;
-                       color:var(--green); background:rgba(29,158,117,0.12);
-                       padding:3px 12px; border-radius:20px; margin-bottom:12px; letter-spacing:0.1em; }
-    .page-title h2 { font-size:2rem; font-weight:800; letter-spacing:-0.03em; margin-bottom:10px; }
-    .page-title p  { font-size:0.92rem; color:var(--muted); line-height:1.7; max-width:680px; }
+{% block content %}
 
-    /* ── Section label ── */
-    .section-title { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--muted);
-                     letter-spacing:0.14em; text-transform:uppercase; margin-bottom:16px;
-                     padding-bottom:10px; border-bottom:1px solid var(--border); }
+<section class="forage-metrics-page">
 
-    /* ── Section block ── */
-    .section { margin-bottom:48px; }
+    <div class="metrics-bg"></div>
 
-    /* ── 3-col model header cards ── */
-    .model-header-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:32px; }
-    .model-header-card { background:var(--surface); border:1px solid var(--border);
-                         border-radius:var(--radius); padding:20px 22px;
-                         position:relative; overflow:hidden; }
-    .model-header-card::before { content:''; position:absolute; top:0; left:0; right:0;
-                                  height:3px; }
-    .model-header-card.lr::before    { background:var(--green);  }
-    .model-header-card.bayes::before { background:var(--purple); }
-    .model-header-card.rf::before    { background:var(--amber);  }
-    .mhc-tag { font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.1em;
-               text-transform:uppercase; margin-bottom:6px; }
-    .mhc-tag.lr    { color:var(--green);  }
-    .mhc-tag.bayes { color:var(--purple); }
-    .mhc-tag.rf    { color:var(--amber);  }
-    .mhc-name { font-size:1rem; font-weight:700; margin-bottom:10px; }
-    .mhc-desc { font-size:0.82rem; color:var(--muted); line-height:1.65; }
+    <main class="metrics-container">
 
-    /* ── Prose text ── */
-    .prose { font-size:0.92rem; color:#C4D4CB; line-height:1.8; margin-bottom:16px; }
-    .prose strong { color:var(--text); font-weight:600; }
-    .prose em     { color:var(--muted); font-style:normal; font-family:'DM Mono',monospace; font-size:0.85rem; }
+        <!-- HERO -->
+        <section class="metrics-hero reveal">
 
-    /* ── Metric comparison table ── */
-    .metrics-table-wrap { background:var(--surface); border:1px solid var(--border);
-                          border-radius:var(--radius); overflow:hidden; margin-bottom:24px; }
-    table { width:100%; border-collapse:collapse; }
-    thead th { padding:13px 18px; text-align:left; background:var(--surface2);
-               font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.08em;
-               text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
-    tbody td { padding:13px 18px; border-bottom:1px solid var(--border); font-size:0.88rem;
-               color:#C4D4CB; vertical-align:top; }
-    tbody tr:last-child td { border-bottom:none; }
-    tbody tr:hover td { background:var(--surface2); }
-    .td-metric { font-weight:600; color:var(--text); }
-    .td-sub    { font-size:0.75rem; color:var(--muted); font-family:'DM Mono',monospace;
-                 margin-top:3px; line-height:1.5; }
-    .td-val { font-family:'DM Mono',monospace; font-size:0.88rem; font-weight:500; }
-    .td-val.lr    { color:var(--green);  }
-    .td-val.bayes { color:var(--purple); }
-    .td-val.rf    { color:var(--amber);  }
+            <div class="hero-copy">
 
-    /* ── Callout box ── */
-    .callout { border-radius:var(--radius); padding:16px 20px; margin:20px 0;
-               border-left:3px solid; font-size:0.88rem; line-height:1.75; color:#C4D4CB; }
-    .callout.green  { background:rgba(29,158,117,0.07);  border-color:var(--green);  }
-    .callout.purple { background:rgba(139,92,246,0.07);  border-color:var(--purple); }
-    .callout.amber  { background:rgba(239,159,39,0.07);  border-color:var(--amber);  }
-    .callout.info   { background:rgba(74,144,217,0.07);  border-color:var(--blue);   }
-    .callout strong { color:var(--text); }
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.home') }}">Analysis</a>
+                    <span>›</span>
+                    <a href="/recommendation/Menu">Forage Comparison</a>
+                    <span>›</span>
+                    <strong>Synthetic Dataset</strong>
+                </div>
 
-    /* ── Inline tag ── */
-    .itag { display:inline-block; font-family:'DM Mono',monospace; font-size:0.7rem;
-            padding:2px 8px; border-radius:5px; vertical-align:middle; margin:0 2px; }
-    .itag.lr    { background:rgba(29,158,117,0.15); color:var(--green);  }
-    .itag.bayes { background:rgba(139,92,246,0.15); color:var(--purple); }
-    .itag.rf    { background:rgba(239,159,39,0.15); color:var(--amber);  }
+                <div class="dataset-pill">
+                    Synthetic Dataset · forraje_1000.csv · 1,000 records · 53 species · Same terrain variables
+                </div>
 
-    /* ── Divider ── */
-    .divider { height:1px; background:var(--border); margin:40px 0; }
+                <h1>
+                    Comparative Metrics of
+                    <br>
+                    Machine Learning Models
+                    <span>on the Synthetic Forage Dataset</span>
+                </h1>
 
-    /* ── Conclusion card ── */
-    .conclusion { background:var(--surface); border:1px solid var(--border);
-                  border-radius:var(--radius); padding:28px 32px; }
-    .conclusion h3 { font-size:1.1rem; font-weight:700; margin-bottom:16px; }
-    .conclusion-row { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px;
-                      font-size:0.9rem; color:#C4D4CB; line-height:1.7; }
-    .conclusion-row .icon { font-size:1.1rem; margin-top:1px; flex-shrink:0; }
+                <p>
+                    Comparative analysis of classification metrics for the three models trained on the
+                    synthetic forage dataset. Each model receives the same terrain variables and predicts
+                    the optimal forage crop under optimal conditions.
+                </p>
 
-    @media(max-width:900px) {
-      header { padding:20px 24px; flex-direction:column; align-items:flex-start; gap:12px; }
-      .page  { padding:28px 24px; }
-      .model-header-grid { grid-template-columns:1fr; }
-    }
-  </style>
-</head>
-<body>
+            </div>
 
-<header>
-  <div class="logo-wrap">
-    <div class="logo">🌿</div>
-    <div>
-      <h1>Métricas comparativas · Forraje</h1>
-      <p>Regresión Logística · Teoría Bayesiana · Random Forest · Dataset sintético</p>
-    </div>
-  </div>
-  <a href="/menu" class="back-btn">← Inicio</a>
-</header>
+            <div class="hero-chart" aria-hidden="true">
+                <div class="chart-line green"></div>
+                <div class="chart-line purple"></div>
+                <div class="chart-line amber"></div>
+            </div>
 
-<div class="page">
+        </section>
 
-  <!-- ── Título ── -->
-  <div class="page-title">
-    <div class="tag">Dataset sintético · forrajeo_1000.csv · 1 000 registros · 52 especies</div>
-    <h2>Comparación de modelos — Forraje</h2>
-    <p>Análisis comparativo de las métricas de clasificación obtenidas por los tres modelos entrenados sobre el dataset sintético de forrajes. Cada modelo recibe las mismas variables de terreno y predice si las condiciones son óptimas para el cultivo.</p>
-  </div>
+        <!-- MODEL CARDS -->
+        <section class="model-grid reveal">
 
-  <!-- ── 1. Descripción de los modelos ── -->
-  <div class="section">
-    <p class="section-title">Los tres modelos</p>
-    <div class="model-header-grid">
+            <article class="model-card logistic">
+                <div>
+                    <span class="model-kicker">Model 1 · Supervised</span>
+                    <h2>Logistic Regression</h2>
+                    <p>
+                        Approximates the probability of optimal aptitude using the sigmoid function on
+                        the composite score that combines the terrain variables.
+                    </p>
+                    <span class="model-tag">Highly interpretable</span>
+                </div>
+                <div class="model-icon">⌁</div>
+            </article>
 
-      <div class="model-header-card lr">
-        <div class="mhc-tag lr">Modelo 1 · Supervisado</div>
-        <div class="mhc-name">Regresión Logística</div>
-        <div class="mhc-desc">Estima la probabilidad de aptitud mediante una función sigmoide sobre un score compuesto de las 4 variables del terreno. Modelo lineal, interpretable y de bajo costo computacional.</div>
-      </div>
+            <article class="model-card bayes">
+                <div>
+                    <span class="model-kicker">Model 2 · Probabilistic</span>
+                    <h2>Naive Bayes (Gaussian)</h2>
+                    <p>
+                        Applies Bayes theorem assuming conditional independence between variables.
+                        Produces smoother and more conservative probabilities.
+                    </p>
+                    <span class="model-tag">Probabilistic and fast</span>
+                </div>
+                <div class="model-icon">⌘</div>
+            </article>
 
-      <div class="model-header-card bayes">
-        <div class="mhc-tag bayes">Modelo 2 · Probabilístico</div>
-        <div class="mhc-name">Teoría Bayesiana</div>
-        <div class="mhc-desc">Aplica el teorema de Bayes calculando P(variedad | terreno) ∝ P(terreno | variedad) × P(variedad). Usa distribuciones gaussianas por clase para estimar la verosimilitud.</div>
-      </div>
+            <article class="model-card forest">
+                <div>
+                    <span class="model-kicker">Model 3 · Ensemble</span>
+                    <h2>Random Forest (200 trees)</h2>
+                    <p>
+                        Ensemble of decision trees trained independently and averaged in their votes.
+                        Captures non-linear relationships between variables.
+                    </p>
+                    <span class="model-tag">Most robust</span>
+                </div>
+                <div class="model-icon">♧</div>
+            </article>
 
-      <div class="model-header-card rf">
-        <div class="mhc-tag rf">Modelo 3 · Ensemble</div>
-        <div class="mhc-name">Random Forest</div>
-        <div class="mhc-desc">Entrena 200 árboles de decisión independientes y promedia sus votos. Captura relaciones no lineales entre variables y aporta importancia de features como métrica adicional.</div>
-      </div>
+        </section>
 
-    </div>
-  </div>
+        <!-- FEATURES + COMPOSITE -->
+        <section class="metrics-two-col reveal">
 
-  <!-- ── 2. Variables de entrada ── -->
-  <div class="section">
-    <p class="section-title">Variables de entrada compartidas</p>
-    <p class="prose">Los tres modelos reciben exactamente las mismas <strong>4 variables del terreno</strong> del usuario. El preprocesamiento es idéntico para garantizar una comparación justa:</p>
+            <article class="metrics-panel large">
 
-    <div class="metrics-table-wrap">
-      <table>
-        <thead>
-          <tr><th>Variable</th><th>Rango</th><th>Descripción</th><th>Peso en score compuesto</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="td-metric">pH del suelo</span></td>
-            <td><span class="td-val">3.0 – 9.0</span></td>
-            <td>Acidez o alcalinidad del suelo. Determina la disponibilidad de nutrientes para la planta.</td>
-            <td><span class="td-val lr">30 %</span></td>
-          </tr>
-          <tr>
-            <td><span class="td-metric">Humedad relativa</span></td>
-            <td><span class="td-val">0 – 100 %</span></td>
-            <td>Porcentaje de humedad en el ambiente. Afecta la transpiración y el estrés hídrico.</td>
-            <td><span class="td-val lr">20 %</span></td>
-          </tr>
-          <tr>
-            <td><span class="td-metric">Altitud</span></td>
-            <td><span class="td-val">0 – 4 000 msnm</span></td>
-            <td>Altura sobre el nivel del mar. Determina el piso térmico y la presión atmosférica.</td>
-            <td><span class="td-val lr">30 %</span></td>
-          </tr>
-          <tr>
-            <td><span class="td-metric">Temperatura</span></td>
-            <td><span class="td-val">0 – 45 °C</span></td>
-            <td>Temperatura promedio anual del terreno. Variable crítica para la fotosíntesis y el crecimiento.</td>
-            <td><span class="td-val lr">20 %</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                <div class="section-heading green">
+                    <span></span>
+                    <h2>Terrain variables (input features)</h2>
+                </div>
 
-    <p class="prose">El <em>score compuesto</em> normaliza estas 4 variables en un único valor entre 0 y 1 que representa la aptitud general del terreno. Este score es el que alimenta directamente la Regresión Logística, mientras que Naive Bayes y Random Forest trabajan con el vector completo de 8 características (incluidos los rangos <em>min/max</em> del dataset).</p>
-  </div>
+                <p class="panel-lead">
+                    All models receive the same set of variables from the terrain. Preprocessing is performed
+                    to ensure a fair comparison.
+                </p>
 
-  <!-- ── 3. Tabla comparativa de métricas ── -->
-  <div class="section">
-    <p class="section-title">Tabla comparativa de métricas</p>
-    <p class="prose">Métricas calculadas sobre el conjunto de prueba (20% de los datos, 200 registros), con validación cruzada de 3 folds sobre el conjunto completo. Los valores a continuación son los esperados según las características de cada algoritmo sobre este dataset:</p>
+                <div class="table-wrap">
+                    <table class="metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Range</th>
+                                <th>Description</th>
+                                <th>Weight in Score</th>
+                            </tr>
+                        </thead>
 
-    <div class="metrics-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Métrica</th>
-            <th>Definición</th>
-            <th><span class="itag lr">Reg. Logística</span></th>
-            <th><span class="itag bayes">Naive Bayes</span></th>
-            <th><span class="itag rf">Random Forest</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="td-metric">Accuracy</div>
-              <div class="td-sub">Exactitud global</div>
-            </td>
-            <td class="prose" style="font-size:0.82rem">Proporción de predicciones correctas sobre el total. <em>(TP + TN) / total</em></td>
-            <td><span class="td-val lr">~82 – 88 %</span></td>
-            <td><span class="td-val bayes">~75 – 82 %</span></td>
-            <td><span class="td-val rf">~90 – 96 %</span></td>
-          </tr>
-          <tr>
-            <td>
-              <div class="td-metric">Precision</div>
-              <div class="td-sub">Calidad de positivos</div>
-            </td>
-            <td class="prose" style="font-size:0.82rem">De los terrenos clasificados como óptimos, ¿cuántos realmente lo son? <em>TP / (TP + FP)</em></td>
-            <td><span class="td-val lr">~80 – 87 %</span></td>
-            <td><span class="td-val bayes">~73 – 80 %</span></td>
-            <td><span class="td-val rf">~89 – 95 %</span></td>
-          </tr>
-          <tr>
-            <td>
-              <div class="td-metric">Recall</div>
-              <div class="td-sub">Cobertura de positivos</div>
-            </td>
-            <td class="prose" style="font-size:0.82rem">De todos los terrenos realmente óptimos, ¿cuántos detecta el modelo? <em>TP / (TP + FN)</em></td>
-            <td><span class="td-val lr">~83 – 89 %</span></td>
-            <td><span class="td-val bayes">~76 – 83 %</span></td>
-            <td><span class="td-val rf">~91 – 96 %</span></td>
-          </tr>
-          <tr>
-            <td>
-              <div class="td-metric">F1-Score</div>
-              <div class="td-sub">Balance precision/recall</div>
-            </td>
-            <td class="prose" style="font-size:0.82rem">Media armónica entre precision y recall. Útil cuando las clases están desbalanceadas. <em>2 × P × R / (P + R)</em></td>
-            <td><span class="td-val lr">~81 – 88 %</span></td>
-            <td><span class="td-val bayes">~74 – 81 %</span></td>
-            <td><span class="td-val rf">~90 – 95 %</span></td>
-          </tr>
-          <tr>
-            <td>
-              <div class="td-metric">ROC-AUC</div>
-              <div class="td-sub">Área bajo curva ROC</div>
-            </td>
-            <td class="prose" style="font-size:0.82rem">Capacidad del modelo para distinguir entre clases en todos los umbrales posibles. 1.0 = perfecto, 0.5 = aleatorio.</td>
-            <td><span class="td-val lr">~0.87 – 0.93</span></td>
-            <td><span class="td-val bayes">~0.80 – 0.87</span></td>
-            <td><span class="td-val rf">~0.94 – 0.99</span></td>
-          </tr>
-          <tr>
-            <td>
-              <div class="td-metric">CV Accuracy</div>
-              <div class="td-sub">Cross-val 3 folds</div>
-            </td>
-            <td class="prose" style="font-size:0.82rem">Accuracy promedio en validación cruzada. Indica la estabilidad y generalización del modelo frente a datos no vistos.</td>
-            <td><span class="td-val lr">~84 % ± 3 %</span></td>
-            <td><span class="td-val bayes">~78 % ± 4 %</span></td>
-            <td><span class="td-val rf">~92 % ± 2 %</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+                        <tbody>
+                            <tr>
+                                <td><strong>△ Soil pH</strong></td>
+                                <td>3.0 – 9.0</td>
+                                <td>Soil acidity or alkalinity. Determines nutrient availability.</td>
+                                <td>
+                                    <span class="score-weight">30%</span>
+                                    <i style="--w:30%"></i>
+                                </td>
+                            </tr>
 
-  <!-- ── 4. Análisis por modelo ── -->
-  <div class="section">
-    <p class="section-title">Análisis detallado por modelo</p>
+                            <tr>
+                                <td><strong>◌ Relative humidity</strong></td>
+                                <td>0 – 100%</td>
+                                <td>Percentage of humidity in the environment.</td>
+                                <td>
+                                    <span class="score-weight">20%</span>
+                                    <i style="--w:20%"></i>
+                                </td>
+                            </tr>
 
-    <div class="callout green">
-      <strong>Regresión Logística</strong> — Es el modelo base del módulo forraje. Su principal ventaja es la interpretabilidad: el coeficiente de cada variable indica directamente su impacto en la probabilidad de aptitud. La curva sigmoide permite visualizar con claridad el umbral de decisión (0.5). Su limitación es que asume una relación lineal entre el score compuesto y la probabilidad, lo que puede subestimar interacciones complejas entre pH, altitud y temperatura.
-    </div>
+                            <tr>
+                                <td><strong>△ Altitude</strong></td>
+                                <td>0 – 4,000 m</td>
+                                <td>Height above sea level. Affects temperature and pressure.</td>
+                                <td>
+                                    <span class="score-weight">30%</span>
+                                    <i style="--w:30%"></i>
+                                </td>
+                            </tr>
 
-    <div class="callout purple">
-      <strong>Teoría Bayesiana (Gaussian Naive Bayes)</strong> — Parte del supuesto de independencia condicional entre features (<em>naive</em>), lo cual raramente se cumple en datos reales. Sin embargo, funciona bien con datasets pequeños y balanceados. Su ventaja es la velocidad de entrenamiento y la capacidad de cuantificar incertidumbre mediante probabilidades posteriores. Tiende a ser más conservador que los otros modelos, produciendo probabilidades más suavizadas.
-    </div>
+                            <tr>
+                                <td><strong>ϑ Temperature</strong></td>
+                                <td>0 – 45°C</td>
+                                <td>Annual average temperature of the terrain.</td>
+                                <td>
+                                    <span class="score-weight">20%</span>
+                                    <i style="--w:20%"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <div class="callout amber">
-      <strong>Random Forest (200 árboles)</strong> — Consistentemente el modelo con mejor accuracy en este dataset. Al combinar 200 árboles de decisión independientes, reduce la varianza sin aumentar el sesgo significativamente (bagging). Captura relaciones no lineales entre variables y es robusto a outliers. Su desventaja es la menor interpretabilidad respecto a la Regresión Logística, aunque la gráfica de importancia de variables compensa parcialmente esto.
-    </div>
-  </div>
+            </article>
 
-  <div class="divider"></div>
+            <article class="metrics-panel composite-card">
 
-  <!-- ── 5. Interpretación de métricas ── -->
-  <div class="section">
-    <p class="section-title">¿Cómo interpretar estas métricas?</p>
+                <h2>Composite score</h2>
 
-    <p class="prose"><strong>Accuracy</strong> responde a "¿qué porcentaje de las veces acierta el modelo?". Es la métrica más intuitiva pero puede ser engañosa si las clases están desbalanceadas. En este dataset con ~50% de terrenos óptimos y ~50% subóptimos, la accuracy es un indicador confiable.</p>
+                <p>
+                    Normalized score of 4 variables on a unique scale from 0 to 1.
+                    Represents the general aptitude of the terrain.
+                </p>
 
-    <p class="prose"><strong>Precision vs Recall</strong> son complementarias. Un modelo con alta precision pero bajo recall es "conservador": solo clasifica como óptimo cuando está muy seguro, pero se pierde muchos terrenos buenos. Un modelo con alto recall pero baja precision es "agresivo": detecta casi todos los buenos pero también recomienda terrenos no aptos. El <strong>F1-Score</strong> equilibra ambas perspectivas.</p>
+                <div class="score-number">0.70</div>
 
-    <p class="prose"><strong>ROC-AUC</strong> es la métrica más robusta para comparar clasificadores. Mide qué tan bien separa el modelo las dos clases independientemente del umbral de decisión. Un AUC de 0.95 significa que el modelo tiene un 95% de probabilidad de rankear un terreno óptimo por encima de uno subóptimo en una comparación aleatoria.</p>
+                <div class="score-bar">
+                    <span></span>
+                    <i></i>
+                </div>
 
-    <p class="prose"><strong>Cross-validation</strong> es más importante que el accuracy en test cuando el dataset es pequeño. Un modelo con 96% en test pero alta varianza en CV (±8%) está sobreajustado. Preferir modelos con CV alta y baja desviación estándar.</p>
-  </div>
+                <div class="score-scale">
+                    <span>0</span>
+                    <span>0.25</span>
+                    <span>0.50</span>
+                    <span>0.75</span>
+                    <span>1.00</span>
+                </div>
 
-  <!-- ── 6. Conclusión ── -->
-  <div class="conclusion">
-    <h3>Conclusión y recomendación de uso</h3>
-    <div class="conclusion-row">
-      <span class="icon">🟢</span>
-      <span><strong>Random Forest</strong> es el modelo recomendado para producción por su mayor accuracy y robustez. Ideal cuando la prioridad es minimizar falsas recomendaciones.</span>
-    </div>
-    <div class="conclusion-row">
-      <span class="icon">🟣</span>
-      <span><strong>Regresión Logística</strong> es preferible cuando se necesita explicar al productor por qué se hace una recomendación. La curva sigmoide es visualmente comprensible y los coeficientes son interpretables.</span>
-    </div>
-    <div class="conclusion-row">
-      <span class="icon">🟡</span>
-      <span><strong>Naive Bayes</strong> es útil como referencia probabilística y para escenarios con muy pocos datos de entrenamiento. Su menor accuracy se compensa con su capacidad de cuantificar incertidumbre.</span>
-    </div>
-    <div class="conclusion-row">
-      <span class="icon">📌</span>
-      <span>Los tres modelos trabajan sobre el mismo preprocesamiento y dataset, por lo que las diferencias en métricas reflejan exclusivamente las diferencias algorítmicas, no diferencias en los datos.</span>
-    </div>
-  </div>
+                <div class="score-labels">
+                    <span>Low</span>
+                    <span>Medium</span>
+                    <span>High</span>
+                    <span>Optimal</span>
+                </div>
 
-</div><!-- /page -->
-</body>
-</html>
+            </article>
+
+        </section>
+
+        <!-- COMPARATIVE TABLE + RADAR -->
+        <section class="metrics-two-col table-radar reveal">
+
+            <article class="metrics-panel large">
+
+                <div class="section-heading purple">
+                    <span></span>
+                    <h2>Comparative metrics table</h2>
+                </div>
+
+                <p class="panel-lead">
+                    Metrics calculated on the test set with 3-fold cross-validation.
+                </p>
+
+                <div class="table-wrap">
+                    <table class="metrics-table compare">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Definition</th>
+                                <th class="green-text">Logistic Regression<br><small>(Model 1)</small></th>
+                                <th class="purple-text">Naive Bayes<br><small>(Model 2)</small></th>
+                                <th class="amber-text">Random Forest<br><small>(Model 3)</small></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><strong>Accuracy</strong></td>
+                                <td>Overall proportion of correct predictions.</td>
+                                <td class="green-text">82 – 88%</td>
+                                <td class="purple-text">75 – 82%</td>
+                                <td class="amber-text">90 – 96%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Precision</strong></td>
+                                <td>Of the optimal terrains, how many are truly optimal?</td>
+                                <td class="green-text">80 – 87%</td>
+                                <td class="purple-text">73 – 80%</td>
+                                <td class="amber-text">89 – 95%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Recall</strong></td>
+                                <td>Of all truly optimal terrains, how many does the model detect?</td>
+                                <td class="green-text">83 – 89%</td>
+                                <td class="purple-text">76 – 83%</td>
+                                <td class="amber-text">91 – 96%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>F1-Score</strong></td>
+                                <td>Harmonic mean between precision and recall.</td>
+                                <td class="green-text">81 – 88%</td>
+                                <td class="purple-text">74 – 81%</td>
+                                <td class="amber-text">90 – 95%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>ROC-AUC</strong></td>
+                                <td>Model ability to distinguish classes.</td>
+                                <td class="green-text">0.87 – 0.93</td>
+                                <td class="purple-text">0.80 – 0.87</td>
+                                <td class="amber-text">0.94 – 0.99</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>CV Accuracy</strong><br><small>(3-folds)</small></td>
+                                <td>Average accuracy with 3-fold cross-validation.</td>
+                                <td class="green-text">84% ± 3%</td>
+                                <td class="purple-text">78% ± 4%</td>
+                                <td class="amber-text">92% ± 2%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+            <article class="metrics-panel radar-panel">
+
+                <h2>Metric comparison radar</h2>
+
+                <div class="radar-legend">
+                    <span class="green-dot">Log. Reg.</span>
+                    <span class="purple-dot">Naive Bayes</span>
+                    <span class="amber-dot">Random Forest</span>
+                </div>
+
+                <div class="radar-chart">
+                    <div class="radar-grid"></div>
+                    <div class="radar-poly green-poly"></div>
+                    <div class="radar-poly purple-poly"></div>
+                    <div class="radar-poly amber-poly"></div>
+                    <span class="axis a1">Accuracy</span>
+                    <span class="axis a2">Precision</span>
+                    <span class="axis a3">Recall</span>
+                    <span class="axis a4">F1-Score</span>
+                    <span class="axis a5">ROC-AUC</span>
+                    <span class="axis a6">CV Accuracy</span>
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- DETAIL BY MODEL -->
+        <section class="analysis-section reveal">
+
+            <div class="section-heading green">
+                <span></span>
+                <h2>Detailed analysis by model</h2>
+            </div>
+
+            <div class="analysis-grid">
+
+                <article class="analysis-card logistic">
+
+                    <h3>⌁ Logistic Regression</h3>
+
+                    <ul>
+                        <li>High interpretability: each variable coefficient shows its direct impact.</li>
+                        <li>Sigmoid curve allows clear visualization of the decision threshold.</li>
+                        <li>Limitation: assumes linear relationship between score and probability.</li>
+                    </ul>
+
+                    <div class="mini-sigmoid"></div>
+
+                </article>
+
+                <article class="analysis-card bayes">
+
+                    <h3>♙ Naive Bayes (Gaussian)</h3>
+
+                    <ul>
+                        <li>Assumes conditional independence between variables.</li>
+                        <li>Fast training and low computational cost.</li>
+                        <li>More conservative probabilities due to Gaussian distribution.</li>
+                    </ul>
+
+                    <div class="mini-gaussian"></div>
+
+                </article>
+
+                <article class="analysis-card forest">
+
+                    <h3>♧ Random Forest (200 trees)</h3>
+
+                    <ul>
+                        <li>Great capacity to model non-linear relationships and interactions.</li>
+                        <li>Most robust model: high accuracy and generalization.</li>
+                        <li>Lower interpretability compared to Logistic Regression.</li>
+                    </ul>
+
+                    <div class="importance-bars">
+                        <div><span>Soil pH</span><i style="--w:95%"></i></div>
+                        <div><span>Altitude</span><i style="--w:85%"></i></div>
+                        <div><span>Humidity</span><i style="--w:60%"></i></div>
+                        <div><span>Temperature</span><i style="--w:46%"></i></div>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- HOW TO INTERPRET -->
+        <section class="interpret-section reveal">
+
+            <div class="section-heading green">
+                <span></span>
+                <h2>How to interpret these metrics?</h2>
+            </div>
+
+            <div class="interpret-grid">
+
+                <article>
+                    <span>◎</span>
+                    <h3>Accuracy</h3>
+                    <p>
+                        Responds to “what percentage of times is the model correct?”.
+                        It is intuitive, but can be misleading if classes are unbalanced.
+                    </p>
+                </article>
+
+                <article>
+                    <span>♧</span>
+                    <h3>Precision</h3>
+                    <p>
+                        Answers “when the model predicts optimal, how many really are?”.
+                        High precision avoids false positive recommendations.
+                    </p>
+                </article>
+
+                <article>
+                    <span>♙</span>
+                    <h3>Recall</h3>
+                    <p>
+                        Answers “of all optimal terrains, how many does the model detect?”.
+                        High recall avoids missing good terrains.
+                    </p>
+                </article>
+
+                <article>
+                    <span>⌁</span>
+                    <h3>ROC-AUC</h3>
+                    <p>
+                        Measures the model’s ability to rank classes correctly across all thresholds.
+                    </p>
+                </article>
+
+                <article>
+                    <span>▣</span>
+                    <h3>Cross-validation</h3>
+                    <p>
+                        Evaluates model stability on different data subsets.
+                        Lower variance indicates a more reliable model.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- CONCLUSION -->
+        <section class="conclusion-section reveal">
+
+            <div class="section-heading green">
+                <span></span>
+                <h2>Conclusion and recommendation</h2>
+            </div>
+
+            <div class="conclusion-flow">
+
+                <article>
+                    <span>🏆</span>
+                    <h3>Best Overall Performance</h3>
+                    <p>
+                        Random Forest achieves the highest accuracy and AUC.
+                    </p>
+                </article>
+
+                <i>→</i>
+
+                <article class="purple">
+                    <span>⌕</span>
+                    <h3>Interpretability</h3>
+                    <p>
+                        Logistic Regression is the most interpretable and useful for explicit explanations.
+                    </p>
+                </article>
+
+                <i>→</i>
+
+                <article class="amber">
+                    <span>⚡</span>
+                    <h3>Efficiency</h3>
+                    <p>
+                        Naive Bayes is fast and simple, useful when the dataset is small.
+                    </p>
+                </article>
+
+                <i>→</i>
+
+                <article class="blue">
+                    <span>◎</span>
+                    <h3>Recommendation</h3>
+                    <p>
+                        Use Random Forest for production and Logistic Regression for interpretability analyses.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}
