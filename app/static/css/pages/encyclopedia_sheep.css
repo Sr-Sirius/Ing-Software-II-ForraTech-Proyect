@@ -291,31 +291,31 @@
 .merino-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/sheep_merino.jpg");
+        url("/static/images/merino.jpg");
 }
 
 .suffolk-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/sheep_suffolk.jpg");
+        url("/static/images/suffolk.jpg");
 }
 
 .dorper-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/sheep_dorper.jpg");
+        url("/static/images/dorper.jpg");
 }
 
 .corriedale-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/sheep_corriedale.jpg");
+        url("/static/images/corriedale.jpg");
 }
 
 .hampshire-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/sheep_hampshire.jpg");
+        url("/static/images/hampshire.jpg");
 }
 
 .breed-overlay {

@@ -291,31 +291,31 @@
 .saanen-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/goat_saanen.jpg");
+        url("/static/images/saanen.jpg");
 }
 
 .boer-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/goat_boer.jpg");
+        url("/static/images/boer.jpg");
 }
 
 .alpine-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/goat_alpine.jpg");
+        url("/static/images/alpine.jpg");
 }
 
 .nubian-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/goat_nubian.jpg");
+        url("/static/images/nubian.jpg");
 }
 
 .anglo-nubian-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/goat_anglo_nubian.jpg");
+        url("/static/images/anglonubian.jpg");
 }
 
 .breed-overlay {

@@ -291,31 +291,31 @@
 .brachiaria-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/forage_brachiaria.jpg");
+        url("/static/images/brachiaria.jpg");
 }
 
 .panicum-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/forage_panicum.jpg");
+        url("/static/images/panicum.jpg");
 }
 
 .cynodon-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/forage_cynodon.jpg");
+        url("/static/images/cynodon.jpg");
 }
 
 .megathyrsus-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/forage_megathyrsus.jpg");
+        url("/static/images/megathyrsus.jpg");
 }
 
 .medicago-image {
     background-image:
         linear-gradient(rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.65)),
-        url("/static/images/forage_medicago.jpg");
+        url("/static/images/medicago.jpg");
 }
 
 .species-overlay {
