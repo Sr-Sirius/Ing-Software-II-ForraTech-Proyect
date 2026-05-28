@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block body_class %}encyclopedia-index-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/encyclopedia_index.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="encyclopedia-shell">
+
+    <div class="encyclopedia-bg"></div>
+
+    <div class="encyclopedia-container">
+
+        <!-- TOP BAR -->
+        <header class="encyclopedia-top reveal">
+
+            <div class="breadcrumb">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <span>›</span>
+                <strong>Encyclopedia</strong>
+            </div>
+
+            <a href="{{ url_for('main.home') }}" class="back-button">
+                ← Back to Dashboard
+            </a>
+
+        </header>
+
+        <!-- HERO -->
+        <section class="encyclopedia-hero reveal">
+
+            <div class="hero-icon">
+                📖
+            </div>
+
+            <h1>ForraTech Encyclopedia</h1>
+
+            <p>
+                Explore detailed information about livestock and forage species.
+                <span>Knowledge for better agricultural decisions.</span>
+            </p>
+
+        </section>
+
+        <!-- CATEGORY CAROUSEL / GRID -->
+        <section class="encyclopedia-cards-wrapper reveal">
+
+            <button class="carousel-arrow left" type="button" aria-label="Previous category">
+                ‹
+            </button>
+
+            <div class="encyclopedia-cards">
+
+                <!-- SHEEP -->
+                <article class="encyclopedia-card sheep-card">
+
+                    <a href="{{ url_for('encyclopedia.sheep') }}" class="card-link" aria-label="Open sheep encyclopedia"></a>
+
+                    <div class="card-image sheep-image"></div>
+
+                    <div class="card-overlay"></div>
+
+                    <div class="card-content">
+
+                        <div class="category-icon">
+                            🐑
+                        </div>
+
+                        <h2>Sheep</h2>
+
+                        <p>
+                            Discover sheep breeds, characteristics, production systems
+                            and management practices.
+                        </p>
+
+                    </div>
+
+                    <div class="card-stats">
+
+                        <div>
+                            <strong>28</strong>
+                            <span>Breeds</span>
+                        </div>
+
+                        <div>
+                            <strong>15</strong>
+                            <span>Production Types</span>
+                        </div>
+
+                        <div>
+                            <strong>85</strong>
+                            <span>Articles</span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <!-- GOATS -->
+                <article class="encyclopedia-card goats-card">
+
+                    <a href="{{ url_for('encyclopedia.goats') }}" class="card-link" aria-label="Open goats encyclopedia"></a>
+
+                    <div class="card-image goats-image"></div>
+
+                    <div class="card-overlay"></div>
+
+                    <div class="card-content">
+
+                        <div class="category-icon">
+                            🐐
+                        </div>
+
+                        <h2>Goats</h2>
+
+                        <p>
+                            Learn about goat breeds, milk and meat production,
+                            and optimal management.
+                        </p>
+
+                    </div>
+
+                    <div class="card-stats">
+
+                        <div>
+                            <strong>22</strong>
+                            <span>Breeds</span>
+                        </div>
+
+                        <div>
+                            <strong>12</strong>
+                            <span>Production Types</span>
+                        </div>
+
+                        <div>
+                            <strong>68</strong>
+                            <span>Articles</span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <!-- FORAGE -->
+                <article class="encyclopedia-card forage-card">
+
+                    <a href="{{ url_for('encyclopedia.fodder') }}" class="card-link" aria-label="Open forage encyclopedia"></a>
+
+                    <div class="card-image forage-image"></div>
+
+                    <div class="card-overlay"></div>
+
+                    <div class="card-content">
+
+                        <div class="category-icon">
+                            🌿
+                        </div>
+
+                        <h2>Forage</h2>
+
+                        <p>
+                            Explore forage species, nutritional value, adaptation
+                            and cultivation conditions.
+                        </p>
+
+                    </div>
+
+                    <div class="card-stats">
+
+                        <div>
+                            <strong>45</strong>
+                            <span>Species</span>
+                        </div>
+
+                        <div>
+                            <strong>18</strong>
+                            <span>Climate Zones</span>
+                        </div>
+
+                        <div>
+                            <strong>120</strong>
+                            <span>Articles</span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <button class="carousel-arrow right" type="button" aria-label="Next category">
+                ›
+            </button>
+
+            <div class="carousel-dots" aria-hidden="true">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </section>
+
+        <!-- BENEFITS -->
+        <section class="benefit-grid reveal">
+
+            <article class="benefit-card">
+                <div class="benefit-icon">📖</div>
+                <div>
+                    <h3>Reliable Information</h3>
+                    <p>Content based on scientific sources and agricultural experts.</p>
+                </div>
+            </article>
+
+            <article class="benefit-card">
+                <div class="benefit-icon">🛡️</div>
+                <div>
+                    <h3>Always Updated</h3>
+                    <p>Information constantly reviewed and updated.</p>
+                </div>
+            </article>
+
+            <article class="benefit-card">
+                <div class="benefit-icon">🎯</div>
+                <div>
+                    <h3>Practical Application</h3>
+                    <p>Designed for real-world application on your farm.</p>
+                </div>
+            </article>
+
+            <article class="benefit-card">
+                <div class="benefit-icon">🌱</div>
+                <div>
+                    <h3>Sustainable Approach</h3>
+                    <p>Promoting responsible and sustainable agricultural practices.</p>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- INFO -->
+        <section class="info-banner reveal">
+
+            <div class="info-icon">i</div>
+
+            <p>
+                Select a category to explore detailed information and improve your agricultural knowledge.
+            </p>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

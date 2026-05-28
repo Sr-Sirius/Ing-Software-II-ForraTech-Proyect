@@ -1,0 +1,228 @@
+/* =========================
+   SIDEBAR BASE
+========================= */
+.sidebar {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    bottom: 20px;
+
+    width: 240px;
+    min-width: 70px;
+    max-width: 260px;
+
+    border-radius: 16px;
+
+    background: rgba(20, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+
+    display: flex;
+    flex-direction: column;
+
+    transition: width 0.25s ease;
+    z-index: 1000;
+}
+
+/* =========================
+   HANDLE (drag)
+========================= */
+.handle {
+    position: absolute;
+    top: 0;
+    right: -4px;
+
+    width: 8px;
+    height: 100%;
+
+    cursor: ew-resize;
+    z-index: 10;
+
+    background: transparent;
+}
+
+.handle:hover {
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255,255,255,0.15)
+    );
+}
+
+/* =========================
+   STRUCTURE
+========================= */
+.sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* =========================
+   LOGO
+========================= */
+.sidebar-header .logo {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.sidebar.collapsed .sidebar-header .logo {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+.logo-icon {
+    font-size: 18px;
+}
+
+.sidebar-header .logo-text {
+    color: var(--primary);
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+/* =========================
+   NAV
+========================= */
+.sidebar-menu {
+    list-style: none;
+    flex: 1;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 14px 20px;
+
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+
+    opacity: 0.85;
+    transition: 0.2s;
+}
+
+.sidebar-menu a:hover {
+    background: rgba(255,255,255,0.05);
+    opacity: 1;
+}
+
+/* TEXTO */
+.sidebar-menu p {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+/* COLAPSADO */
+.sidebar.collapsed .sidebar-menu p {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+/* NORMAL */
+.sidebar:not(.collapsed) .sidebar-menu p {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+.sidebar-footer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-footer a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 12px 20px;
+
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+.sidebar-footer a:hover {
+    color: var(--primary);
+}
+
+/* ocultar texto en colapsado */
+.sidebar.collapsed .sidebar-footer p {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+/* =========================
+   RESIZE UX FIX
+========================= */
+body.resizing * {
+    user-select: none !important;
+    cursor: ew-resize !important;
+}
+
+/* =========================
+   SIDEBAR HEADER FIX (LOGO COLLAPSE)
+========================= */
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* TEXTO DEL LOGO */
+.sidebar-header .logo {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+/* CUANDO ESTÁ COLAPSADO */
+.sidebar.collapsed .sidebar-header .logo {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+/* TEXTO EXTRA */
+.logo-text {
+    transition: 0.2s;
+}
+
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+/* ICONO */
+.logo-icon {
+    font-size: 18px;
+}
+
+/* COLOR MARCA */
+.sidebar-header .logo-text {
+    color: var(--primary);
+    font-weight: 600;
+}

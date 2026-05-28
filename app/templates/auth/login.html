@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% set show_footer = False %}
+
+{% block body_class %}auth-bg login-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/login.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="login-container">
+
+    <div class="card">
+
+        <!-- LEFT SIDE -->
+        <div class="hero">
+            <div class="bg"></div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <form method="POST" action="">
+
+            <h2>ForraTech 🌱</h2>
+            <h3>Login to your account</h3>
+
+            <div class="socials">
+                <button type="button" class="social-btn">
+                    <img src="{{ url_for('static', filename='images/google.svg') }}">
+                    <p><span class="extra-text">Login with</span> Google</p>
+                </button>
+
+                <button type="button" class="social-btn">
+                    <img src="{{ url_for('static', filename='images/apple.svg') }}">
+                    <p><span class="extra-text">Login with</span> Apple</p>
+                </button>
+            </div>
+
+            <div class="or">
+                <span>Or</span>
+            </div>
+
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+
+            <div class="login-options">
+                <label class="remember">
+                    <input type="checkbox" name="remember">
+                    Remember me
+                </label>
+
+                <a href="{{ url_for('auth.forgot_password') }}" class="forgot">
+                    Forgot password?
+                </a>
+            </div>
+
+            <button type="submit">Login</button>
+
+            <p class="register-link">
+                Don't have an account? 
+                <a href="{{ url_for('auth.register') }}">Sign up</a>
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

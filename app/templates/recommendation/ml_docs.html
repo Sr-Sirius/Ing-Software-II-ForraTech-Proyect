@@ -1,0 +1,1388 @@
+{% extends "base.html" %}
+
+{% block body_class %}ml-docs-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/ml_docs.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="ml-docs-layout">
+
+    <div class="ml-docs-background"></div>
+
+    <!-- SIDEBAR LOCAL DE DOCUMENTACIÓN -->
+    <aside class="ml-local-sidebar reveal">
+
+        <div class="sidebar-group">
+            <span class="sidebar-label">Recommendation System</span>
+
+            <button class="sidebar-main-item">
+                <span>🎮</span>
+                Synthetic Dataset
+                <i>⌄</i>
+            </button>
+
+            <button class="sidebar-main-item">
+                <span>▦</span>
+                Real Dataset
+                <i>⌄</i>
+            </button>
+        </div>
+
+        <div class="sidebar-group">
+            <span class="sidebar-label">Pipeline Documentation</span>
+
+            <button class="sidebar-model active" data-model="lr">
+                <span>🌿</span>
+                Logistic Regression
+                <i>⌃</i>
+            </button>
+
+            <div class="sidebar-steps active" data-steps="lr">
+                <button class="active" data-scroll="lr-business">Business Understanding</button>
+                <button data-scroll="lr-data">Data Understanding</button>
+                <button data-scroll="lr-engineering">Data Engineering</button>
+                <button data-scroll="lr-model">Model Engineering</button>
+                <button data-scroll="lr-evaluation">Model Evaluation</button>
+                <button data-scroll="lr-prediction">Prediction System</button>
+            </div>
+
+            <button class="sidebar-model" data-model="nb_syn">
+                <span>🧠</span>
+                Naive Bayes
+                <i>›</i>
+            </button>
+
+            <div class="sidebar-steps" data-steps="nb_syn">
+                <button data-scroll="nb-business">Business Understanding</button>
+                <button data-scroll="nb-data">Data Understanding</button>
+                <button data-scroll="nb-engineering">Data Engineering</button>
+                <button data-scroll="nb-model">Model Engineering</button>
+                <button data-scroll="nb-evaluation">Model Evaluation</button>
+                <button data-scroll="nb-prediction">Prediction System</button>
+            </div>
+
+            <button class="sidebar-model" data-model="rf_syn">
+                <span>🌲</span>
+                Random Forest
+                <i>›</i>
+            </button>
+
+            <div class="sidebar-steps" data-steps="rf_syn">
+                <button data-scroll="rf-business">Business Understanding</button>
+                <button data-scroll="rf-data">Data Understanding</button>
+                <button data-scroll="rf-engineering">Data Engineering</button>
+                <button data-scroll="rf-model">Model Engineering</button>
+                <button data-scroll="rf-evaluation">Model Evaluation</button>
+                <button data-scroll="rf-prediction">Prediction System</button>
+            </div>
+
+            <button class="sidebar-model" data-model="dane">
+                <span>📍</span>
+                DANE Models
+                <i>›</i>
+            </button>
+
+            <div class="sidebar-steps" data-steps="dane">
+                <button data-scroll="dane-business">Business Understanding</button>
+                <button data-scroll="dane-data">Data Understanding</button>
+                <button data-scroll="dane-engineering">Data Engineering</button>
+                <button data-scroll="dane-model">Model Engineering</button>
+                <button data-scroll="dane-evaluation">Model Evaluation</button>
+                <button data-scroll="dane-prediction">Prediction System</button>
+            </div>
+        </div>
+
+        <div class="sidebar-help">
+            <div class="help-icon">?</div>
+            <strong>Need help?</strong>
+            <p>Check the technical documentation or contact support.</p>
+            <a href="/recommendation/docs">View docs</a>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="ml-docs-content">
+
+        <!-- HERO -->
+        <section class="pipeline-hero reveal">
+
+            <div class="breadcrumb">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <span>›</span>
+                <a href="/recommendation/Menu">Pipelines</a>
+                <span>›</span>
+                <strong id="breadcrumb-current">Logistic Regression</strong>
+            </div>
+
+            <div class="pipeline-hero-inner">
+
+                <div class="pipeline-copy">
+
+                    <span class="pipeline-pill">CRISP-ML Pipeline</span>
+
+                    <h1 id="pipeline-title">
+                        Pipeline: Logistic
+                        <span>Regression</span>
+                    </h1>
+
+                    <p id="pipeline-description">
+                        Complete documentation of the machine learning pipeline using the
+                        CRISP-ML methodology applied to the Logistic Regression model.
+                    </p>
+
+                    <div class="pipeline-meta">
+
+                        <div class="meta-card">
+                            <span>🌿 Model Type</span>
+                            <strong id="model-type">Supervised Learning</strong>
+                        </div>
+
+                        <div class="meta-card">
+                            <span>▣ Dataset</span>
+                            <strong id="dataset-name">Synthetic Forage Dataset</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <aside class="pipeline-overview">
+
+                    <span class="overview-title">⌁ Pipeline Overview</span>
+
+                    <div class="overview-stat">
+                        <i>▧</i>
+                        <div>
+                            <strong>6</strong>
+                            <p>CRISP-ML Phases</p>
+                        </div>
+                    </div>
+
+                    <div class="overview-stat">
+                        <i>▤</i>
+                        <div>
+                            <strong id="records-count">1,000</strong>
+                            <p>Records</p>
+                        </div>
+                    </div>
+
+                    <div class="overview-stat">
+                        <i>♧</i>
+                        <div>
+                            <strong id="features-count">12</strong>
+                            <p>Features</p>
+                        </div>
+                    </div>
+
+                    <div class="overview-stat">
+                        <i>☑</i>
+                        <div>
+                            <strong id="best-accuracy">85.3%</strong>
+                            <p>Best Accuracy</p>
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+        <!-- TIMELINE -->
+        <section class="pipeline-timeline reveal">
+
+            <button class="timeline-step active" data-scroll-current="business">
+                <span>🌿</span>
+                <small>01</small>
+                <strong>Business<br>Understanding</strong>
+            </button>
+
+            <button class="timeline-step" data-scroll-current="data">
+                <span>▧</span>
+                <small>02</small>
+                <strong>Data<br>Understanding</strong>
+            </button>
+
+            <button class="timeline-step" data-scroll-current="engineering">
+                <span>▤</span>
+                <small>03</small>
+                <strong>Data<br>Engineering</strong>
+            </button>
+
+            <button class="timeline-step" data-scroll-current="model">
+                <span>🧠</span>
+                <small>04</small>
+                <strong>Model<br>Engineering</strong>
+            </button>
+
+            <button class="timeline-step" data-scroll-current="evaluation">
+                <span>📈</span>
+                <small>05</small>
+                <strong>Model<br>Evaluation</strong>
+            </button>
+
+            <button class="timeline-step" data-scroll-current="prediction">
+                <span>🚀</span>
+                <small>06</small>
+                <strong>Prediction<br>System</strong>
+            </button>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- MODEL 1: LOGISTIC REGRESSION -->
+        <!-- ===================================================== -->
+        <div id="panel-lr" class="model-panel active" data-model-name="Logistic Regression">
+
+            <section id="lr-business" class="phase-card current-business">
+
+                <div class="phase-header">
+                    <span>01</span>
+                    <h2>Business Understanding</h2>
+                </div>
+
+                <div class="phase-grid three">
+
+                    <article class="visual-card large">
+                        <div class="visual-title">
+                            <span>🎯</span>
+                            <h3>Business Objective</h3>
+                        </div>
+
+                        <p>
+                            Determine if the conditions of a terrain — pH, humidity, altitude and temperature —
+                            are optimal to recommend the most suitable forage crop according to its productivity.
+                        </p>
+
+                        <div class="plant-highlight">
+                            <strong>Problem to solve</strong>
+                            <p>
+                                Identify optimal conditions for forage crop production and recommend
+                                the crop with the highest productivity.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>👥</span>
+                            <h3>Context & Users</h3>
+                        </div>
+
+                        <strong class="mini-label">Target users</strong>
+
+                        <ul>
+                            <li>Livestock and dairy producers</li>
+                            <li>Agronomic field technicians</li>
+                            <li>Agribusiness decision-makers</li>
+                            <li>ForraTech platform users</li>
+                        </ul>
+
+                        <div class="chip-row">
+                            <span>Binary Classification</span>
+                            <span>Crop Recommendation</span>
+                        </div>
+                    </article>
+
+                    <article class="visual-card compact">
+                        <div class="visual-title">
+                            <span>⭐</span>
+                            <h3>Success Criteria</h3>
+                        </div>
+
+                        <div class="success-grid">
+                            <div>
+                                <span>Accuracy</span>
+                                <strong>≥ 80%</strong>
+                            </div>
+
+                            <div>
+                                <span>Precision</span>
+                                <strong>≥ 80%</strong>
+                            </div>
+
+                            <div>
+                                <span>Recall</span>
+                                <strong>≥ 80%</strong>
+                            </div>
+
+                            <div>
+                                <span>F1-Score</span>
+                                <strong>≥ 0.80</strong>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="lr-data">
+                        Next: Data Understanding
+                        <span>→</span>
+                    </button>
+
+                    <a class="outline-action" href="/recommendation/Menu">
+                        View full pipeline
+                    </a>
+                </div>
+
+            </section>
+
+            <section id="lr-data" class="phase-card current-data">
+
+                <div class="phase-header">
+                    <span>02</span>
+                    <h2>Data Understanding</h2>
+                </div>
+
+                <div class="phase-grid three">
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>▤</span>
+                            <h3>Data Source</h3>
+                        </div>
+
+                        <p>
+                            Synthetic dataset with 1,000 forage crop records and agroecological
+                            condition ranges.
+                        </p>
+
+                        <div class="chip-row">
+                            <span>1,000 records</span>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>▧</span>
+                            <h3>Input Variables</h3>
+                        </div>
+
+                        <ul>
+                            <li><code>ph_min / ph_max</code></li>
+                            <li><code>humedad_min / humedad_max</code></li>
+                            <li><code>altitud_min / altitud_max</code></li>
+                            <li><code>temp_min / temp_max</code></li>
+                        </ul>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>☑</span>
+                            <h3>Target Variable</h3>
+                        </div>
+
+                        <p>
+                            <code>optimal</code> is a binary variable derived from the composite score.
+                        </p>
+
+                        <div class="chip-row">
+                            <span>0 = Not optimal</span>
+                            <span>1 = Optimal</span>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="lr-engineering">
+                        Next: Data Engineering
+                        <span>→</span>
+                    </button>
+                </div>
+
+            </section>
+
+            <section id="lr-engineering" class="phase-card current-engineering">
+
+                <div class="phase-header">
+                    <span>03</span>
+                    <h2>Data Engineering</h2>
+                </div>
+
+                <div class="process-line">
+
+                    <div class="process-step">
+                        <span>01</span>
+                        <strong>Midpoints</strong>
+                        <p>Build average values from min/max ranges.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <span>02</span>
+                        <strong>Composite</strong>
+                        <p>Weighted forage suitability score.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <span>03</span>
+                        <strong>Scaling</strong>
+                        <p>StandardScaler normalization.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <span>04</span>
+                        <strong>Dataset Split</strong>
+                        <p>75% train / 25% test stratified.</p>
+                    </div>
+
+                </div>
+
+                <div class="phase-grid two">
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>ƒ</span>
+                            <h3>Composite Formula</h3>
+                        </div>
+
+<pre><code>composite =
+  0.30 × ph_mid / 9 +
+  0.20 × hum_mid / 100 +
+  0.30 × alt_mid / 4000 +
+  0.20 × temp_mid / 45</code></pre>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>⚙️</span>
+                            <h3>Affinity Function</h3>
+                        </div>
+
+                        <p>
+                            Ranks forage crops by checking whether user terrain values fall inside
+                            each crop's valid agroecological range.
+                        </p>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="lr-model">
+                        Next: Model Engineering
+                        <span>→</span>
+                    </button>
+                </div>
+
+            </section>
+
+            <section id="lr-model" class="phase-card current-model">
+
+                <div class="phase-header">
+                    <span>04</span>
+                    <h2>Model Engineering</h2>
+                </div>
+
+                <div class="phase-grid two">
+
+                    <article class="visual-card large">
+                        <div class="visual-title">
+                            <span>🧠</span>
+                            <h3>Logistic Regression Algorithm</h3>
+                        </div>
+
+                        <p>
+                            Linear generalized model that applies the sigmoid function over the
+                            scaled composite score to estimate the probability of optimal terrain.
+                        </p>
+
+                        <div class="chip-row">
+                            <span>LogisticRegression</span>
+                            <span>max_iter=1000</span>
+                            <span>threshold=0.5</span>
+                        </div>
+                    </article>
+
+                    <article class="visual-card code-visual">
+                        <div class="visual-title">
+                            <span>▣</span>
+                            <h3>Model Formula</h3>
+                        </div>
+
+<pre><code>P(optimal | x) =
+  1 / (1 + e^(-z))
+
+z = β0 + β1 · composite</code></pre>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="lr-evaluation">
+                        Next: Model Evaluation
+                        <span>→</span>
+                    </button>
+                </div>
+
+            </section>
+
+            <section id="lr-evaluation" class="phase-card current-evaluation">
+
+                <div class="phase-header">
+                    <span>05</span>
+                    <h2>Model Evaluation</h2>
+                </div>
+
+                <div class="phase-grid three">
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>📈</span>
+                            <h3>Evaluation Metrics</h3>
+                        </div>
+
+                        <div class="metric-mini-grid">
+                            <div>
+                                <span>Accuracy</span>
+                                <strong>85.3%</strong>
+                            </div>
+                            <div>
+                                <span>Precision</span>
+                                <strong>84.8%</strong>
+                            </div>
+                            <div>
+                                <span>Recall</span>
+                                <strong>86.1%</strong>
+                            </div>
+                            <div>
+                                <span>F1-Score</span>
+                                <strong>85.4%</strong>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>▦</span>
+                            <h3>Confusion Matrix</h3>
+                        </div>
+
+                        <div class="matrix-mini">
+                            <div></div><div>Pred 0</div><div>Pred 1</div>
+                            <div>Real 0</div><strong>214</strong><strong>34</strong>
+                            <div>Real 1</div><strong>29</strong><strong>223</strong>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>〽</span>
+                            <h3>ROC Curve</h3>
+                        </div>
+
+                        <div class="fake-roc">
+                            <span>AUC ≈ 0.91</span>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="lr-prediction">
+                        Next: Prediction System
+                        <span>→</span>
+                    </button>
+                </div>
+
+            </section>
+
+            <section id="lr-prediction" class="phase-card current-prediction">
+
+                <div class="phase-header">
+                    <span>06</span>
+                    <h2>Prediction System</h2>
+                </div>
+
+                <div class="phase-grid two">
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>🚀</span>
+                            <h3>Evaluation Flow</h3>
+                        </div>
+
+                        <ol class="flow-list">
+                            <li>User enters pH, humidity, altitude and temperature.</li>
+                            <li>System calculates composite suitability score.</li>
+                            <li>Model predicts optimal class and probability.</li>
+                            <li>System recommends the most suitable forage crop.</li>
+                        </ol>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>✅</span>
+                            <h3>Example Prediction</h3>
+                        </div>
+
+                        <div class="example-box">
+                            <p><strong>Input</strong> pH: 6.2 · Humidity: 65% · Altitude: 1800 · Temp: 18.5°C</p>
+                            <p><strong>Output</strong> Optimal conditions detected · Recommended crop: Ryegrass</p>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <a href="/recommendation/Menu" class="outline-action">← Back to Pipelines</a>
+                    <a href="/recommendation/Mforraje" class="outline-action">View metrics</a>
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- MODEL 2: NAIVE BAYES -->
+        <!-- ===================================================== -->
+        <div id="panel-nb_syn" class="model-panel" data-model-name="Naive Bayes">
+
+            <section id="nb-business" class="phase-card current-business">
+
+                <div class="phase-header">
+                    <span>01</span>
+                    <h2>Business Understanding</h2>
+                </div>
+
+                <div class="phase-grid three">
+
+                    <article class="visual-card large">
+                        <div class="visual-title">
+                            <span>🧠</span>
+                            <h3>Business Objective</h3>
+                        </div>
+
+                        <p>
+                            Classify terrain as optimal or non-optimal for forage using Bayesian
+                            probability and range-based variables.
+                        </p>
+
+                        <div class="plant-highlight">
+                            <strong>Problem to solve</strong>
+                            <p>
+                                Recommend forage crops while explicitly modeling uncertainty in
+                                agroecological conditions.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <div class="visual-title">
+                            <span>👥</span>
+                            <h3>Context & Users</h3>
+                        </div>
+
+                        <ul>
+                            <li>Livestock and dairy producers</li>
+                            <li>Agronomic technicians</li>
+                            <li>Agribusiness analysts</li>
+                            <li>ForraTech recommendation system</li>
+                        </ul>
+
+                        <div class="chip-row">
+                            <span>Bayesian Classification</span>
+                            <span>8 Features</span>
+                        </div>
+                    </article>
+
+                    <article class="visual-card compact">
+                        <div class="visual-title">
+                            <span>⭐</span>
+                            <h3>Success Criteria</h3>
+                        </div>
+
+                        <div class="success-grid">
+                            <div><span>Accuracy</span><strong>≥ 80%</strong></div>
+                            <div><span>Precision</span><strong>≥ 80%</strong></div>
+                            <div><span>Recall</span><strong>≥ 80%</strong></div>
+                            <div><span>F1-Score</span><strong>≥ 0.80</strong></div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="nb-data">Next: Data Understanding <span>→</span></button>
+                </div>
+
+            </section>
+
+            <section id="nb-data" class="phase-card current-data">
+                <div class="phase-header"><span>02</span><h2>Data Understanding</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card">
+                        <h3>Data Source</h3>
+                        <p>Synthetic forage dataset with 1,000 generated records.</p>
+                        <div class="chip-row"><span>1,000 records</span></div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Input Variables</h3>
+                        <ul>
+                            <li><code>ph_min / ph_max</code></li>
+                            <li><code>humedad_min / humedad_max</code></li>
+                            <li><code>altitud_min / altitud_max</code></li>
+                            <li><code>temp_min / temp_max</code></li>
+                        </ul>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Target Variable</h3>
+                        <p><code>optimal</code> derived from the same composite score for fair model comparison.</p>
+                        <div class="chip-row"><span>0 = Not optimal</span><span>1 = Optimal</span></div>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="nb-engineering">Next: Data Engineering <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="nb-engineering" class="phase-card current-engineering">
+                <div class="phase-header"><span>03</span><h2>Data Engineering</h2></div>
+
+                <div class="process-line">
+                    <div class="process-step"><span>01</span><strong>Cleaning</strong><p>Remove missing values and outliers.</p></div>
+                    <div class="process-step"><span>02</span><strong>Transformation</strong><p>Normalize numerical variables.</p></div>
+                    <div class="process-step"><span>03</span><strong>Feature Engineering</strong><p>Composite score as decision threshold.</p></div>
+                    <div class="process-step"><span>04</span><strong>Dataset Split</strong><p>80% training / 20% test.</p></div>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="nb-model">Next: Model Engineering <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="nb-model" class="phase-card current-model">
+                <div class="phase-header"><span>04</span><h2>Model Engineering</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card">
+                        <h3>Naive Bayes Algorithm</h3>
+                        <p>Gaussian Naive Bayes assumes independence between features and normal distribution.</p>
+                        <div class="chip-row"><span>GaussianNB</span></div>
+                    </article>
+
+                    <article class="visual-card code-visual">
+                        <h3>Model Formula</h3>
+<pre><code>P(Ck | X) =
+  P(Ck) ∏ P(xi | Ck)
+  ─────────────────
+       P(X)</code></pre>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="nb-evaluation">Next: Model Evaluation <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="nb-evaluation" class="phase-card current-evaluation">
+                <div class="phase-header"><span>05</span><h2>Model Evaluation</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card">
+                        <h3>Evaluation Metrics</h3>
+                        <div class="metric-mini-grid">
+                            <div><span>Accuracy</span><strong>86.7%</strong></div>
+                            <div><span>Precision</span><strong>85.3%</strong></div>
+                            <div><span>Recall</span><strong>87.1%</strong></div>
+                            <div><span>ROC AUC</span><strong>0.91</strong></div>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Confusion Matrix</h3>
+                        <div class="matrix-mini">
+                            <div></div><div>Pred 0</div><div>Pred 1</div>
+                            <div>Real 0</div><strong>248</strong><strong>32</strong>
+                            <div>Real 1</div><strong>28</strong><strong>192</strong>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>ROC Curve</h3>
+                        <div class="fake-roc"><span>AUC ≈ 0.91</span></div>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="nb-prediction">Next: Prediction System <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="nb-prediction" class="phase-card current-prediction">
+                <div class="phase-header"><span>06</span><h2>Prediction System</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card">
+                        <h3>Evaluation Flow</h3>
+                        <ol class="flow-list">
+                            <li>User enters pH, humidity, altitude and temperature.</li>
+                            <li>System normalizes and processes the data.</li>
+                            <li>Naive Bayes predicts the optimal class.</li>
+                            <li>System recommends the most suitable crop.</li>
+                        </ol>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Example Prediction</h3>
+                        <div class="example-box">
+                            <p><strong>Input</strong> pH: 6.2 · Humidity: 45% · Altitude: 1800 · Temp: 18.5°C</p>
+                            <p><strong>Output</strong> Optimal conditions detected · Recommended crop: Ryegrass</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <a href="/recommendation/Menu" class="outline-action">← Back to Pipelines</a>
+                    <a href="/recommendation/Mforraje" class="outline-action">View metrics</a>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- MODEL 3: RANDOM FOREST -->
+        <!-- ===================================================== -->
+        <div id="panel-rf_syn" class="model-panel" data-model-name="Random Forest">
+
+            <section id="rf-business" class="phase-card current-business">
+                <div class="phase-header"><span>01</span><h2>Business Understanding</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card large">
+                        <div class="visual-title"><span>🌲</span><h3>Business Objective</h3></div>
+                        <p>
+                            Classify terrains and recommend forage crops using an ensemble of decision
+                            trees capable of capturing nonlinear interactions.
+                        </p>
+                        <div class="plant-highlight">
+                            <strong>Problem to solve</strong>
+                            <p>Improve classification robustness and model complex variable interactions.</p>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Context & Users</h3>
+                        <ul>
+                            <li>Livestock producers</li>
+                            <li>Agronomic technicians</li>
+                            <li>Decision-makers</li>
+                            <li>ForraTech recommendation system</li>
+                        </ul>
+                        <div class="chip-row"><span>Ensemble Learning</span><span>Feature Importance</span></div>
+                    </article>
+
+                    <article class="visual-card compact">
+                        <h3>Success Criteria</h3>
+                        <div class="success-grid">
+                            <div><span>Accuracy</span><strong>≥ 80%</strong></div>
+                            <div><span>Precision</span><strong>≥ 80%</strong></div>
+                            <div><span>Recall</span><strong>≥ 80%</strong></div>
+                            <div><span>F1-Score</span><strong>≥ 0.80</strong></div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="rf-data">Next: Data Understanding <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="rf-data" class="phase-card current-data">
+                <div class="phase-header"><span>02</span><h2>Data Understanding</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card">
+                        <h3>Dataset & Features</h3>
+                        <p>Uses the same 8 range-based features and composite target as Naive Bayes.</p>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Feature Importances</h3>
+                        <p>Random Forest calculates relevance through accumulated Gini impurity decrease.</p>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="rf-engineering">Next: Data Engineering <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="rf-engineering" class="phase-card current-engineering">
+                <div class="phase-header"><span>03</span><h2>Data Engineering</h2></div>
+
+                <div class="process-line">
+                    <div class="process-step"><span>01</span><strong>Midpoints</strong><p>Range midpoint calculation.</p></div>
+                    <div class="process-step"><span>02</span><strong>Composite</strong><p>Target construction.</p></div>
+                    <div class="process-step"><span>03</span><strong>Scaling</strong><p>StandardScaler.</p></div>
+                    <div class="process-step"><span>04</span><strong>Split</strong><p>80% train / 20% test.</p></div>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="rf-model">Next: Model Engineering <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="rf-model" class="phase-card current-model">
+                <div class="phase-header"><span>04</span><h2>Model Engineering</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card code-visual large">
+                        <h3>Random Forest Classifier</h3>
+<pre><code>RandomForestClassifier(
+  n_estimators = 100,
+  random_state = 42,
+  n_jobs = -1
+)</code></pre>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Voting Mechanism</h3>
+                        <p>
+                            Each tree votes independently. Final probability equals the average
+                            probability across all trees.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="rf-evaluation">Next: Model Evaluation <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="rf-evaluation" class="phase-card current-evaluation">
+                <div class="phase-header"><span>05</span><h2>Model Evaluation</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card">
+                        <h3>Evaluation Metrics</h3>
+                        <div class="metric-mini-grid">
+                            <div><span>Accuracy</span><strong>88.2%</strong></div>
+                            <div><span>Precision</span><strong>87.4%</strong></div>
+                            <div><span>Recall</span><strong>88.9%</strong></div>
+                            <div><span>ROC AUC</span><strong>0.93</strong></div>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Overfitting Check</h3>
+                        <p>Train-test accuracy gap is monitored to detect possible overfitting.</p>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Charts</h3>
+                        <ul>
+                            <li>RF probability curve</li>
+                            <li>Feature importance</li>
+                            <li>Confusion matrix</li>
+                            <li>ROC curve</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="rf-prediction">Next: Prediction System <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="rf-prediction" class="phase-card current-prediction">
+                <div class="phase-header"><span>06</span><h2>Prediction System</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card">
+                        <h3>Prediction Flow</h3>
+                        <ol class="flow-list">
+                            <li>User vector is built from terrain inputs.</li>
+                            <li>Scaler transforms the vector.</li>
+                            <li>Random Forest estimates optimal probability.</li>
+                            <li>Affinity ranking returns top crops.</li>
+                        </ol>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Example Output</h3>
+                        <div class="example-box">
+                            <p><strong>Output</strong> Optimal probability: 88.2%</p>
+                            <p><strong>Recommendation</strong> Top forage crops ranked by affinity.</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <a href="/recommendation/Menu" class="outline-action">← Back to Pipelines</a>
+                    <a href="/recommendation/Mforraje" class="outline-action">View metrics</a>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- MODEL 4: DANE MODELS -->
+        <!-- ===================================================== -->
+        <div id="panel-dane" class="model-panel" data-model-name="DANE Models">
+
+            <section id="dane-business" class="phase-card current-business">
+                <div class="phase-header"><span>01</span><h2>Business Understanding</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card large">
+                        <h3>Real DANE Dataset Objective</h3>
+                        <p>
+                            Four models use ENA 2019 agricultural data to recommend real pasture
+                            varieties based on area, protein objective and climate.
+                        </p>
+                        <div class="plant-highlight">
+                            <strong>Problem to solve</strong>
+                            <p>Adapt crop recommendation to real productive and territorial criteria.</p>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Included Models</h3>
+                        <div class="chip-row">
+                            <span>Bayes DANE</span>
+                            <span>RF DANE</span>
+                            <span>KNN DANE</span>
+                            <span>K-Means DANE</span>
+                        </div>
+                    </article>
+
+                    <article class="visual-card compact">
+                        <h3>Success Criteria</h3>
+                        <div class="success-grid">
+                            <div><span>Consistency</span><strong>High</strong></div>
+                            <div><span>Ranking</span><strong>Top-K</strong></div>
+                            <div><span>Climate Fit</span><strong>✓</strong></div>
+                            <div><span>Explainability</span><strong>✓</strong></div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="dane-data">Next: Data Understanding <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="dane-data" class="phase-card current-data">
+                <div class="phase-header"><span>02</span><h2>Data Understanding</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card">
+                        <h3>DANE ENA 2019</h3>
+                        <p>Real records of pasture varieties planted in Colombia.</p>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Key Columns</h3>
+                        <ul>
+                            <li><code>variedad</code></li>
+                            <li><code>area_sembrada_ha</code></li>
+                            <li><code>clima</code></li>
+                            <li><code>prop_banco_proteina</code></li>
+                        </ul>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Problem Nature</h3>
+                        <p>Multiclass variety prediction plus binary protein suitability evaluation.</p>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="dane-engineering">Next: Data Engineering <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="dane-engineering" class="phase-card current-engineering">
+                <div class="phase-header"><span>03</span><h2>Data Engineering</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card code-visual">
+                        <h3>Shared Feature Pipeline</h3>
+<pre><code>score_proteina =
+  0.50 × banco_proteina +
+  0.30 × corte +
+  0.10 × rotacional +
+  0.10 × continuo
+
+log_area = log1p(area_ha)
+clima_num = frio ? 1 : 0</code></pre>
+                    </article>
+
+                    <article class="visual-card code-visual">
+                        <h3>User Vector</h3>
+<pre><code>[log_area, score_p, clima_num,
+ prop_cont, prop_rot,
+ prop_corte, prop_banco]</code></pre>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="dane-model">Next: Model Engineering <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="dane-model" class="phase-card current-model">
+                <div class="phase-header"><span>04</span><h2>Model Engineering</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card">
+                        <h3>Bayes + Random Forest</h3>
+                        <ul>
+                            <li>GaussianNB multiclase with climate likelihood adjustment.</li>
+                            <li>Random Forest with multiclass and binary branches.</li>
+                            <li>Threshold optimized for F1.</li>
+                        </ul>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>KNN + K-Means</h3>
+                        <ul>
+                            <li>KNN by nearest neighbors and climate-adjusted affinity.</li>
+                            <li>K-Means with 4 clusters and PCA visualization.</li>
+                            <li>Affinity based on distance to centroid or neighbors.</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="dane-evaluation">Next: Model Evaluation <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="dane-evaluation" class="phase-card current-evaluation">
+                <div class="phase-header"><span>05</span><h2>Model Evaluation</h2></div>
+
+                <div class="phase-grid three">
+                    <article class="visual-card">
+                        <h3>Supervised Metrics</h3>
+                        <div class="chip-row">
+                            <span>Accuracy</span>
+                            <span>Precision</span>
+                            <span>Recall</span>
+                            <span>F1</span>
+                            <span>ROC AUC</span>
+                        </div>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Unsupervised Metrics</h3>
+                        <p>K-Means metrics are interpreted as cluster cohesion indicators.</p>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Generated Charts</h3>
+                        <ul>
+                            <li>PCA 2D</li>
+                            <li>Posterior ranking</li>
+                            <li>Feature importance</li>
+                            <li>ROC and confusion matrix</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <button class="phase-next" data-scroll="dane-prediction">Next: Prediction System <span>→</span></button>
+                </div>
+            </section>
+
+            <section id="dane-prediction" class="phase-card current-prediction">
+                <div class="phase-header"><span>06</span><h2>Prediction System</h2></div>
+
+                <div class="phase-grid two">
+                    <article class="visual-card">
+                        <h3>User Inputs</h3>
+                        <ul>
+                            <li><code>area_ha</code></li>
+                            <li><code>ganancia_proteina_pct</code></li>
+                            <li><code>clima</code>: frio or calido</li>
+                        </ul>
+                    </article>
+
+                    <article class="visual-card">
+                        <h3>Lazy Loading</h3>
+                        <p>
+                            Models are trained only once on first use through their respective
+                            load_model functions.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="phase-actions">
+                    <a href="/recommendation/Menu" class="outline-action">← Back to Pipelines</a>
+                    <a href="/recommendation/Mdane" class="outline-action">View metrics</a>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- FOOTER LOCAL -->
+        <section class="ml-docs-footer reveal">
+
+            <div class="footer-brand">
+                <span>🌿</span>
+                <strong>ForraTech</strong>
+            </div>
+
+            <p>© 2026 All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}
+
+{% block page_js %}
+<script>
+const modelMeta = {
+    lr: {
+        breadcrumb: "Logistic Regression",
+        title: "Pipeline: Logistic",
+        titleAccent: "Regression",
+        description: "Complete documentation of the machine learning pipeline using the CRISP-ML methodology applied to the Logistic Regression model.",
+        modelType: "Supervised Learning",
+        dataset: "Synthetic Forage Dataset",
+        records: "1,000",
+        features: "12",
+        accuracy: "85.3%"
+    },
+    nb_syn: {
+        breadcrumb: "Naive Bayes",
+        title: "Pipeline: Naive",
+        titleAccent: "Bayes",
+        description: "Complete documentation of the machine learning pipeline using the CRISP-ML methodology applied to the Naive Bayes model.",
+        modelType: "Supervised Learning",
+        dataset: "Synthetic Forage Dataset",
+        records: "1,000",
+        features: "15",
+        accuracy: "86.7%"
+    },
+    rf_syn: {
+        breadcrumb: "Random Forest",
+        title: "Pipeline: Random",
+        titleAccent: "Forest",
+        description: "Complete documentation of the ensemble learning pipeline applied to Random Forest classification and crop recommendation.",
+        modelType: "Ensemble Learning",
+        dataset: "Synthetic Forage Dataset",
+        records: "1,000",
+        features: "15",
+        accuracy: "88.2%"
+    },
+    dane: {
+        breadcrumb: "DANE Models",
+        title: "Pipeline: DANE",
+        titleAccent: "Models",
+        description: "Complete documentation of real-data machine learning models trained on DANE ENA 2019 pasture records.",
+        modelType: "Hybrid ML Suite",
+        dataset: "DANE ENA 2019 Dataset",
+        records: "26",
+        features: "7",
+        accuracy: "Variable"
+    }
+};
+
+let currentModel = "lr";
+
+function activateModel(modelId) {
+    currentModel = modelId;
+
+    document.querySelectorAll(".model-panel").forEach(panel => {
+        panel.classList.remove("active");
+    });
+
+    document.getElementById("panel-" + modelId).classList.add("active");
+
+    document.querySelectorAll(".sidebar-model").forEach(btn => {
+        const active = btn.dataset.model === modelId;
+        btn.classList.toggle("active", active);
+        btn.querySelector("i").textContent = active ? "⌃" : "›";
+    });
+
+    document.querySelectorAll(".sidebar-steps").forEach(group => {
+        group.classList.toggle("active", group.dataset.steps === modelId);
+    });
+
+    const meta = modelMeta[modelId];
+
+    document.getElementById("breadcrumb-current").textContent = meta.breadcrumb;
+    document.getElementById("pipeline-title").innerHTML = `${meta.title}<span>${meta.titleAccent}</span>`;
+    document.getElementById("pipeline-description").textContent = meta.description;
+    document.getElementById("model-type").textContent = meta.modelType;
+    document.getElementById("dataset-name").textContent = meta.dataset;
+    document.getElementById("records-count").textContent = meta.records;
+    document.getElementById("features-count").textContent = meta.features;
+    document.getElementById("best-accuracy").textContent = meta.accuracy;
+
+    document.querySelectorAll(".timeline-step").forEach((step, index) => {
+        step.classList.toggle("active", index === 0);
+    });
+
+    document.querySelectorAll(".sidebar-steps button").forEach(btn => btn.classList.remove("active"));
+    const firstStep = document.querySelector(`.sidebar-steps[data-steps="${modelId}"] button`);
+    if (firstStep) firstStep.classList.add("active");
+
+    window.scrollTo({
+        top: document.querySelector(".ml-docs-content").offsetTop - 90,
+        behavior: "smooth"
+    });
+}
+
+function scrollToPhase(targetId) {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    el.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".sidebar-model").forEach(btn => {
+        btn.addEventListener("click", () => {
+            activateModel(btn.dataset.model);
+        });
+    });
+
+    document.querySelectorAll("[data-scroll]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            scrollToPhase(btn.dataset.scroll);
+
+            document.querySelectorAll(".sidebar-steps button").forEach(step => {
+                step.classList.toggle("active", step.dataset.scroll === btn.dataset.scroll);
+            });
+        });
+    });
+
+    document.querySelectorAll(".timeline-step").forEach(step => {
+        step.addEventListener("click", () => {
+            const suffix = step.dataset.scrollCurrent;
+            const target = `${currentModel === "nb_syn" ? "nb" : currentModel === "rf_syn" ? "rf" : currentModel}-${suffix}`;
+
+            scrollToPhase(target);
+
+            document.querySelectorAll(".timeline-step").forEach(s => s.classList.remove("active"));
+            step.classList.add("active");
+        });
+    });
+});
+</script>
+{% endblock %}

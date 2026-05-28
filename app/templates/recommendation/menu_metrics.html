@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block body_class %}recommendation-hub-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/recommendation_hub.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="ml-hub-shell reveal">
+
+    <div class="ml-hub-bg"></div>
+
+    <div class="ml-hub-container">
+
+        <!-- HERO -->
+        <section class="ml-hub-hero">
+
+            <div class="ml-hub-copy">
+
+                <div class="version-pill">
+                    <span></span>
+                    v1.0 · Active Models
+                </div>
+
+                <h1>
+                    Forrage Crop
+                    <span>ML Recommendations</span>
+                </h1>
+
+                <p>
+                    Select a module to analyze the suitability of your land
+                    or explore comparative metrics between models.
+                </p>
+
+            </div>
+
+            <aside class="ml-status-stack">
+
+                <div class="ml-status-card">
+                    <div class="ml-status-icon">⌁</div>
+
+                    <div>
+                        <span>System Status</span>
+                        <strong>Active</strong>
+                        <p><i></i> All systems operational</p>
+                    </div>
+                </div>
+
+                <div class="ml-status-card">
+                    <div class="ml-status-icon">▧</div>
+
+                    <div>
+                        <span>Current Input</span>
+                        <strong>Crop Data</strong>
+                        <p>Agronomic variables loaded</p>
+                    </div>
+                </div>
+
+                <div class="ml-status-card">
+                    <div class="ml-status-icon">∅</div>
+
+                    <div>
+                        <span>Active Module</span>
+                        <strong>Ready for Recommendations</strong>
+                        <p>Select a module to continue</p>
+                    </div>
+                </div>
+
+            </aside>
+
+        </section>
+
+        <!-- RECOMMENDATION MODULES -->
+        <section class="hub-section">
+
+            <div class="hub-section-title">
+                <span>🌿</span>
+                <h2>Recommendation Modules</h2>
+            </div>
+
+            <div class="recommendation-grid">
+
+                <a href="/recommendation/menu_F" class="hub-card hub-card-large glow-hover reveal">
+
+                    <div class="hub-card-icon green">
+                        📈
+                    </div>
+
+                    <div class="hub-card-content">
+                        <span class="hub-tag green">
+                            Forage · Synthetic Dataset
+                        </span>
+
+                        <h3>Forage Recommendation</h3>
+
+                        <p>
+                            Predict the optimal crop using logistic regression on the
+                            forraje_1000 dataset. Enter pH, humidity, altitude and temperature.
+                        </p>
+
+                        <div class="hub-card-footer">
+                            <div class="hub-chips">
+                                <span>Logistic Regression</span>
+                                <span>1,000 records</span>
+                            </div>
+
+                            <div class="hub-arrow">→</div>
+                        </div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/menu_D" class="hub-card hub-card-large dane glow-hover reveal">
+
+                    <div class="hub-card-icon amber">
+                        🌾
+                    </div>
+
+                    <div class="hub-card-content">
+                        <span class="hub-tag amber">
+                            DANE · ENA 2019
+                        </span>
+
+                        <h3>DANE Recommendation</h3>
+
+                        <p>
+                            Full suite of 4 ML models trained on real ENA data.
+                            Enter area, protein yield and climate to obtain the best variety.
+                        </p>
+
+                        <div class="hub-card-footer">
+                            <div class="hub-chips amber">
+                                <span>K-Means</span>
+                                <span>KNN</span>
+                                <span>RF</span>
+                                <span>Naive Bayes</span>
+                            </div>
+
+                            <div class="hub-arrow">→</div>
+                        </div>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- ANALYSIS AND DOCUMENTATION -->
+        <section class="hub-section">
+
+            <div class="hub-section-title">
+                <span>▧</span>
+                <h2>Analysis & Documentation</h2>
+            </div>
+
+            <div class="analysis-grid">
+
+                <a href="/recommendation/ml_docs" class="hub-card glow-hover reveal">
+
+                    <div class="new-badge">New</div>
+
+                    <div class="hub-card-icon pink">
+                        🧠
+                    </div>
+
+                    <span class="hub-tag green">
+                        Pipeline ML · CRISP-DM
+                    </span>
+
+                    <h3>ML Pipeline Documentation</h3>
+
+                    <p>
+                        Complete documentation of the 5 models: Business Understanding,
+                        Data Engineering, Model Engineering, Evaluation and Prediction System.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips">
+                            <span>5 phases</span>
+                            <span>5 models</span>
+                            <span>CRISP-DM</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/docs" class="hub-card blue-card glow-hover reveal">
+
+                    <div class="hub-card-icon blue">
+                        📄
+                    </div>
+
+                    <span class="hub-tag blue">
+                        Documentation
+                    </span>
+
+                    <h3>Technical Documentation</h3>
+
+                    <p>
+                        Description of datasets, variables, project architecture,
+                        ML pipelines and the Flask application structure.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips blue">
+                            <span>Datasets</span>
+                            <span>Architecture</span>
+                            <span>Variables</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/Mforraje" class="hub-card glow-hover reveal">
+
+                    <div class="hub-card-icon green">
+                        📊
+                    </div>
+
+                    <span class="hub-tag green">
+                        Metrics · Forage
+                    </span>
+
+                    <h3>Forage Model Comparison</h3>
+
+                    <p>
+                        Comparative table of accuracy, precision and recall between
+                        Logistic Regression, Bayesian Theory and Random Forest on the synthetic dataset.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips">
+                            <span>Log. Reg.</span>
+                            <span>Naive Bayes</span>
+                            <span>Random Forest</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+                <a href="/recommendation/Mdane" class="hub-card purple-card glow-hover reveal">
+
+                    <div class="hub-card-icon purple">
+                        🔬
+                    </div>
+
+                    <span class="hub-tag purple">
+                        Metrics · DANE
+                    </span>
+
+                    <h3>DANE Model Comparison</h3>
+
+                    <p>
+                        Comparative analysis of the 4 models trained on ENA 2019 data:
+                        K-Means, KNN, Naive Bayes and Random Forest.
+                    </p>
+
+                    <div class="hub-card-footer">
+                        <div class="hub-chips purple">
+                            <span>K-Means</span>
+                            <span>KNN</span>
+                            <span>Bayes</span>
+                            <span>RF</span>
+                        </div>
+
+                        <div class="hub-arrow">→</div>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- LOCAL FOOTER -->
+        <section class="hub-local-footer reveal">
+
+            <div class="hub-footer-brand">
+                <span>🌿</span>
+                <strong>ForraTech</strong>
+            </div>
+
+            <p>© 2026 All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

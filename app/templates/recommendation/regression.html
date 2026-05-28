@@ -1,0 +1,492 @@
+{% extends "base.html" %}
+
+{% block body_class %}logistic-regression-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/regression.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="lr-shell">
+
+    <div class="lr-bg"></div>
+
+    <main class="lr-container">
+
+        <!-- HERO -->
+        <section class="lr-hero reveal">
+
+            <div class="hero-copy">
+
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.home') }}">Analysis</a>
+                    <span>›</span>
+                    <a href="/recommendation/Menu">Predictive Models</a>
+                    <span>›</span>
+                    <a href="/recommendation/MF">Logistic Regression</a>
+                    <span>›</span>
+                    <strong>Recommendation</strong>
+                </div>
+
+                <h1>Logistic Regression</h1>
+
+                <h2>Forage Productivity Recommendation</h2>
+
+                <p>
+                    Adjust the terrain variables and get an immediate analysis and crop recommendation
+                    using the Logistic Regression model.
+                </p>
+
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="network-line line-1"></div>
+                <div class="network-line line-2"></div>
+                <div class="network-line line-3"></div>
+                <div class="sprout">🌱</div>
+                <div class="hero-icon">⌁</div>
+            </div>
+
+            <a href="/recommendation/MF" class="back-button">
+                ← Back to Model Selection
+            </a>
+
+        </section>
+
+        <!-- INPUT FORM -->
+        <section class="input-panel reveal">
+
+            <div class="section-heading">
+                <span>1.</span>
+                <h2>Input Data <small>— Adjust Terrain Variables</small></h2>
+            </div>
+
+            <form action="/recommendation/regression" method="POST" class="input-grid">
+
+                <!-- PH -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>🌿</span>
+                        <strong>Soil pH</strong>
+                    </div>
+
+                    <output id="ph-val">{{ ph_value or 6.5 }}</output>
+
+                    <input
+                        type="range"
+                        name="ph"
+                        id="ph"
+                        min="3"
+                        max="9"
+                        step="0.1"
+                        value="{{ ph_value or 6.5 }}"
+                        oninput="document.getElementById('ph-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>3.0</span>
+                        <span>9.0</span>
+                    </div>
+                </article>
+
+                <!-- HUMEDAD -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>💧</span>
+                        <strong>Relative Humidity (%)</strong>
+                    </div>
+
+                    <output id="hum-val">{{ hum_value or 60 }}%</output>
+
+                    <input
+                        type="range"
+                        name="humedad"
+                        id="humedad"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ hum_value or 60 }}"
+                        oninput="document.getElementById('hum-val').textContent=this.value + '%'"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </article>
+
+                <!-- ALTITUD -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>⛰</span>
+                        <strong>Altitude (m)</strong>
+                    </div>
+
+                    <output id="alt-val">{{ alt_value or 1500 }} m</output>
+
+                    <input
+                        type="range"
+                        name="altitud"
+                        id="altitud"
+                        min="0"
+                        max="4000"
+                        step="10"
+                        value="{{ alt_value or 1500 }}"
+                        oninput="document.getElementById('alt-val').textContent=this.value + ' m'"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 m</span>
+                        <span>4000 m</span>
+                    </div>
+                </article>
+
+                <!-- TEMPERATURA -->
+                <article class="input-card">
+                    <div class="input-title">
+                        <span>🌡</span>
+                        <strong>Temperature (°C)</strong>
+                    </div>
+
+                    <output id="temp-val">{{ temp_value or 20 }} °C</output>
+
+                    <input
+                        type="range"
+                        name="temperatura"
+                        id="temperatura"
+                        min="0"
+                        max="45"
+                        step="0.5"
+                        value="{{ temp_value or 20 }}"
+                        oninput="document.getElementById('temp-val').textContent=this.value + ' °C'"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 °C</span>
+                        <span>45 °C</span>
+                    </div>
+                </article>
+
+                <!-- BUTTON -->
+                <button type="submit" class="generate-card">
+                    <span>⌁</span>
+                    <strong>Generate Analysis</strong>
+                    <small>Get recommendation in real time</small>
+                </button>
+
+            </form>
+
+        </section>
+
+        {% if result is not none %}
+
+            {% set is_optimal = (result == 1) %}
+
+            <!-- RESULTS GRID -->
+            <section class="results-grid reveal">
+
+                <!-- TERRAIN ASSESSMENT -->
+                <article class="result-panel assessment-panel">
+
+                    <div class="section-heading">
+                        <span>2.</span>
+                        <h2>Terrain Assessment</h2>
+
+                        <strong class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Optimal' if is_optimal else 'Suboptimal' }}
+                            <small>✓</small>
+                        </strong>
+                    </div>
+
+                    <p class="panel-lead">
+                        {{ 'The terrain is optimal for forage crops.' if is_optimal else 'The terrain is not optimal for forage crops.' }}
+                    </p>
+
+                    <div class="assessment-stats">
+
+                        <div>
+                            <span>Probability</span>
+                            <strong class="{{ 'green-text' if is_optimal else 'amber-text' }}">
+                                {{ "%.1f"|format(probability * 100) }}%
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Model Threshold</span>
+                            <strong>{{ "%.1f"|format(threshold * 100) }}%</strong>
+                        </div>
+
+                        <div>
+                            <span>Best Crop</span>
+
+                            {% if top_crops %}
+                                <strong class="green-text crop-name-highlight">
+                                    {{ top_crops[0].nombre }}
+                                </strong>
+                            {% else %}
+                                <strong class="green-text crop-name-highlight">—</strong>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <div class="probability-bar">
+                        <i style="left: {{ '%.1f'|format(probability * 100) }}%"></i>
+                    </div>
+
+                    <div class="probability-labels">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                    </div>
+
+                </article>
+
+                <!-- TOP CROPS -->
+                {% if top_crops %}
+                <article class="result-panel crops-panel">
+
+                    <div class="section-heading">
+                        <span>3.</span>
+                        <h2>Top 10 Crops by Affinity</h2>
+                    </div>
+
+                    <div class="crop-list">
+                        {% for crop in top_crops %}
+                            {% set affinity_pct = crop.affinity * 100 %}
+                            {% set level_class = 'optimal' if crop.affinity >= 0.80 else 'high' if crop.affinity >= 0.70 else 'medium' %}
+
+                            <div class="crop-row">
+                                <span class="rank">{{ loop.index }}</span>
+                                <strong>{{ crop.nombre }}</strong>
+
+                                <div class="bar-track">
+                                    <i style="width: {{ '%.1f'|format(affinity_pct) }}%"></i>
+                                </div>
+
+                                <span class="crop-pct">{{ "%.1f"|format(affinity_pct) }}%</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </article>
+                {% endif %}
+
+            </section>
+
+            <!-- CHARTS AND RANKING -->
+            <section class="charts-grid reveal">
+
+                {% if plot %}
+                <article class="chart-panel wide">
+
+                    <div class="section-heading">
+                        <span>4.</span>
+                        <h2>Logistic Regression <small>(Sigmoid Curve)</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ plot }}" alt="Logistic Regression Sigmoid Curve">
+                    </div>
+
+                </article>
+                {% endif %}
+
+                {% if top_crops %}
+                <article class="chart-panel ranking-panel">
+
+                    <div class="section-heading">
+                        <span>5.</span>
+                        <h2>Affinity Ranking</h2>
+                    </div>
+
+                    <div class="ranking-table-wrap">
+
+                        <table class="ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Crop</th>
+                                    <th>Affinity (%)</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for crop in top_crops %}
+                                    {% set affinity_pct = crop.affinity * 100 %}
+                                    {% set level = 'Optimal' if crop.affinity >= 0.80 else 'High' if crop.affinity >= 0.70 else 'Medium' %}
+                                    {% set level_class = 'optimal' if crop.affinity >= 0.80 else 'high' if crop.affinity >= 0.70 else 'medium' %}
+
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ crop.nombre }}</td>
+                                        <td>
+                                            <div class="heat-cell {{ level_class }}">
+                                                {{ "%.1f"|format(affinity_pct) }}%
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="level-pill {{ level_class }}">{{ level }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </article>
+                {% endif %}
+
+            </section>
+
+        {% else %}
+
+            <!-- EMPTY STATE -->
+            <section class="empty-panel reveal">
+
+                <div class="empty-icon">🌾</div>
+
+                <h2>Ready for terrain analysis</h2>
+
+                <p>
+                    Adjust the terrain variables and press <strong>Generate Analysis</strong> to obtain
+                    aptitude classification, probability, and the most suitable forage crops.
+                </p>
+
+            </section>
+
+            {% if plot %}
+            <section class="charts-grid single reveal">
+                <article class="chart-panel wide">
+                    <div class="section-heading">
+                        <span>4.</span>
+                        <h2>Logistic Regression <small>Preview</small></h2>
+                    </div>
+
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{{ plot }}" alt="Logistic Regression Preview">
+                    </div>
+                </article>
+            </section>
+            {% endif %}
+
+        {% endif %}
+
+        <!-- METRICS -->
+        {% if metrics %}
+        <section class="metrics-panel reveal">
+
+            <div class="section-heading">
+                <span>6.</span>
+                <h2>Model Performance <small>(Test set — 25% of data)</small></h2>
+            </div>
+
+            <div class="metric-cards">
+
+                <article>
+                    <span>🌱</span>
+                    <div>
+                        <small>Accuracy</small>
+                        <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                        <p>Correct predictions</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>⌁</span>
+                    <div>
+                        <small>Precision</small>
+                        <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                        <p>True positives / Predicted positives</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>♧</span>
+                    <div>
+                        <small>Recall</small>
+                        <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                        <p>True positives / Actual positives</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>◉</span>
+                    <div>
+                        <small>F1-Score</small>
+                        <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                        <p>Harmonic mean of Precision & Recall</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>▧</span>
+                    <div>
+                        <small>ROC AUC</small>
+                        <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                        <p>Model discrimination capacity</p>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+        {% endif %}
+
+        <!-- MATRIX / ROC -->
+        <section class="bottom-charts-grid reveal">
+
+            {% if confusion_matrix_plot %}
+            <article class="chart-panel">
+
+                <div class="section-heading">
+                    <span>7.</span>
+                    <h2>Confusion Matrix</h2>
+                </div>
+
+                <div class="chart-image">
+                    <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix">
+                </div>
+
+            </article>
+            {% endif %}
+
+            {% if roc_plot %}
+            <article class="chart-panel">
+
+                <div class="section-heading">
+                    <span>8.</span>
+                    <h2>ROC Curve</h2>
+                </div>
+
+                <div class="chart-image">
+                    <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve">
+                </div>
+
+            </article>
+            {% endif %}
+
+        </section>
+
+        <!-- INFO -->
+        <section class="info-banner reveal">
+
+            <div class="info-icon">i</div>
+
+            <p>
+                The recommendation is based on the input variables and the Logistic Regression model.
+                Adjust the variables and generate a new analysis to explore different scenarios.
+            </p>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

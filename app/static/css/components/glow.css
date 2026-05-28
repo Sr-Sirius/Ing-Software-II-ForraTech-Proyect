@@ -1,0 +1,40 @@
+/* =========================
+   GLOW EFFECT
+========================= */
+.glow-hover {
+    position: relative;
+    overflow: visible;
+    transition: transform 0.2s ease;
+}
+
+.glow-hover::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+
+    background: radial-gradient(
+        circle,
+        rgba(76,175,80,0.6),
+        transparent 70%
+    );
+
+    filter: blur(20px);
+
+    top: var(--y, 50%);
+    left: var(--x, 50%);
+
+    transform: translate(-50%, -50%);
+    opacity: 0;
+
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.glow-hover:hover::before {
+    opacity: 1;
+}
+
+.glow-hover:hover {
+    transform: translateY(-2px);
+}

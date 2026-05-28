@@ -1,0 +1,53 @@
+/* =========================
+   BODY GLOBAL
+========================= */
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: #0b1117;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* =========================
+   MAIN (OFFSET NAVBAR)
+========================= */
+main {
+    padding-top: 110px;
+    background: transparent;
+}
+
+/* =========================
+   AUTH BACKGROUND
+========================= */
+.auth-bg::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: url("/static/images/background.png") center/cover no-repeat;
+
+    filter: blur(8px);
+    transform: scale(1.1);
+
+    z-index: -2;
+}
+
+.auth-bg::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.6);
+
+    z-index: -1;
+}
+
+/* =========================
+   SIDEBAR OFFSET
+========================= */
+body.with-sidebar main {
+    margin-left: 280px;
+    transition: margin-left 0.25s ease;
+}

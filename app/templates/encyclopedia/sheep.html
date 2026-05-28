@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+
+{% block body_class %}encyclopedia-sheep-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/encyclopedia_sheep.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="sheep-shell">
+
+    <div class="sheep-bg"></div>
+
+    <div class="sheep-container">
+
+        <!-- TOP -->
+        <header class="sheep-top reveal">
+
+            <div class="breadcrumb">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <span>›</span>
+                <a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a>
+                <span>›</span>
+                <strong>Sheep</strong>
+            </div>
+
+            <a href="{{ url_for('encyclopedia.index') }}" class="back-button">
+                ← Back to Encyclopedia
+            </a>
+
+        </header>
+
+        <!-- HERO -->
+        <section class="sheep-hero reveal">
+
+            <div class="hero-main">
+
+                <div class="hero-icon">
+                    🐑
+                </div>
+
+                <div>
+                    <h1>Sheep</h1>
+                    <p>
+                        Explore sheep breeds, characteristics, production and management.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="hero-stats">
+
+                <article>
+                    <span>🐑</span>
+                    <strong>28</strong>
+                    <small>Breeds</small>
+                </article>
+
+                <article>
+                    <span>🧴</span>
+                    <strong>15</strong>
+                    <small>Production Types</small>
+                </article>
+
+                <article>
+                    <span>▤</span>
+                    <strong>85</strong>
+                    <small>Articles</small>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- BREED CAROUSEL -->
+        <section class="breed-carousel-wrapper reveal">
+
+            <button class="carousel-arrow left" type="button" aria-label="Previous sheep breed">
+                ‹
+            </button>
+
+            <div class="breed-carousel">
+
+                <article class="breed-card">
+                    <div class="breed-image merino-image"></div>
+                    <div class="breed-overlay"></div>
+
+                    <div class="breed-content">
+                        <h2>Merino</h2>
+                        <p>Fine wool, excellent adaptability.</p>
+                    </div>
+                </article>
+
+                <article class="breed-card">
+                    <div class="breed-image suffolk-image"></div>
+                    <div class="breed-overlay"></div>
+
+                    <div class="breed-content">
+                        <h2>Suffolk</h2>
+                        <p>Meat production, early maturity.</p>
+                    </div>
+                </article>
+
+                <article class="breed-card featured">
+                    <div class="breed-image dorper-image"></div>
+                    <div class="breed-overlay"></div>
+
+                    <div class="breed-content">
+                        <h2>Dorper</h2>
+                        <p>Meat production, high growth rate.</p>
+                        <span class="popular-badge">Most Popular</span>
+                    </div>
+                </article>
+
+                <article class="breed-card">
+                    <div class="breed-image corriedale-image"></div>
+                    <div class="breed-overlay"></div>
+
+                    <div class="breed-content">
+                        <h2>Corriedale</h2>
+                        <p>Dual purpose: wool and meat.</p>
+                    </div>
+                </article>
+
+                <article class="breed-card">
+                    <div class="breed-image hampshire-image"></div>
+                    <div class="breed-overlay"></div>
+
+                    <div class="breed-content">
+                        <h2>Hampshire Down</h2>
+                        <p>Meat production, good conformation.</p>
+                    </div>
+                </article>
+
+            </div>
+
+            <button class="carousel-arrow right" type="button" aria-label="Next sheep breed">
+                ›
+            </button>
+
+            <div class="carousel-dots" aria-hidden="true">
+                <span></span>
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="overview-panel reveal">
+
+            <div class="section-heading">
+                <span>ⓘ</span>
+                <div>
+                    <h2>Breed Overview</h2>
+                    <p>General information about sheep.</p>
+                </div>
+            </div>
+
+            <div class="overview-grid">
+
+                <div class="overview-image"></div>
+
+                <div class="overview-text">
+
+                    <p>
+                        Sheep <em>(Ovis aries)</em> are ruminant mammals widely raised worldwide for
+                        their meat, milk, wool and hides. They are highly adaptable animals that thrive
+                        in diverse climates and environmental conditions.
+                    </p>
+
+                    <ul class="check-list">
+                        <li><strong>Domestication:</strong> Over 10,000 years ago.</li>
+                        <li><strong>Distribution:</strong> Worldwide, in all continents.</li>
+                        <li><strong>Lifespan:</strong> 10–12 years on average.</li>
+                        <li><strong>Gestation:</strong> 145–155 days.</li>
+                        <li><strong>Social animals:</strong> Prefer to live in flocks.</li>
+                        <li><strong>Diet:</strong> Grazers, feed on grasses and legumes.</li>
+                    </ul>
+
+                </div>
+
+                <aside class="key-facts">
+
+                    <h3>Key Facts</h3>
+
+                    <div class="fact-row">
+                        <span>⚖️</span>
+                        <div>
+                            <strong>Average Weight (Adult)</strong>
+                            <p>40–120 kg depending on breed</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>🌡️</span>
+                        <div>
+                            <strong>Body Temperature</strong>
+                            <p>38.3–39.9 °C</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>♡</span>
+                        <div>
+                            <strong>Heart Rate</strong>
+                            <p>70–80 bpm</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>🧶</span>
+                        <div>
+                            <strong>Wool Production</strong>
+                            <p>2–8 kg per shearing</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>🥛</span>
+                        <div>
+                            <strong>Milk Production</strong>
+                            <p>50–250 L per lactation</p>
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+        <!-- INFO CARDS -->
+        <section class="info-card-grid reveal">
+
+            <article class="info-card">
+                <div class="card-title">
+                    <span>▧</span>
+                    <div>
+                        <h2>Production Types</h2>
+                        <p>Main production purposes of sheep.</p>
+                    </div>
+                </div>
+
+                <div class="use-list">
+
+                    <div class="use-row">
+                        <span>🐏</span>
+                        <div>
+                            <strong>Meat Production</strong>
+                            <p>Focused breeds with high growth rate and muscle mass.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🥛</span>
+                        <div>
+                            <strong>Milk Production</strong>
+                            <p>Breeds specialized in milk yield and quality.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🧶</span>
+                        <div>
+                            <strong>Wool Production</strong>
+                            <p>Breeds with fine, medium or coarse fiber wool.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>♻️</span>
+                        <div>
+                            <strong>Dual Purpose</strong>
+                            <p>Breeds that provide both meat and wool or milk.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+            <article class="info-card">
+                <div class="card-title">
+                    <span>☘️</span>
+                    <div>
+                        <h2>Key Characteristics</h2>
+                        <p>General characteristics of sheep.</p>
+                    </div>
+                </div>
+
+                <ul class="check-list compact">
+                    <li>Ruminant animals with a four-chambered stomach.</li>
+                    <li>Excellent adaptation to various climates.</li>
+                    <li>Good feed conversion efficiency.</li>
+                    <li>Strong flocking and herd behavior.</li>
+                    <li>High reproductive rate.</li>
+                    <li>Wool or hair covering depending on breed.</li>
+                </ul>
+            </article>
+
+            <article class="info-card">
+                <div class="card-title">
+                    <span>🔗</span>
+                    <div>
+                        <h2>Common Uses</h2>
+                        <p>Products and services obtained from sheep.</p>
+                    </div>
+                </div>
+
+                <div class="use-list">
+
+                    <div class="use-row">
+                        <span>🥩</span>
+                        <div>
+                            <strong>Meat</strong>
+                            <p>Lamb, mutton and other meat products.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🧴</span>
+                        <div>
+                            <strong>Milk & Dairy</strong>
+                            <p>Milk, cheese, yogurt and derivatives.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🧶</span>
+                        <div>
+                            <strong>Wool & Fiber</strong>
+                            <p>Textile industry and wool products.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🌿</span>
+                        <div>
+                            <strong>Manure</strong>
+                            <p>Organic fertilizer and soil improvement.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🔺</span>
+                        <div>
+                            <strong>Hides & Leather</strong>
+                            <p>Leather goods and other products.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+        </section>
+
+        <!-- RELATED ARTICLES -->
+        <section class="articles-panel reveal">
+
+            <div class="section-heading">
+                <span>▧</span>
+                <div>
+                    <h2>Related Articles & Resources</h2>
+                    <p>Learn more about sheep management and production.</p>
+                </div>
+            </div>
+
+            <div class="article-grid">
+
+                <article class="article-card">
+                    <div class="article-image article-breeds"></div>
+                    <div class="article-body">
+                        <span class="article-tag green">Breeds</span>
+                        <h3>Complete guide to sheep breeds</h3>
+                        <p>Characteristics, origin and main uses of the most common breeds.</p>
+                        <small>📖 10 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-management"></div>
+                    <div class="article-body">
+                        <span class="article-tag blue">Management</span>
+                        <h3>Sheep feeding and nutrition</h3>
+                        <p>Nutritional requirements and best feeding practices.</p>
+                        <small>📖 8 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-health"></div>
+                    <div class="article-body">
+                        <span class="article-tag purple">Health</span>
+                        <h3>Common diseases in sheep</h3>
+                        <p>Prevention, symptoms and treatments for common diseases.</p>
+                        <small>📖 7 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-reproduction"></div>
+                    <div class="article-body">
+                        <span class="article-tag orange">Reproduction</span>
+                        <h3>Reproduction and flock management</h3>
+                        <p>Breeding, mating and flock management strategies.</p>
+                        <small>📖 9 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-production"></div>
+                    <div class="article-body">
+                        <span class="article-tag lime">Production</span>
+                        <h3>Wool production and quality</h3>
+                        <p>Factors that influence wool quality and production.</p>
+                        <small>📖 6 min read</small>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- OPTIONAL DYNAMIC DATA PLACEHOLDER -->
+        {% if data %}
+        <section class="dynamic-data-panel reveal">
+
+            <div class="section-heading">
+                <span>☘️</span>
+                <div>
+                    <h2>Database Records</h2>
+                    <p>Items loaded from the encyclopedia service.</p>
+                </div>
+            </div>
+
+            <div class="dynamic-grid">
+                {% for item in data %}
+                    <article class="dynamic-card">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.description }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+
+        </section>
+        {% endif %}
+
+        <!-- SOURCE NOTICE -->
+        <section class="source-banner reveal">
+
+            <div class="source-icon">◎</div>
+
+            <div>
+                <strong>Information based on scientific sources and agricultural experts.</strong>
+                <p>
+                    Content constantly reviewed and updated to provide accurate and relevant information.
+                </p>
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

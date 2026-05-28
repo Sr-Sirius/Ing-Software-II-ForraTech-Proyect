@@ -1,0 +1,494 @@
+{% extends "base.html" %}
+
+{% block body_class %}knn-dane-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/knn_dane.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="knn-shell">
+
+    <div class="knn-bg"></div>
+
+    <main class="knn-layout">
+
+        <!-- SIDEBAR INPUT -->
+        <aside class="knn-sidebar reveal">
+
+            <div class="section-heading compact">
+                <span>1.</span>
+                <h2>Input Data <small>Adjust terrain variables</small></h2>
+            </div>
+
+            <form action="/recommendation/KNN" method="POST" class="knn-form">
+
+                <div class="field-card">
+                    <label>
+                        <strong>Planted Area (ha)</strong>
+                        <span id="area-val">{{ area_value or 50.0 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="area_ha"
+                        id="area_ha"
+                        min="0.5"
+                        max="500"
+                        step="0.5"
+                        value="{{ area_value or 50.0 }}"
+                        oninput="document.getElementById('area-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0.5 ha</span>
+                        <span>500 ha</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>Protein Gain (%)</strong>
+                        <span id="proteina-val">{{ proteina_value or 70 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="ganancia_proteina_pct"
+                        id="ganancia_proteina_pct"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ proteina_value or 70 }}"
+                        oninput="document.getElementById('proteina-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>Climate Type</strong>
+                    </label>
+
+                    <div class="climate-toggle">
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="calido"
+                                {% if clima_value == 'calido' or clima_value is none %}checked{% endif %}
+                            >
+                            <span>☀️ Warm</span>
+                        </label>
+
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="frio"
+                                {% if clima_value == 'frio' %}checked{% endif %}
+                            >
+                            <span>❄️ Cold</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    Recommend with KNN
+                    <span>⌕</span>
+                </button>
+
+            </form>
+
+            <div class="knn-info-card">
+                <strong>KNN (K=3)</strong>
+                <ul>
+                    <li>Euclidean distance</li>
+                    <li>Protein score: 50% bank</li>
+                    <li>Cut: 30%</li>
+                    <li>Climate: 10%</li>
+                    <li>Rotation: 10%</li>
+                    <li>Affinity = 1 / (1 + distance)</li>
+                    <li>Climate weight adjustment: ±20%</li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="knn-content">
+
+            <!-- HERO -->
+            <section class="knn-hero reveal">
+
+                <div class="hero-copy">
+
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('main.home') }}">Analysis</a>
+                        <span>›</span>
+                        <a href="/recommendation/Menu">Predictive Models</a>
+                        <span>›</span>
+                        <a href="/recommendation/MD">KNN</a>
+                        <span>›</span>
+                        <strong>Recommendation</strong>
+                    </div>
+
+                    <h1>KNN <span>(K-Nearest Neighbors)</span></h1>
+
+                    <h2>Forage Productivity Recommendation</h2>
+
+                    <p>
+                        Adjust the terrain variables and get an immediate analysis and crop
+                        recommendation using the KNN algorithm with K=5.
+                    </p>
+
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="network-node n1"></div>
+                    <div class="network-node n2"></div>
+                    <div class="network-node n3"></div>
+                    <div class="network-node n4"></div>
+                    <div class="network-node n5"></div>
+                    <div class="network-node n6"></div>
+                    <div class="network-line l1"></div>
+                    <div class="network-line l2"></div>
+                    <div class="network-line l3"></div>
+                    <div class="network-line l4"></div>
+                    <div class="lens">••••</div>
+                </div>
+
+                <a href="/recommendation/MD" class="back-button">
+                    ← Back to Model Selection
+                </a>
+
+            </section>
+
+            {% if result is not none %}
+
+                {% set is_optimal = categoria == 'ÓPTIMO' or categoria == 'OPTIMAL' or categoria == 'Optimal' %}
+
+                <!-- RESULT CARD -->
+                <section class="knn-result-card reveal {{ 'optimal' if is_optimal else 'suboptimal' }}">
+
+                    <div class="result-icon">🌿</div>
+
+                    <div class="result-main">
+
+                        <span class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Optimal' if is_optimal else 'Suboptimal' }}
+                        </span>
+
+                        <h2>{{ result }}</h2>
+
+                        <div class="result-stats">
+
+                            <div>
+                                <small>Affinity Index</small>
+                                <strong class="green-text">{{ "%.2f"|format(afinidad * 100) }}%</strong>
+                                <span>Higher is better</span>
+                            </div>
+
+                            <div>
+                                <small>Probability</small>
+                                <strong class="green-text">{{ probabilidad }}%</strong>
+                                <span>Within K neighbors</span>
+                            </div>
+
+                            <div>
+                                <small>Distance</small>
+                                <strong>{{ "%.3f"|format(distancia) }}</strong>
+                                <span>Euclidean</span>
+                            </div>
+
+                            <div>
+                                <small>Area (ha)</small>
+                                <strong class="green-text">{{ "%.1f"|format(area_value) }} ha</strong>
+                            </div>
+
+                            <div>
+                                <small>Climate</small>
+                                <strong>
+                                    {{ '☀️ Warm' if clima_value == 'calido' else '❄️ Cold' }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- NEIGHBORS + VISUALIZATION -->
+                <section class="knn-grid reveal">
+
+                    {% if ranking %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>2.</span>
+                            <h2>Top 3 Nearest Neighbors</h2>
+                        </div>
+
+                        <div class="neighbors-table-wrap">
+
+                            <table class="neighbors-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Forage Variety</th>
+                                        <th>Distance</th>
+                                        <th>Affinity</th>
+                                        <th>Protein Score</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for crop in ranking %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>
+                                            <strong>{{ crop.variedad }}</strong>
+                                        </td>
+                                        <td>{{ "%.3f"|format(crop.distancia if crop.distancia is defined else distancia) }}</td>
+                                        <td class="green-text">
+                                            {{ "%.2f"|format((crop.afinidad_ajustada if crop.afinidad_ajustada is defined else crop.afinidad) * 100) }}%
+                                        </td>
+                                        <td>
+                                            {{ "%.1f"|format(crop.score_proteina * 100) }}%
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if plot %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>3.</span>
+                            <h2>KNN Visualization <small>(2D)</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ plot }}" alt="KNN nearest neighbors visualization">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- AFFINITY CURVE + METRICS -->
+                <section class="knn-grid reveal">
+
+                    {% if affinity_curve_plot %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>4.</span>
+                            <h2>Affinity Curve by Distance <small>(Euclidean)</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ affinity_curve_plot }}" alt="KNN affinity curve by distance">
+                        </div>
+
+                    </article>
+                    {% elif ranking %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>4.</span>
+                            <h2>Affinity Curve by Distance <small>(Euclidean)</small></h2>
+                        </div>
+
+                        <div class="affinity-curve-fallback">
+                            <div class="curve-line"></div>
+                            <div class="current-point" style="left: {{ 60 if distancia > 100 else distancia }}%; bottom: {{ afinidad * 100 }}%"></div>
+                            <div class="threshold-line"></div>
+                            <p>
+                                Current distance: <strong>{{ "%.3f"|format(distancia) }}</strong><br>
+                                Affinity: <strong>{{ "%.2f"|format(afinidad * 100) }}%</strong>
+                            </p>
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if metrics %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>5.</span>
+                            <h2>Model Performance <small>(Test set — 20% of data)</small></h2>
+                        </div>
+
+                        <div class="metric-cards">
+
+                            <article>
+                                <span>▥</span>
+                                <small>Accuracy</small>
+                                <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                                <p>Correct predictions</p>
+                            </article>
+
+                            <article>
+                                <span>⌁</span>
+                                <small>Precision</small>
+                                <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                                <p>True positives / predicted positives</p>
+                            </article>
+
+                            <article>
+                                <span>♧</span>
+                                <small>Recall</small>
+                                <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                                <p>True positives / actual positives</p>
+                            </article>
+
+                            <article>
+                                <span>◎</span>
+                                <small>F1-Score</small>
+                                <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                                <p>Harmonic mean of precision & recall</p>
+                            </article>
+
+                            <article>
+                                <span>↗</span>
+                                <small>ROC AUC</small>
+                                <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                                <p>Discriminative ability</p>
+                            </article>
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- CONFUSION MATRIX + ROC -->
+                <section class="knn-bottom-grid reveal">
+
+                    {% if confusion_matrix_plot %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>6.</span>
+                            <h2>Confusion Matrix <small>— KNN (K=3)</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="KNN confusion matrix">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if roc_plot %}
+                    <article class="knn-panel">
+
+                        <div class="section-heading">
+                            <span>7.</span>
+                            <h2>ROC Curve <small>— KNN (K=3)</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ roc_plot }}" alt="KNN ROC curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- EXPLANATION -->
+                <section class="knn-panel reveal">
+
+                    <div class="section-heading">
+                        <span>8.</span>
+                        <h2>What do these metrics mean for KNN?</h2>
+                    </div>
+
+                    <div class="explanation-grid">
+
+                        <article>
+                            <strong>Accuracy</strong>
+                            <p>Percentage of correct predictions made by the model.</p>
+                        </article>
+
+                        <article>
+                            <strong>Precision</strong>
+                            <p>How many of the predicted positives are actually correct.</p>
+                        </article>
+
+                        <article>
+                            <strong>Recall</strong>
+                            <p>How many of the actual positives were correctly found.</p>
+                        </article>
+
+                        <article>
+                            <strong>F1-Score</strong>
+                            <p>Balance between precision and recall.</p>
+                        </article>
+
+                        <article>
+                            <strong>ROC AUC</strong>
+                            <p>Measures the model’s ability to distinguish between classes.</p>
+                        </article>
+
+                    </div>
+
+                </section>
+
+            {% else %}
+
+                <!-- INITIAL STATE WITHOUT BASE GRAPHS -->
+                <section class="empty-panel reveal">
+
+                    <div class="empty-icon">⌕</div>
+
+                    <h2>Ready for KNN analysis</h2>
+
+                    <p>
+                        Adjust the terrain variables and press <strong>Recommend with KNN</strong> to find
+                        the most similar forage varieties using the K-Nearest Neighbors model.
+                    </p>
+
+                    <small>
+                        KNN searches for the K=5 closest observations in the feature space and recommends the most suitable variety.
+                    </small>
+
+                </section>
+
+            {% endif %}
+
+            <section class="info-banner reveal">
+
+                <div class="info-icon">i</div>
+
+                <p>
+                    The recommendation is based on the input variables and the KNN model with K=5.
+                    You can adjust the terrain parameters and generate a new analysis to explore different scenarios.
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

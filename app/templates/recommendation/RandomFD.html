@@ -1,0 +1,548 @@
+{% extends "base.html" %}
+
+{% block body_class %}rf-dane-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/random_forest_dane.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="rf-dane-shell">
+
+    <div class="rf-dane-bg"></div>
+
+    <main class="rf-dane-layout">
+
+        <!-- SIDEBAR INPUT -->
+        <aside class="rf-dane-sidebar reveal">
+
+            <div class="section-heading compact">
+                <span>1.</span>
+                <h2>Input Data <small>Adjust terrain variables</small></h2>
+            </div>
+
+            <form action="/recommendation/RandomFD" method="POST" class="rf-dane-form">
+
+                <div class="field-card">
+                    <label>
+                        <strong>Planted Area (ha)</strong>
+                        <span id="area-val">{{ area_value or 50.0 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="area_ha"
+                        id="area_ha"
+                        min="0.5"
+                        max="500"
+                        step="0.5"
+                        value="{{ area_value or 50.0 }}"
+                        oninput="document.getElementById('area-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0.5 ha</span>
+                        <span>500 ha</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>Protein Gain (%)</strong>
+                        <span id="proteina-val">{{ proteina_value or 70 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="ganancia_proteina_pct"
+                        id="ganancia_proteina_pct"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ proteina_value or 70 }}"
+                        oninput="document.getElementById('proteina-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>Climate Type</strong>
+                    </label>
+
+                    <div class="climate-toggle">
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="calido"
+                                {% if clima_value == 'calido' or clima_value is none %}checked{% endif %}
+                            >
+                            <span>☀️ Warm</span>
+                        </label>
+
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="frio"
+                                {% if clima_value == 'frio' %}checked{% endif %}
+                            >
+                            <span>❄️ Cold</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    Analyze with Random Forest
+                </button>
+
+            </form>
+
+            <div class="rf-info-card">
+                <strong>Random Forest</strong>
+                <ul>
+                    <li>200 trees</li>
+                    <li>High / Low protein aptitude</li>
+                    <li>Binary classification</li>
+                    <li>Optimized threshold</li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="rf-dane-content">
+
+            <!-- HERO -->
+            <section class="rf-dane-hero reveal">
+
+                <div class="hero-copy">
+
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('main.home') }}">Analysis</a>
+                        <span>›</span>
+                        <a href="/recommendation/Menu">Predictive Models</a>
+                        <span>›</span>
+                        <a href="/recommendation/MD">Random Forest</a>
+                        <span>›</span>
+                        <strong>Recommendation</strong>
+                    </div>
+
+                    <h1>Random Forest Classifier</h1>
+
+                    <h2>Forage Crop Recommendation</h2>
+
+                    <p>
+                        Enter terrain characteristics to get a forage crop recommendation using the
+                        Random Forest model with 200 decision trees. The system classifies protein
+                        aptitude as High or Low.
+                    </p>
+
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="forest-tree">♧</div>
+                    <div class="hero-icon">🌱</div>
+                </div>
+
+                <a href="/recommendation/MD" class="back-button">
+                    ← Back to Model Selection
+                </a>
+
+            </section>
+
+            {% if result is not none %}
+
+                {% set is_optimal = categoria == 'ÓPTIMO' or categoria == 'OPTIMAL' or categoria == 'Optimal' %}
+
+                <!-- RESULT CARD -->
+                <section class="rf-result-card reveal {{ 'optimal' if is_optimal else 'suboptimal' }}">
+
+                    <div class="result-icon">🌱</div>
+
+                    <div class="result-main">
+
+                        <span class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Optimal' if is_optimal else 'Suboptimal' }}
+                        </span>
+
+                        <h2>
+                            {{ 'The terrain has high protein aptitude' if is_optimal else 'The terrain has low protein aptitude' }}
+                        </h2>
+
+                        <div class="result-stats">
+
+                            <div>
+                                <small>Prob. High Aptitude</small>
+                                <strong class="{{ 'green-text' if is_optimal else 'amber-text' }}">
+                                    {{ probabilidad }}%
+                                </strong>
+                                <span>Vote of trees</span>
+                            </div>
+
+                            <div>
+                                <small>Binary Threshold</small>
+                                <strong class="amber-text">
+                                    {{ threshold }}%
+                                </strong>
+                                <span>Optimized</span>
+                            </div>
+
+                            <div>
+                                <small>Area (ha)</small>
+                                <strong class="blue-text">
+                                    {{ "%.1f"|format(area_value) }} ha
+                                </strong>
+                            </div>
+
+                            <div>
+                                <small>Climate</small>
+                                <strong>
+                                    {{ '☀️ Warm' if clima_value == 'calido' else '❄️ Cold' }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- TOP RANKING + OVERVIEW -->
+                <section class="rf-main-grid reveal">
+
+                    {% if ranking %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>2.</span>
+                            <h2>Top 10 Varieties by Adjusted Probability</h2>
+                        </div>
+
+                        <div class="ranking-table-wrap">
+
+                            <table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Variety</th>
+                                        <th>Adjusted Probability</th>
+                                        <th>Climate</th>
+                                        <th>Protein Score</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for crop in ranking %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>
+                                            <strong>{{ crop.variedad }}</strong>
+                                        </td>
+                                        <td>
+                                            <span class="prob-value">
+                                                {{ "%.1f"|format(crop.probabilidad * 100) }}%
+                                            </span>
+
+                                            <div class="prob-bar">
+                                                <i style="width: {{ '%.1f'|format(crop.probabilidad * 100) }}%"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ '☀️' if crop.clima == 'calido' else '❄️' }}
+                                        </td>
+                                        <td>
+                                            {{ "%.1f"|format(crop.score_proteina * 100) }}%
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if plot %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>3.</span>
+                            <h2>Random Forest Overview</h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ plot }}" alt="Random Forest overview">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- DETAILED VISUALIZATIONS -->
+                <section class="rf-panel reveal">
+
+                    <div class="section-heading">
+                        <span>4.</span>
+                        <h2>Detailed Analysis Visualizations</h2>
+                    </div>
+
+                    <div class="rf-detail-grid">
+
+                        {% if plot %}
+                        <article class="mini-chart-card">
+                            <h3>A. Random Forest — Votes per Tree</h3>
+                            <div class="chart-image">
+                                <img src="data:image/png;base64,{{ plot }}" alt="Random Forest votes per tree">
+                            </div>
+                        </article>
+                        {% endif %}
+
+                        {% if importance_plot %}
+                        <article class="mini-chart-card">
+                            <h3>B. Feature Importance — Gini Impurity</h3>
+                            <div class="chart-image">
+                                <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature importance">
+                            </div>
+                        </article>
+                        {% endif %}
+
+                        {% if ranking %}
+                        <article class="mini-chart-card">
+                            <h3>C. Top Recommended Varieties</h3>
+
+                            <div class="compact-bars">
+
+                                {% for crop in ranking[:8] %}
+                                <div class="compact-row">
+                                    <span>{{ crop.variedad }}</span>
+
+                                    <div class="compact-track">
+                                        <i style="width: {{ '%.1f'|format(crop.probabilidad * 100) }}%"></i>
+                                    </div>
+
+                                    <strong>{{ "%.1f"|format(crop.probabilidad * 100) }}%</strong>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+
+                        </article>
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+                <!-- METRICS -->
+                {% if metrics %}
+                <section class="rf-panel reveal">
+
+                    <div class="section-heading">
+                        <span>5.</span>
+                        <h2>Model Performance <small>(Evaluation on test set — 20% of data)</small></h2>
+                    </div>
+
+                    <div class="metric-cards">
+
+                        <article>
+                            <span>🌿</span>
+                            <small>Accuracy</small>
+                            <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                            <p>Correct predictions</p>
+                        </article>
+
+                        <article>
+                            <span>⌁</span>
+                            <small>Precision</small>
+                            <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                            <p>True positives / predicted positives</p>
+                        </article>
+
+                        <article>
+                            <span>♧</span>
+                            <small>Recall</small>
+                            <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                            <p>True positives / actual positives</p>
+                        </article>
+
+                        <article>
+                            <span>◎</span>
+                            <small>F1-Score</small>
+                            <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                            <p>Harmonic mean of precision & recall</p>
+                        </article>
+
+                        <article>
+                            <span>↗</span>
+                            <small>ROC AUC</small>
+                            <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                            <p>Model discrimination capacity</p>
+                        </article>
+
+                    </div>
+
+                </section>
+                {% endif %}
+
+                <!-- BOTTOM CHARTS -->
+                <section class="rf-bottom-grid reveal">
+
+                    {% if confusion_matrix_plot %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>6.</span>
+                            <h2>Confusion Matrix <small>— Random Forest Binary</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Random Forest confusion matrix">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if roc_plot %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>7.</span>
+                            <h2>ROC Curve <small>— Random Forest Binary</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ roc_plot }}" alt="Random Forest ROC curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if importance_plot %}
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>8.</span>
+                            <h2>Feature Importance <small>— Random Forest</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ importance_plot }}" alt="Random Forest feature importance">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- EXPLANATION + FIXES -->
+                <section class="rf-explanation-grid reveal">
+
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>9.</span>
+                            <h2>What do these metrics mean for Random Forest?</h2>
+                        </div>
+
+                        <div class="explanation-grid">
+
+                            <article>
+                                <strong>Accuracy</strong>
+                                <p>Overall percentage of correct predictions for High or Low aptitude.</p>
+                            </article>
+
+                            <article>
+                                <strong>Precision</strong>
+                                <p>How many predicted High aptitude cases are truly High.</p>
+                            </article>
+
+                            <article>
+                                <strong>Recall</strong>
+                                <p>How many true High aptitude cases were correctly identified.</p>
+                            </article>
+
+                            <article>
+                                <strong>F1-Score</strong>
+                                <p>Balance between precision and recall.</p>
+                            </article>
+
+                            <article>
+                                <strong>ROC AUC</strong>
+                                <p>Measures the model’s ability to distinguish between classes.</p>
+                            </article>
+
+                        </div>
+
+                    </article>
+
+                    <article class="rf-panel">
+
+                        <div class="section-heading">
+                            <span>10.</span>
+                            <h2>Corrections Applied to Optimize the Model</h2>
+                        </div>
+
+                        <ul class="correction-list">
+                            <li>Removed highly correlated variables to reduce multicollinearity.</li>
+                            <li>Handled missing values using median or mode imputation.</li>
+                            <li>Balanced classes with class_weight="balanced" to improve minority detection.</li>
+                            <li>Tuned hyperparameters using cross-validation.</li>
+                            <li>Optimized probability threshold to maximize F1-Score.</li>
+                            <li>Validated model stability with stratified 5-fold cross-validation.</li>
+                        </ul>
+
+                    </article>
+
+                </section>
+
+            {% else %}
+
+                <!-- INITIAL STATE WITHOUT BASE GRAPHS -->
+                <section class="empty-panel reveal">
+
+                    <div class="empty-icon">🌲</div>
+
+                    <h2>Ready for Random Forest analysis</h2>
+
+                    <p>
+                        Adjust the terrain variables and press <strong>Analyze with Random Forest</strong>
+                        to obtain a crop recommendation, aptitude classification, adjusted probability
+                        ranking, and model diagnostics.
+                    </p>
+
+                    <small>
+                        The model recommends a forage variety and classifies protein aptitude as High or Low.
+                    </small>
+
+                </section>
+
+            {% endif %}
+
+            <section class="info-banner reveal">
+
+                <div class="info-icon">i</div>
+
+                <p>
+                    The recommendation is based on the input variables and the Random Forest model with
+                    200 decision trees. You can adjust the terrain parameters and generate a new analysis
+                    to explore different scenarios.
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

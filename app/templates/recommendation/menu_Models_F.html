@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block body_class %}model-selection-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/menu_models_forraje.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="model-selection-shell">
+
+    <div class="model-selection-bg"></div>
+
+    <main class="model-selection-container">
+
+        <!-- HERO -->
+        <section class="selection-hero reveal">
+
+            <div class="hero-copy">
+
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.home') }}">Analysis</a>
+                    <span>›</span>
+                    <a href="/recommendation/Menu">Predictive Models</a>
+                    <span>›</span>
+                    <strong>Model Selection</strong>
+                </div>
+
+                <h1>
+                    Predictive Models
+                    <span>Model Selection</span>
+                </h1>
+
+                <p>
+                    Select a model to estimate and predict forage productivity based on terrain
+                    variables. Each model uses different algorithms and assumptions.
+                </p>
+
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="network-line line-1"></div>
+                <div class="network-line line-2"></div>
+                <div class="network-line line-3"></div>
+                <div class="sprout">🌱</div>
+            </div>
+
+        </section>
+
+        <!-- INFO BAR -->
+        <section class="dataset-summary reveal">
+
+            <article>
+                <span>▤</span>
+                <div>
+                    <small>Dataset</small>
+                    <strong>Synthetic Dataset</strong>
+                    <p>1,000 records · 52 species</p>
+                </div>
+            </article>
+
+            <article>
+                <span>🌾</span>
+                <div>
+                    <small>Target Variable</small>
+                    <strong>Productivity</strong>
+                    <p>ton/ha/year</p>
+                </div>
+            </article>
+
+            <article>
+                <span>⌁</span>
+                <div>
+                    <small>Input Variables</small>
+                    <strong>4 variables</strong>
+                    <p>Terrain & climate</p>
+                </div>
+            </article>
+
+            <article>
+                <span>◎</span>
+                <div>
+                    <small>Models Available</small>
+                    <strong>3 models</strong>
+                    <p>Ready to use</p>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- MODELS -->
+        <section class="available-section reveal">
+
+            <div class="section-heading">
+                <h2>Available Models</h2>
+                <p>Choose the model that best fits your objective and data characteristics.</p>
+            </div>
+
+            <div class="models-grid">
+
+                <!-- LOGISTIC REGRESSION -->
+                <article class="model-card logistic">
+
+                    <div class="model-icon">
+                        <span>⌁</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>Logistic Regression</h3>
+
+                        <span class="model-type">Classification Model</span>
+
+                        <p>
+                            Estimates the probability of high productivity using the sigmoid
+                            function on a composite score of input variables.
+                        </p>
+
+                        <ul>
+                            <li>Easy to interpret</li>
+                            <li>Provides probability from 0 to 1</li>
+                            <li>Assumes linear relationship</li>
+                            <li>Ideal for initial analysis</li>
+                        </ul>
+
+                        <a href="/recommendation/regression" class="model-action">
+                            Use Logistic Regression
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+                <!-- RANDOM FOREST -->
+                <article class="model-card forest">
+
+                    <div class="model-icon">
+                        <span>♧</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>Random Forest</h3>
+
+                        <span class="model-type">Ensemble Model</span>
+
+                        <p>
+                            Ensemble of 200 decision trees that captures non-linear relationships
+                            and interactions between variables.
+                        </p>
+
+                        <ul>
+                            <li>High accuracy and robustness</li>
+                            <li>Handles noise and outliers well</li>
+                            <li>Captures complex interactions</li>
+                            <li>Less interpretable than linear models</li>
+                        </ul>
+
+                        <a href="/recommendation/RandomRF" class="model-action">
+                            Use Random Forest
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+                <!-- BAYESIAN -->
+                <article class="model-card bayesian">
+
+                    <div class="model-icon">
+                        <span>♙</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>Bayesian (Naive Bayes)</h3>
+
+                        <span class="model-type">Probabilistic Model</span>
+
+                        <p>
+                            Applies Bayes’ theorem assuming conditional independence between
+                            variables to estimate productivity.
+                        </p>
+
+                        <ul>
+                            <li>Fast training and low computational cost</li>
+                            <li>Works well with limited data</li>
+                            <li>Assumes feature independence</li>
+                            <li>More sensitive to correlated variables</li>
+                        </ul>
+
+                        <a href="/recommendation/TeoBayesian" class="model-action">
+                            Use Bayesian Model
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- HELP -->
+        <section class="selection-help reveal">
+
+            <div class="help-icon">i</div>
+
+            <div>
+                <h3>Not sure which model to choose?</h3>
+                <p>
+                    You can try different models and compare their performance in the results section.
+                </p>
+            </div>
+
+            <a href="/recommendation/Mforraje">
+                Compare metrics
+                <span>→</span>
+            </a>
+
+        </section>
+
+        <!-- BACK -->
+        <section class="selection-back reveal">
+            <a href="/recommendation/Menu">← Back to Recommendation Menu</a>
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

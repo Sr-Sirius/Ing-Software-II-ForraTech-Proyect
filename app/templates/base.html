@@ -1,12 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>ForraTech</title>
-</head>
-<body>
 
-    {% block content %}
-    {% endblock %}
+    <!-- 🔥 DEBUG GLOBAL -->
+    <script>
+      window.DEBUG = true;
+    </script>
+
+    <!-- 🔥 BASE GLOBAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <!-- 🔥 CSS POR PÁGINA -->
+    {% block page_css %}{% endblock %}
+</head>
+
+<body class="
+    {% block body_class %}{% endblock %}
+    {% if show_sidebar %}with-sidebar{% endif %}
+">
+
+    <!-- NAVBAR -->
+    {% include "components/navbar.html" %}
+
+    <!-- 🔥 SIDEBAR -->
+    {% if show_sidebar %}
+        {% include "components/sidebar.html" %}
+    {% endif %}
+
+    <!-- FLASH -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">
+              {{ message }}
+              <span class="close-flash">&times;</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- CONTENT -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- 🔥 FOOTER GLOBAL -->
+    {% if show_footer is not defined or show_footer %}
+        {% include "components/footer.html" %}
+    {% endif %}
+
+    <!-- 🔥 JS GLOBAL (MODULAR) -->
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- JS POR PÁGINA -->
+    {% block page_js %}{% endblock %}
 
 </body>
 </html>

@@ -1,0 +1,15 @@
+/* =========================
+   VARIABLES GLOBALES
+========================= */
+:root {
+    --primary: #4CAF50;
+    --primary-hover: #43a047;
+
+    --bg-dark: #0f0f0f;
+    --bg-soft: #1c1c1c;
+
+    --text-main: #ffffff;
+    --text-secondary: #b0b0b0;
+
+    --glass-bg: rgba(20, 30, 40, 0.4);
+}

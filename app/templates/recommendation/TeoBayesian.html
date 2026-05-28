@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+
+{% block body_class %}bayes-forraje-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/teo_bayesian.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="bayes-shell">
+
+    <div class="bayes-bg"></div>
+
+    <main class="bayes-layout">
+
+        <!-- SIDEBAR INPUT -->
+        <aside class="bayes-sidebar reveal">
+
+            <div class="section-heading compact">
+                <span>1.</span>
+                <h2>Input Data <small>Adjust Terrain Variables</small></h2>
+            </div>
+
+            <form action="/recommendation/TeoBayesian" method="POST" class="bayes-form">
+
+                <div class="field-card">
+                    <label>
+                        <strong>🌿 Soil pH</strong>
+                        <span id="ph-val">{{ ph_value or 6.5 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="ph"
+                        id="ph"
+                        min="3"
+                        max="9"
+                        step="0.1"
+                        value="{{ ph_value or 6.5 }}"
+                        oninput="document.getElementById('ph-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>3.0</span>
+                        <span>9.0</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>💧 Relative Humidity (%)</strong>
+                        <span id="hum-val">{{ hum_value or 60 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="humedad"
+                        id="humedad"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ hum_value or 60 }}"
+                        oninput="document.getElementById('hum-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>⛰ Altitude (m)</strong>
+                        <span id="alt-val">{{ alt_value or 1500 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="altitud"
+                        id="altitud"
+                        min="0"
+                        max="4000"
+                        step="10"
+                        value="{{ alt_value or 1500 }}"
+                        oninput="document.getElementById('alt-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 m</span>
+                        <span>4000 m</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>🌡 Temperature (°C)</strong>
+                        <span id="temp-val">{{ temp_value or 20 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="temperatura"
+                        id="temperatura"
+                        min="0"
+                        max="45"
+                        step="0.5"
+                        value="{{ temp_value or 20 }}"
+                        oninput="document.getElementById('temp-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0 °C</span>
+                        <span>45 °C</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    Analyze Terrain
+                    <span>♙</span>
+                </button>
+
+            </form>
+
+            <div class="bayes-info-card">
+                <span>♙</span>
+                <div>
+                    <strong>Naive Bayes Model</strong>
+                    <small>Gaussian distribution</small>
+                </div>
+            </div>
+
+            <div class="bayes-info-card">
+                <span>⌘</span>
+                <div>
+                    <strong>Conditional independence</strong>
+                    <small>between features</small>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="bayes-content">
+
+            <!-- HERO -->
+            <section class="bayes-hero reveal">
+
+                <div class="hero-copy">
+
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('main.home') }}">Analysis</a>
+                        <span>›</span>
+                        <a href="/recommendation/Menu">Predictive Models</a>
+                        <span>›</span>
+                        <a href="/recommendation/MF">Naive Bayes</a>
+                        <span>›</span>
+                        <strong>Recommendation</strong>
+                    </div>
+
+                    <h1>Naive Bayes <span>(Bayesian Theory)</span></h1>
+
+                    <h2>Forage Productivity Recommendation</h2>
+
+                    <p>
+                        Adjust the terrain variables and get an immediate analysis and crop recommendation
+                        using our Naive Bayes model.
+                    </p>
+
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="gaussian-visual"></div>
+                    <div class="hero-icon">♙</div>
+                </div>
+
+                <a href="/recommendation/MF" class="back-button">
+                    ← Back to Model Selection
+                </a>
+
+            </section>
+
+            {% if result is not none %}
+
+                {% set is_optimal = (result == 1) %}
+
+                <!-- RESULT HERO CARD -->
+                <section class="bayes-result-card reveal {{ 'optimal' if is_optimal else 'suboptimal' }}">
+
+                    <div class="result-icon">♙</div>
+
+                    <div class="result-main">
+
+                        <span class="status-pill {{ 'optimal' if is_optimal else 'suboptimal' }}">
+                            {{ 'Óptimo' if is_optimal else 'Subóptimo' }}
+                        </span>
+
+                        <h2>
+                            {{ 'El terreno es apto para cultivos forrajeros' if is_optimal else 'El terreno no es óptimo para cultivos forrajeros' }}
+                        </h2>
+
+                        <div class="result-stats">
+
+                            <div>
+                                <small>Probabilidad posterior</small>
+                                <strong class="{{ 'blue-text' if is_optimal else 'amber-text' }}">
+                                    {{ "%.1f"|format(probability * 100) }}%
+                                </strong>
+                                <span>P(Óptimo | Features)</span>
+                            </div>
+
+                            <div>
+                                <small>Umbral del modelo</small>
+                                <strong>{{ "%.1f"|format(threshold * 100) }}%</strong>
+                                <span>P(Óptimo)</span>
+                            </div>
+
+                            <div>
+                                <small>Mejor cultivo</small>
+
+                                {% if top_crops %}
+                                    <strong class="blue-text">
+                                        {{ top_crops[0].nombre }}
+                                        <em>({{ "%.0f"|format(top_crops[0].affinity * 100) }}%)</em>
+                                    </strong>
+                                {% else %}
+                                    <strong class="blue-text">—</strong>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- TOP CROPS -->
+                {% if top_crops %}
+                <section class="bayes-panel reveal">
+
+                    <div class="section-heading">
+                        <span>2.</span>
+                        <h2>Top 10 Cultivos por Afinidad</h2>
+                    </div>
+
+                    <div class="top-crops-layout">
+
+                        <div class="crop-list">
+
+                            {% for crop in top_crops %}
+                                {% set affinity_pct = crop.affinity * 100 %}
+                                {% set is_g = crop.affinity >= 0.50 %}
+
+                                <div class="crop-row">
+                                    <span class="rank">{{ loop.index }}</span>
+                                    <strong>{{ crop.nombre }}</strong>
+
+                                    <div class="bar-track">
+                                        <i class="{{ 'blue' if is_g else 'amber' }}"
+                                           style="width: {{ '%.1f'|format(affinity_pct) }}%">
+                                        </i>
+                                    </div>
+
+                                    <span class="crop-pct">{{ "%.1f"|format(affinity_pct) }}%</span>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <aside class="crop-legend">
+
+                            <div>
+                                <span class="legend-dot blue"></span>
+                                <strong>Óptimo</strong>
+                                <small>≥50%</small>
+                            </div>
+
+                            <div>
+                                <span class="legend-dot amber"></span>
+                                <strong>Subóptimo</strong>
+                                <small>&lt;50%</small>
+                            </div>
+
+                            <p>
+                                Los puntajes representan la afinidad estimada de cada cultivo según
+                                las condiciones del terreno.
+                            </p>
+
+                            <div class="legend-tree">♙</div>
+
+                        </aside>
+
+                    </div>
+
+                </section>
+                {% endif %}
+
+                <!-- CHARTS -->
+                <section class="bayes-grid reveal">
+
+                    {% if plot %}
+                    <article class="bayes-panel">
+
+                        <div class="section-heading">
+                            <span>3.</span>
+                            <h2>Distribución Gaussiana <small>— Naive Bayes</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ plot }}" alt="Naive Bayes posterior probability curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if top_crops %}
+                    <article class="bayes-panel">
+
+                        <div class="section-heading">
+                            <span>4.</span>
+                            <h2>Ranking de Afinidad por Cultivo</h2>
+                        </div>
+
+                        <div class="ranking-table-wrap">
+
+                            <table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Cultivo</th>
+                                        <th>Afinidad (%)</th>
+                                        <th>Nivel</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for crop in top_crops %}
+                                        {% set affinity_pct = crop.affinity * 100 %}
+                                        {% set level = 'Óptimo' if crop.affinity >= 0.50 else 'Subóptimo' %}
+                                        {% set level_class = 'optimal' if crop.affinity >= 0.50 else 'suboptimal' %}
+
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ crop.nombre }}</td>
+                                            <td>
+                                                <div class="heat-cell {{ level_class }}">
+                                                    {{ "%.1f"|format(affinity_pct) }}%
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="level-pill {{ level_class }}">
+                                                    {{ level }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- IMPORTANCE + METRICS -->
+                <section class="bayes-grid reveal">
+
+                    {% if importance_plot %}
+                    <article class="bayes-panel">
+
+                        <div class="section-heading">
+                            <span>5.</span>
+                            <h2>Importancia de Features <small>(Poder de Separación)</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ importance_plot }}" alt="Feature importance">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if metrics %}
+                    <article class="bayes-panel">
+
+                        <div class="section-heading">
+                            <span>6.</span>
+                            <h2>Métricas del Modelo <small>(Test set — 20% de los datos)</small></h2>
+                        </div>
+
+                        <div class="metric-cards">
+
+                            <article>
+                                <small>Accuracy</small>
+                                <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                                <p>Predicciones correctas</p>
+                            </article>
+
+                            <article>
+                                <small>Precision</small>
+                                <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                                <p>VP / (VP + FP)</p>
+                            </article>
+
+                            <article>
+                                <small>Recall</small>
+                                <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                                <p>VP / (VP + FN)</p>
+                            </article>
+
+                            <article>
+                                <small>F1-Score</small>
+                                <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                                <p>Media armónica</p>
+                            </article>
+
+                            <article>
+                                <small>ROC AUC</small>
+                                <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                                <p>Capacidad discriminativa</p>
+                            </article>
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- BOTTOM CHARTS -->
+                <section class="bayes-bottom-grid reveal">
+
+                    {% if confusion_matrix_plot %}
+                    <article class="bayes-panel">
+
+                        <div class="section-heading">
+                            <span>7.</span>
+                            <h2>Matriz de Confusión <small>— Naive Bayes</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="Confusion Matrix">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if roc_plot %}
+                    <article class="bayes-panel">
+
+                        <div class="section-heading">
+                            <span>8.</span>
+                            <h2>Curva ROC <small>— Naive Bayes</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ roc_plot }}" alt="ROC Curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+            {% else %}
+
+                <!-- ESTADO INICIAL SIN GRÁFICA BASE -->
+                <section class="empty-panel reveal">
+
+                    <div class="empty-icon">♙</div>
+
+                    <h2>Ready for Naive Bayes analysis</h2>
+
+                    <p>
+                        Adjust the terrain variables and press <strong>Analyze Terrain</strong> to obtain
+                        posterior probability, aptitude classification, and crop affinity ranking.
+                    </p>
+
+                    <small>
+                        P(Optimal | Features) ∝ P(Features | Optimal) · P(Optimal)
+                    </small>
+
+                </section>
+
+            {% endif %}
+
+            <section class="info-banner reveal">
+
+                <div class="info-icon">i</div>
+
+                <p>
+                    The recommendation is based on the input 
+                    variables and the Naive Bayes model with a Gaussian distribution. 
+                    It adjusts the variables and generates a new analysis to explore 
+                    different scenarios.
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

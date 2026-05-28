@@ -1,0 +1,557 @@
+{% extends "base.html" %}
+
+{% block body_class %}kmeans-dane-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/kmeans_dane.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="kmeans-shell">
+
+    <div class="kmeans-bg"></div>
+
+    <main class="kmeans-layout">
+
+        <!-- SIDEBAR INPUT -->
+        <aside class="kmeans-sidebar reveal">
+
+            <div class="section-heading compact">
+                <span>1.</span>
+                <h2>Input Data <small>Adjust terrain variables</small></h2>
+            </div>
+
+            <form action="/recommendation/KmeansD" method="POST" class="kmeans-form">
+
+                <div class="field-card">
+                    <label>
+                        <strong>Planted Area (ha)</strong>
+                        <span id="area-val">{{ area_value or 50.0 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="area_ha"
+                        id="area_ha"
+                        min="0.5"
+                        max="500"
+                        step="0.5"
+                        value="{{ area_value or 50.0 }}"
+                        oninput="document.getElementById('area-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0.5 ha</span>
+                        <span>500 ha</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>Protein Gain (%)</strong>
+                        <span id="proteina-val">{{ proteina_value or 70 }}</span>
+                    </label>
+
+                    <input
+                        type="range"
+                        name="ganancia_proteina_pct"
+                        id="ganancia_proteina_pct"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="{{ proteina_value or 70 }}"
+                        oninput="document.getElementById('proteina-val').textContent=this.value"
+                    >
+
+                    <div class="range-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <div class="field-card">
+                    <label>
+                        <strong>Climate Type</strong>
+                    </label>
+
+                    <div class="climate-toggle">
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="calido"
+                                {% if clima_value == 'calido' or clima_value is none %}checked{% endif %}
+                            >
+                            <span>☀️ Warm</span>
+                        </label>
+
+                        <label class="climate-option">
+                            <input
+                                type="radio"
+                                name="clima"
+                                value="frio"
+                                {% if clima_value == 'frio' %}checked{% endif %}
+                            >
+                            <span>❄️ Cold</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    Analyze Terrain
+                    <span>♧</span>
+                </button>
+
+            </form>
+
+            <div class="kmeans-info-card">
+                <strong>K-Means (K=4)</strong>
+                <ul>
+                    <li>Distance: Euclidean</li>
+                    <li>PCA: 2D Projection</li>
+                    <li>Initialization: K-Means++</li>
+                    <li>Max iterations: 300</li>
+                    <li>Tolerance: 1e-4</li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="kmeans-content">
+
+            <!-- HERO -->
+            <section class="kmeans-hero reveal">
+
+                <div class="hero-copy">
+
+                    <div class="breadcrumb">
+                        <a href="{{ url_for('main.home') }}">Analysis</a>
+                        <span>›</span>
+                        <a href="/recommendation/Menu">Predictive Models</a>
+                        <span>›</span>
+                        <a href="/recommendation/MD">K-Means</a>
+                        <span>›</span>
+                        <strong>Recommendation</strong>
+                    </div>
+
+                    <h1>K-Means Clustering</h1>
+
+                    <h2>Forage Productivity Recommendation</h2>
+
+                    <p>
+                        Adjust the terrain variables and get an immediate analysis and crop
+                        recommendation using the K-Means clustering algorithm with K=4.
+                    </p>
+
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="cluster c1"></div>
+                    <div class="cluster c2"></div>
+                    <div class="cluster c3"></div>
+                    <div class="cluster c4"></div>
+                    <span class="centroid x1">×</span>
+                    <span class="centroid x2">×</span>
+                    <span class="centroid x3">×</span>
+                    <span class="centroid x4">×</span>
+                    <span class="user-point">★</span>
+                    <span class="k-badge">K=4</span>
+                </div>
+
+                <a href="/recommendation/MD" class="back-button">
+                    ← Back to Model Selection
+                </a>
+
+            </section>
+
+            {% if result is not none %}
+
+                <!-- CLUSTER RECOMMENDATION -->
+                <section class="cluster-result-card reveal">
+
+                    <div class="result-icon">♧</div>
+
+                    <div class="result-main">
+
+                        <small class="result-kicker">Cluster Recommendation</small>
+
+                        <div class="result-title-row">
+                            <span class="cluster-badge">Cluster {{ cluster }}</span>
+                            <h2>{{ result }}</h2>
+                        </div>
+
+                        <div class="result-stats">
+
+                            <div>
+                                <small>Affinity Index</small>
+                                <strong class="green-text">{{ "%.2f"|format(afinidad * 100) }}%</strong>
+                                <span>(inverse distance)</span>
+                            </div>
+
+                            <div>
+                                <small>Protein Score</small>
+                                <strong class="amber-text">{{ "%.2f"|format(score_proteina * 100) }}%</strong>
+                            </div>
+
+                            <div>
+                                <small>Area (ha)</small>
+                                <strong class="blue-text">{{ "%.1f"|format(area_value) }} ha</strong>
+                            </div>
+
+                            <div>
+                                <small>Climate</small>
+                                <strong>
+                                    {{ '☀️ Warm' if clima_value == 'calido' else '❄️ Cold' }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- TOP FEATURES + TOP CROPS -->
+                <section class="kmeans-grid reveal">
+
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>2.</span>
+                            <h2>Top 5 Recommendation Factors <small>(by affinity)</small></h2>
+                        </div>
+
+                        <div class="factor-list">
+
+                            <div class="factor-row">
+                                <span>1</span>
+                                <strong>Protein Gain (%)</strong>
+                                <em>{{ "%.1f"|format(proteina_value) }}%</em>
+                            </div>
+
+                            <div class="factor-row">
+                                <span>2</span>
+                                <strong>Planted Area (ha)</strong>
+                                <em>{{ "%.1f"|format(area_value) }} ha</em>
+                            </div>
+
+                            <div class="factor-row">
+                                <span>3</span>
+                                <strong>Climate Type</strong>
+                                <em>{{ 'Warm' if clima_value == 'calido' else 'Cold' }}</em>
+                            </div>
+
+                            <div class="factor-row">
+                                <span>4</span>
+                                <strong>Rotational Cut (%)</strong>
+                                <em>30%</em>
+                            </div>
+
+                            <div class="factor-row">
+                                <span>5</span>
+                                <strong>Euclidean Distance</strong>
+                                <em>{{ "%.3f"|format((1 / afinidad) - 1) if afinidad else "—" }}</em>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    {% if ranking %}
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>3.</span>
+                            <h2>Top Recommended Forages <small>— Cluster {{ cluster }}</small></h2>
+                        </div>
+
+                        <div class="crop-list">
+
+                            {% for crop in ranking %}
+                                <div class="crop-row">
+                                    <strong>{{ crop.variedad }}</strong>
+
+                                    <div class="bar-track">
+                                        <i style="width: {{ '%.1f'|format(crop.afinidad * 100) }}%"></i>
+                                    </div>
+
+                                    <span>{{ "%.4f"|format(crop.afinidad) }}</span>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="chart-caption">
+                            <span></span>
+                            Affinity higher is better.
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- PCA + CLUSTER PROFILES -->
+                <section class="kmeans-grid reveal">
+
+                    {% if plot %}
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>4.</span>
+                            <h2>PCA 2D Visualization <small>— K-Means Clusters</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ plot }}" alt="K-Means PCA cluster visualization">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if cluster_info %}
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>5.</span>
+                            <h2>Cluster Profiles <small>(average characteristics)</small></h2>
+                        </div>
+
+                        <div class="cluster-profile-grid">
+
+                            {% for item in cluster_info %}
+                                {% set cnum = item.cluster if item.cluster is defined else loop.index0 %}
+
+                                <article class="profile-card cluster-{{ cnum }}">
+                                    <h3>Cluster {{ cnum }}</h3>
+
+                                    <p>
+                                        <span>Protein Score</span>
+                                        <strong>
+                                            {{ "%.2f"|format((item.score_proteina if item.score_proteina is defined else 0) * 100) }}%
+                                        </strong>
+                                    </p>
+
+                                    <p>
+                                        <span>Area (ha)</span>
+                                        <strong>
+                                            {{ "%.1f"|format(item.area_ha if item.area_ha is defined else area_value) }}
+                                        </strong>
+                                    </p>
+
+                                    <p>
+                                        <span>Climate</span>
+                                        <strong>
+                                            {{ item.clima if item.clima is defined else ('Warm' if clima_value == 'calido' else 'Cold') }}
+                                        </strong>
+                                    </p>
+
+                                    <p>
+                                        <span>Rotational Cut</span>
+                                        <strong>
+                                            {{ "%.0f"|format((item.prop_pastoreo_rotacional if item.prop_pastoreo_rotacional is defined else 0.30) * 100) }}%
+                                        </strong>
+                                    </p>
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- METRICS -->
+                {% if metrics %}
+                <section class="kmeans-panel reveal">
+
+                    <div class="section-heading">
+                        <span>6.</span>
+                        <h2>Clustering Evaluation Metrics <small>(using the entire dataset)</small></h2>
+                    </div>
+
+                    <div class="metric-cards">
+
+                        <article>
+                            <span>🌱</span>
+                            <div>
+                                <small>Accuracy</small>
+                                <strong>{{ "%.1f"|format(metrics.exactitud * 100) }}%</strong>
+                                <p>Correct assignments</p>
+                            </div>
+                        </article>
+
+                        <article>
+                            <span>⌁</span>
+                            <div>
+                                <small>Precision</small>
+                                <strong>{{ "%.1f"|format(metrics.precision * 100) }}%</strong>
+                                <p>Cluster purity</p>
+                            </div>
+                        </article>
+
+                        <article>
+                            <span>♧</span>
+                            <div>
+                                <small>Recall</small>
+                                <strong>{{ "%.1f"|format(metrics.recall * 100) }}%</strong>
+                                <p>Completeness</p>
+                            </div>
+                        </article>
+
+                        <article>
+                            <span>◎</span>
+                            <div>
+                                <small>F1-Score</small>
+                                <strong>{{ "%.3f"|format(metrics.f1_score) }}</strong>
+                                <p>Balance score</p>
+                            </div>
+                        </article>
+
+                        <article>
+                            <span>▧</span>
+                            <div>
+                                <small>ROC AUC</small>
+                                <strong>{{ "%.3f"|format(metrics.roc_auc) }}</strong>
+                                <p>Discriminative ability</p>
+                            </div>
+                        </article>
+
+                    </div>
+
+                </section>
+                {% endif %}
+
+                <!-- BOTTOM CHARTS -->
+                <section class="kmeans-bottom-grid reveal">
+
+                    {% if confusion_matrix_plot %}
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>7.</span>
+                            <h2>Confusion Matrix <small>— K-Means</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ confusion_matrix_plot }}" alt="K-Means confusion matrix">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if roc_plot %}
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>8.</span>
+                            <h2>ROC Curve <small>— K-Means</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ roc_plot }}" alt="K-Means ROC curve">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                    {% if importance_plot %}
+                    <article class="kmeans-panel">
+
+                        <div class="section-heading">
+                            <span>9.</span>
+                            <h2>Feature Importance <small>— K-Means</small></h2>
+                        </div>
+
+                        <div class="chart-image">
+                            <img src="data:image/png;base64,{{ importance_plot }}" alt="K-Means feature importance">
+                        </div>
+
+                    </article>
+                    {% endif %}
+
+                </section>
+
+                <!-- EXPLANATION -->
+                <section class="kmeans-panel reveal">
+
+                    <div class="section-heading">
+                        <span>10.</span>
+                        <h2>What do these metrics mean for K-Means?</h2>
+                    </div>
+
+                    <div class="explanation-grid">
+
+                        <article>
+                            <strong>Accuracy</strong>
+                            <p>Percentage of data points correctly assigned to their natural cluster.</p>
+                        </article>
+
+                        <article>
+                            <strong>Precision</strong>
+                            <p>How pure the clusters are, meaning how similar the points are within each cluster.</p>
+                        </article>
+
+                        <article>
+                            <strong>Recall</strong>
+                            <p>How complete the clusters are, meaning how well the points that belong together are grouped.</p>
+                        </article>
+
+                        <article>
+                            <strong>F1-Score</strong>
+                            <p>Harmonic mean between precision and recall, providing a balanced evaluation.</p>
+                        </article>
+
+                        <article>
+                            <strong>ROC AUC</strong>
+                            <p>Measures the clustering model’s ability to discriminate between different groups.</p>
+                        </article>
+
+                    </div>
+
+                </section>
+
+            {% else %}
+
+                <!-- INITIAL STATE WITHOUT BASE GRAPH -->
+                <section class="empty-panel reveal">
+
+                    <div class="empty-icon">♧</div>
+
+                    <h2>Ready for K-Means analysis</h2>
+
+                    <p>
+                        Adjust the terrain variables and press <strong>Analyze Terrain</strong> to obtain
+                        the closest cluster, forage recommendation, PCA visualization, and affinity ranking.
+                    </p>
+
+                    <small>
+                        K-Means groups similar pasture varieties and recommends the closest match to your terrain.
+                    </small>
+
+                </section>
+
+            {% endif %}
+
+            <section class="info-banner reveal">
+
+                <div class="info-icon">i</div>
+
+                <p>
+                    The recommendation is based on the input variables and the K-Means clustering model with K=4.
+                    You can adjust the terrain parameters and generate a new analysis to explore different scenarios.
+                </p>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

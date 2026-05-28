@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block body_class %}recommendation-menu-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/recommendation_menu.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="recommendation-shell reveal">
+
+    <div class="recommendation-background"></div>
+
+    <div class="recommendation-panel">
+
+        <!-- HERO -->
+        <section class="recommendation-hero">
+
+            <div class="hero-left">
+
+                <div class="hero-icon">
+                    <span>Ø</span>
+                </div>
+
+                <div class="hero-copy">
+
+                    <div class="system-pill">
+                        <span></span>
+                        System · AgroData
+                    </div>
+
+                    <h1>
+                        Recommendation
+                        <span>Menu</span>
+                    </h1>
+
+                    <p class="hero-kicker">
+                        FORAGE CROP CLASSIFIER
+                    </p>
+
+                    <p class="hero-description">
+                        Select a module to continue with the analysis, recommendation or classification.
+                        The interface combines technical, agricultural, and premium aesthetics.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="hero-status">
+
+                <div class="status-card">
+                    <div class="status-icon">⌁</div>
+                    <div>
+                        <span>System Status</span>
+                        <strong>Active</strong>
+                        <p><i></i> All systems operational</p>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-icon">▧</div>
+                    <div>
+                        <span>Current Input</span>
+                        <strong>Crop Data</strong>
+                        <p>Agronomic variables loaded</p>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-icon">∅</div>
+                    <div>
+                        <span>Active Module</span>
+                        <strong>Ready for Recommendations</strong>
+                        <p>Select a module to continue</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- MODULES -->
+        <section class="module-grid">
+
+            <article class="module-card glow-hover reveal">
+
+                <div class="module-number">01</div>
+
+                <div class="module-icon">
+                    <span>▣</span>
+                </div>
+
+                <div class="module-visual seedling"></div>
+
+                <h2>Overview</h2>
+
+                <p>
+                    Introduction module to present the system, objectives, variables,
+                    and scope of the classifier.
+                </p>
+
+                <a href="/recommendation/menu_M" class="module-btn">
+                    Open Module
+                    <span>→</span>
+                </a>
+
+            </article>
+
+            <article class="module-card glow-hover reveal">
+
+                <div class="module-number">02</div>
+
+                <div class="module-icon">
+                    <span>♒</span>
+                </div>
+
+                <div class="module-visual grass"></div>
+
+                <h2>Forage Recommendation</h2>
+
+                <p>
+                    Suggests the most suitable forage crop based on productive conditions
+                    and terrain characteristics.
+                </p>
+
+                <a href="/recommendation/menu_F" class="module-btn">
+                    Open Module
+                    <span>→</span>
+                </a>
+
+            </article>
+
+            <article class="module-card glow-hover reveal">
+
+                <div class="module-number">03</div>
+
+                <div class="module-icon">
+                    <span>⌾</span>
+                </div>
+
+                <div class="module-visual map"></div>
+
+                <h2>DANE Recommendation</h2>
+
+                <p>
+                    Integrates DANE criteria to guide recommendations with territorial
+                    and productive focus.
+                </p>
+
+                <a href="/recommendation/menu_D" class="module-btn">
+                    Open Module
+                    <span>→</span>
+                </a>
+
+            </article>
+
+        </section>
+
+        <!-- INFO STRIP -->
+        <section class="info-strip reveal">
+
+            <div class="info-item">
+                <div class="info-icon">◌</div>
+                <div>
+                    <strong>Academic Interface</strong>
+                    <p>
+                        Designed for advanced analysis, forage classification models,
+                        and high-level metrics.
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-divider"></div>
+
+            <div class="info-item">
+                <div class="info-icon">♧</div>
+                <div>
+                    <strong>ForraTech</strong>
+                    <p>
+                        Artificial intelligence applied to animal nutrition
+                        and sustainable agriculture.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- PAGE FOOTER -->
+        <div class="recommendation-footer">
+            <p>© 2026 ForraTech. All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

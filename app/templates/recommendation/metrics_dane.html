@@ -1,0 +1,565 @@
+{% extends "base.html" %}
+
+{% block body_class %}metrics-dane-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/metrics_dane.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="dane-metrics-page">
+
+    <div class="metrics-bg"></div>
+
+    <main class="metrics-container">
+
+        <!-- HERO -->
+        <section class="metrics-hero reveal">
+
+            <div class="hero-copy">
+
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.home') }}">Analysis</a>
+                    <span>›</span>
+                    <a href="/recommendation/Menu">DANE Comparison</a>
+                    <span>›</span>
+                    <strong>Real Dataset</strong>
+                </div>
+
+                <div class="dataset-pill">
+                    Real Dataset (DANE) · ena_2019_pastos_ml.csv · 26 varieties · ENA 2019
+                </div>
+
+                <h1>
+                    Comparative Metrics of Machine Learning Models
+                    <span>on the DANE Real Dataset</span>
+                </h1>
+
+                <p>
+                    Comparative analysis of classification metrics for the four machine learning models
+                    trained on the real dataset from the National Agricultural Survey ENA 2019.
+                    Models are evaluated both as supervised and unsupervised according to their
+                    corresponding metrics.
+                </p>
+
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="chart-line green"></div>
+                <div class="chart-line purple"></div>
+                <div class="chart-line amber"></div>
+                <div class="chart-line blue"></div>
+
+                <div class="hero-stats">
+                    <div>
+                        <span>▧</span>
+                        <strong>4</strong>
+                        <small>Models compared</small>
+                    </div>
+
+                    <div>
+                        <span>♧</span>
+                        <strong>26</strong>
+                        <small>Pasture varieties</small>
+                    </div>
+
+                    <div>
+                        <span>▤</span>
+                        <strong>ENA 2019</strong>
+                        <small>Real dataset</small>
+                    </div>
+
+                    <div>
+                        <span>◎</span>
+                        <strong>3-Fold</strong>
+                        <small>Cross-validation</small>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- MODELS -->
+        <section class="metrics-section reveal">
+
+            <div class="section-heading green">
+                <span>1.</span>
+                <h2>The four evaluated models</h2>
+            </div>
+
+            <div class="dane-model-grid">
+
+                <article class="dane-model-card kmeans">
+                    <div>
+                        <span class="model-kicker">Model 1 · Unsupervised</span>
+                        <h3>K-Means Clustering</h3>
+                        <p>
+                            Groups the 26 varieties into 4 clusters without a predefined label.
+                            Assigns each terrain to the nearest cluster centroid and recommends
+                            the closest variety.
+                        </p>
+                        <span class="model-tag">Clustering</span>
+                    </div>
+
+                    <div class="model-icon">⌘</div>
+                </article>
+
+                <article class="dane-model-card knn">
+                    <div>
+                        <span class="model-kicker">Model 2 · Supervised</span>
+                        <h3>K-Nearest Neighbors (KNN)</h3>
+                        <p>
+                            Finds the 3 nearest neighbors of the user's terrain in Euclidean space.
+                            Recommends the variety most frequently present among the neighbors.
+                        </p>
+                        <span class="model-tag">Instance-based</span>
+                    </div>
+
+                    <div class="model-icon">⌁</div>
+                </article>
+
+                <article class="dane-model-card bayes">
+                    <div>
+                        <span class="model-kicker">Model 3 · Probabilistic</span>
+                        <h3>Naive Bayes (Gaussian)</h3>
+                        <p>
+                            Calculates P(variety | terrain) using Gaussian distributions per feature.
+                            Applies Bayes theorem with prior adjusted by climate.
+                        </p>
+                        <span class="model-tag">Probabilistic</span>
+                    </div>
+
+                    <div class="model-icon">♙</div>
+                </article>
+
+                <article class="dane-model-card forest">
+                    <div>
+                        <span class="model-kicker">Model 4 · Ensemble</span>
+                        <h3>Random Forest (200 trees)</h3>
+                        <p>
+                            Builds 200 decision trees and averages their votes. Captures non-linear
+                            relationships and interactions between features.
+                        </p>
+                        <span class="model-tag">Ensemble</span>
+                    </div>
+
+                    <div class="model-icon">♧</div>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- DATASET + SCORE -->
+        <section class="metrics-two-col reveal">
+
+            <article class="metrics-panel large">
+
+                <div class="section-heading green">
+                    <span>2.</span>
+                    <h2>Dataset and input variables</h2>
+                </div>
+
+                <p class="panel-lead">
+                    The dataset <code>ena_2019_pastos_ml.csv</code> contains 26 pasture varieties
+                    and their usage proportions according to type of use reported in ENA 2019.
+                    The four models receive the same input variables from the terrain:
+                </p>
+
+                <div class="table-wrap">
+                    <table class="metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Input variable</th>
+                                <th>Range</th>
+                                <th>Description</th>
+                                <th>How it is used</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Available area</strong>
+                                    <small>area_ha</small>
+                                </td>
+                                <td>0.5 – 1M ha</td>
+                                <td>Hectares available to the producer for sowing.</td>
+                                <td>Transformed as <code>log(1 + area_ha)</code> to reduce magnitude bias.</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Protein gain (%)</strong>
+                                    <small>ganancia_proteina_pct</small>
+                                </td>
+                                <td>0 – 100%</td>
+                                <td>Percentage of nutritional improvement sought in the animals.</td>
+                                <td>Defines the target distribution of usage proportions.</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Terrain climate</strong>
+                                    <small>clima</small>
+                                </td>
+                                <td>warm / cold</td>
+                                <td>Thermal climate of the terrain.</td>
+                                <td>Encoded as <code>clima_num</code> and used as post-prediction affinity factor.</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Type of use</strong>
+                                    <small>feature vector</small>
+                                </td>
+                                <td>grazing / cut / rotational</td>
+                                <td>Intended use of the pasture.</td>
+                                <td>Determines the proportion weights of each feature.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+            <article class="metrics-panel composite-card">
+
+                <h2>Composite score</h2>
+
+                <p>
+                    Weighted score of 7 features on a 0 to 1 scale.
+                    Represents the general aptitude of the terrain.
+                </p>
+
+                <div class="score-number">0.68</div>
+
+                <div class="score-bar">
+                    <i></i>
+                </div>
+
+                <div class="score-scale">
+                    <span>0</span>
+                    <span>0.25</span>
+                    <span>0.50</span>
+                    <span>0.75</span>
+                    <span>1.00</span>
+                </div>
+
+                <div class="score-labels">
+                    <span>Low</span>
+                    <span>Medium</span>
+                    <span>High</span>
+                    <span>Optimal</span>
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- TABLE + KMEANS -->
+        <section class="metrics-two-col table-kmeans reveal">
+
+            <article class="metrics-panel large">
+
+                <div class="section-heading purple">
+                    <span>3.</span>
+                    <h2>Comparative metrics table <small>(supervised models)</small></h2>
+                </div>
+
+                <p class="panel-lead">
+                    Classification metrics calculated on the test set with 3-fold cross-validation.
+                </p>
+
+                <div class="table-wrap">
+                    <table class="metrics-table compare">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Definition</th>
+                                <th class="green-text">KNN<br><small>(K=5)</small></th>
+                                <th class="purple-text">Naive Bayes<br><small>(Gaussian)</small></th>
+                                <th class="amber-text">Random Forest<br><small>(200 trees)</small></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><strong>Accuracy</strong><small>Overall</small></td>
+                                <td>Proportion of correct predictions.</td>
+                                <td class="green-text">76 – 84%</td>
+                                <td class="purple-text">70 – 79%</td>
+                                <td class="amber-text">87 – 94%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Precision</strong><small>TP / (TP + FP)</small></td>
+                                <td>Of the recommended varieties, how many are actually optimal?</td>
+                                <td class="green-text">73 – 81%</td>
+                                <td class="purple-text">69 – 78%</td>
+                                <td class="amber-text">86 – 93%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Recall</strong><small>TP / (TP + FN)</small></td>
+                                <td>Of the truly optimal varieties, how many does the model detect?</td>
+                                <td class="green-text">75 – 83%</td>
+                                <td class="purple-text">71 – 80%</td>
+                                <td class="amber-text">88 – 95%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>F1-Score</strong><small>Harmonic mean</small></td>
+                                <td>Balance between precision and recall.</td>
+                                <td class="green-text">74 – 82%</td>
+                                <td class="purple-text">70 – 79%</td>
+                                <td class="amber-text">87 – 94%</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>ROC-AUC</strong><small>Curve area</small></td>
+                                <td>Discrimination capacity between classes.</td>
+                                <td class="green-text">0.79 – 0.88</td>
+                                <td class="purple-text">0.74 – 0.83</td>
+                                <td class="amber-text">0.92 – 0.97</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>CV Accuracy</strong><small>3-folds</small></td>
+                                <td>Average accuracy with 3-fold cross-validation.</td>
+                                <td class="green-text">79% ± 4%</td>
+                                <td class="purple-text">73% ± 5%</td>
+                                <td class="amber-text">90% ± 2%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+            <article class="metrics-panel kmeans-card">
+
+                <h2>K-Means clustering metrics <small>(unsupervised)</small></h2>
+
+                <p>
+                    Internal metrics that measure the cohesion and separation of the obtained clusters.
+                </p>
+
+                <div class="kmeans-list">
+                    <div>
+                        <span>Number of clusters (K)</span>
+                        <strong>4</strong>
+                    </div>
+
+                    <div>
+                        <span>Selection method</span>
+                        <strong>Elbow method</strong>
+                    </div>
+
+                    <div>
+                        <span>Silhouette score</span>
+                        <strong>0.35 – 0.55</strong>
+                    </div>
+
+                    <div>
+                        <span>Inertia (SSE)</span>
+                        <strong>Depends on the scale</strong>
+                    </div>
+
+                    <div>
+                        <span>Mean affinity (top-1)</span>
+                        <strong>0.60 – 0.80</strong>
+                    </div>
+                </div>
+
+                <div class="kmeans-note">
+                    <strong>Silhouette Score</strong> measures how similar a point is to its own cluster
+                    compared to the other clusters. Range: -1 to 1.
+                    <br><br>
+                    • &gt; 0.5: well-separated clusters<br>
+                    • 0.25 – 0.5: acceptable separation<br>
+                    • &lt; 0.25: clusters may overlap
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- ANALYSIS -->
+        <section class="metrics-section reveal">
+
+            <div class="section-heading green">
+                <span>4.</span>
+                <h2>Detailed analysis by model</h2>
+            </div>
+
+            <div class="analysis-grid">
+
+                <article class="analysis-card kmeans">
+                    <h3>⌘ K-Means Clustering</h3>
+
+                    <ul>
+                        <li>Identifies natural groups without labels.</li>
+                        <li>Effective for exploration and segmenting similar terrains.</li>
+                        <li>Limitation: depends on K and scale.</li>
+                    </ul>
+
+                    <div class="cluster-visual">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                </article>
+
+                <article class="analysis-card knn">
+                    <h3>⌁ K-Nearest Neighbors (KNN)</h3>
+
+                    <ul>
+                        <li>Intuitive and easy to implement.</li>
+                        <li>Performance depends on local density of data.</li>
+                        <li>Sensitive to noise and irrelevant features.</li>
+                    </ul>
+
+                    <div class="knn-visual">
+                        <div class="knn-points"></div>
+                        <div class="knn-ring">K = 3</div>
+                    </div>
+                </article>
+
+                <article class="analysis-card bayes">
+                    <h3>♙ Naive Bayes (Gaussian)</h3>
+
+                    <ul>
+                        <li>Fast and efficient for continuous features.</li>
+                        <li>Assumes conditional independence between variables.</li>
+                        <li>Well suited when data is limited.</li>
+                    </ul>
+
+                    <div class="mini-gaussian"></div>
+                </article>
+
+                <article class="analysis-card forest">
+                    <h3>♧ Random Forest (200 trees)</h3>
+
+                    <ul>
+                        <li>Highest accuracy and generalization.</li>
+                        <li>Handles non-linear relationships and outliers.</li>
+                        <li>More computational cost.</li>
+                    </ul>
+
+                    <div class="importance-bars">
+                        <div><span>Available area</span><i style="--w:92%"></i></div>
+                        <div><span>Protein gain</span><i style="--w:78%"></i></div>
+                        <div><span>Climate</span><i style="--w:66%"></i></div>
+                        <div><span>Type of use</span><i style="--w:36%"></i></div>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- KMEANS EXPLANATION -->
+        <section class="info-banner reveal">
+
+            <div class="info-icon">i</div>
+
+            <div>
+                <div class="section-heading blue">
+                    <span>5.</span>
+                    <h2>Why K-Means clustering does not have accuracy, precision or recall?</h2>
+                </div>
+
+                <p>
+                    K-Means is an unsupervised algorithm: it does not use true labels
+                    (<em>ground truth</em>) to learn. Therefore, metrics such as accuracy,
+                    precision and recall, which require known correct classes, cannot be computed.
+                    Instead, internal clustering metrics are used: Silhouette, Inertia and Affinity.
+                </p>
+            </div>
+
+            <div class="network-visual">
+                <span></span><span></span>
+            </div>
+
+        </section>
+
+        <!-- CONCLUSION -->
+        <section class="conclusion-section reveal">
+
+            <div class="section-heading green">
+                <span>6.</span>
+                <h2>Conclusion and model selection guide</h2>
+            </div>
+
+            <div class="conclusion-flow">
+
+                <article>
+                    <span>🏆</span>
+                    <h3>Best Overall Performance</h3>
+                    <p>
+                        Random Forest reaches the highest accuracy and AUC stability.
+                    </p>
+                </article>
+
+                <i>→</i>
+
+                <article class="purple">
+                    <span>◎</span>
+                    <h3>Interpretability</h3>
+                    <p>
+                        KNN is intuitive and easy to explain to producers.
+                        Naive Bayes offers probabilistic interpretation.
+                    </p>
+                </article>
+
+                <i>→</i>
+
+                <article class="amber">
+                    <span>⚡</span>
+                    <h3>Efficiency</h3>
+                    <p>
+                        Naive Bayes is the fastest and simplest model, ideal for quick scenarios
+                        or small datasets.
+                    </p>
+                </article>
+
+                <i>→</i>
+
+                <article class="blue">
+                    <span>🎯</span>
+                    <h3>Recommendation</h3>
+                    <p>
+                        Use Random Forest for production recommendations.
+                        For exploration or segmentation, use K-Means.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- LOCAL FOOTER -->
+        <section class="metrics-footer reveal">
+
+            <div>
+                <span>🌿</span>
+                <strong>ForraTech</strong>
+            </div>
+
+            <p>© 2026 ForraTech. All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

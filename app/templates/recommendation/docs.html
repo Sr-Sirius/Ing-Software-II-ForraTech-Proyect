@@ -1,0 +1,853 @@
+{% extends "base.html" %}
+
+{% block body_class %}technical-docs-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/technical_docs.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="tech-docs-layout">
+
+    <div class="tech-docs-bg"></div>
+
+    <!-- SIDEBAR LOCAL -->
+    <aside class="tech-docs-sidebar reveal">
+
+        <div class="docs-logo-card">
+            <div class="docs-logo-icon">🌿</div>
+            <strong>Documentation</strong>
+            <p>ForraTech technical reference</p>
+        </div>
+
+        <nav class="docs-nav">
+
+            <a href="#overview" class="active">
+                <span>▦</span>
+                Overview
+            </a>
+
+            <a href="#datasets">
+                <span>▤</span>
+                Datasets
+            </a>
+
+            <a href="#variables">
+                <span>⌘</span>
+                Input Variables
+            </a>
+
+            <a href="#architecture">
+                <span>▱</span>
+                Architecture
+            </a>
+
+            <a href="#pipeline">
+                <span>⛓</span>
+                Pipelines
+            </a>
+
+            <a href="#models">
+                <span>◉</span>
+                ML Models
+            </a>
+
+            <a href="#routes">
+                <span>⌬</span>
+                Routes
+            </a>
+
+            <a href="#config">
+                <span>⚙</span>
+                Configuration
+            </a>
+
+        </nav>
+
+        <div class="docs-help-card">
+            <div class="help-icon">🌱</div>
+            <strong>Need help?</strong>
+            <p>Check the full documentation or contact support.</p>
+            <a href="/recommendation/Menu">View docs ↗</a>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="tech-docs-content">
+
+        <!-- HERO -->
+        <section class="tech-docs-hero reveal" id="overview">
+
+            <div class="breadcrumb">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <span>›</span>
+                <a href="/recommendation/Menu">Documentation</a>
+                <span>›</span>
+                <strong>Overview</strong>
+            </div>
+
+            <div class="hero-inner">
+
+                <div class="hero-copy">
+
+                    <h1>
+                        Technical
+                        <span>Documentation</span>
+                    </h1>
+
+                    <p>
+                        Complete guide to understand the architecture, data, variables,
+                        pipelines and machine learning models of the ForraTech forage
+                        recommendation system.
+                    </p>
+
+                    <div class="hero-tags">
+
+                        <div>
+                            <span>▧</span>
+                            <strong>Built with Flask</strong>
+                            <small>Python Web Framework</small>
+                        </div>
+
+                        <div>
+                            <span>⌁</span>
+                            <strong>Machine Learning</strong>
+                            <small>Scikit-learn Ecosystem</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <aside class="glance-card">
+
+                    <h3>System at a Glance</h3>
+
+                    <div class="glance-grid">
+
+                        <div>
+                            <span>▤</span>
+                            <strong>2</strong>
+                            <small>Datasets</small>
+                        </div>
+
+                        <div>
+                            <span>◉</span>
+                            <strong>4</strong>
+                            <small>ML Models</small>
+                        </div>
+
+                        <div>
+                            <span>⛓</span>
+                            <strong>6</strong>
+                            <small>Pipelines</small>
+                        </div>
+
+                        <div>
+                            <span>⌬</span>
+                            <strong>12+</strong>
+                            <small>Routes</small>
+                        </div>
+
+                    </div>
+
+                    <p>🌿 Powering intelligent forage recommendations</p>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+        <!-- SYSTEM OVERVIEW -->
+        <section class="docs-section reveal">
+
+            <div class="section-title">
+                <span></span>
+                <h2>System Overview</h2>
+            </div>
+
+            <p class="section-lead">
+                ForraTech follows a modular pipeline that transforms raw data and user inputs
+                into intelligent forage recommendations.
+            </p>
+
+            <div class="system-flow">
+
+                <div class="flow-item">
+                    <span>▧</span>
+                    <strong>Data Source</strong>
+                    <p>Synthetic & real datasets</p>
+                </div>
+
+                <i>→</i>
+
+                <div class="flow-item">
+                    <span>⌘</span>
+                    <strong>Data Processing</strong>
+                    <p>Cleaning, transformation and feature engineering</p>
+                </div>
+
+                <i>→</i>
+
+                <div class="flow-item">
+                    <span>⛓</span>
+                    <strong>ML Pipelines</strong>
+                    <p>CRISP-ML phases for each model</p>
+                </div>
+
+                <i>→</i>
+
+                <div class="flow-item">
+                    <span>▱</span>
+                    <strong>Models</strong>
+                    <p>Training and evaluation</p>
+                </div>
+
+                <i>→</i>
+
+                <div class="flow-item">
+                    <span>🌿</span>
+                    <strong>Recommendation System</strong>
+                    <p>Predictions and suggestions</p>
+                </div>
+
+                <i>→</i>
+
+                <div class="flow-item">
+                    <span>▨</span>
+                    <strong>User Interface</strong>
+                    <p>Web app and visualization</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- DATASETS -->
+        <section class="docs-section reveal" id="datasets">
+
+            <div class="section-title numbered">
+                <span>1.</span>
+                <h2>Datasets</h2>
+            </div>
+
+            <p class="section-lead">
+                The system uses two main datasets to train and evaluate machine learning models.
+            </p>
+
+            <div class="dataset-grid">
+
+                <article class="data-card">
+
+                    <div class="data-card-header">
+                        <h3>Synthetic Forage Dataset <small>(forrajeo_1000.csv)</small></h3>
+                        <span>1,000 records</span>
+                    </div>
+
+                    <p>
+                        Generated with 52 forage species with random variation. Includes ranges of
+                        environmental and agronomic conditions.
+                    </p>
+
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><code>id</code></td>
+                                <td>int</td>
+                                <td>Unique identifier (1–1000)</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>nombre</code></td>
+                                <td>str</td>
+                                <td>Forage species name</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>ph_min / ph_max</code></td>
+                                <td>float</td>
+                                <td>pH range</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>humedad_min / humedad_max</code></td>
+                                <td>float</td>
+                                <td>Relative humidity range (%)</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>altitud_min / altitud_max</code></td>
+                                <td>float</td>
+                                <td>Altitude range (msnm)</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>temp_min / temp_max</code></td>
+                                <td>float</td>
+                                <td>Temperature range (°C)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </article>
+
+                <article class="data-card purple">
+
+                    <div class="data-card-header">
+                        <h3>ENA 2019 Pasture Dataset <small>(ena_2019_pastos_ml.csv)</small></h3>
+                        <span>26 varieties</span>
+                    </div>
+
+                    <p>
+                        Derived from the ENA 2019 pastures annex. Contains 26 pasture varieties with
+                        seeded areas and production properties.
+                    </p>
+
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><code>variedad</code></td>
+                                <td>str</td>
+                                <td>Pasture variety name</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>clima</code></td>
+                                <td>str</td>
+                                <td>Warm / Cold</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>area_sembrada_ha</code></td>
+                                <td>float</td>
+                                <td>Total seeded area</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>prop_pastoreo_continuo</code></td>
+                                <td>float</td>
+                                <td>Continuous grazing proportion</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>prop_pastoreo_rotacional</code></td>
+                                <td>float</td>
+                                <td>Rotational grazing proportion</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>prop_corte</code></td>
+                                <td>float</td>
+                                <td>Cut usage proportion</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>prop_banco_proteina</code></td>
+                                <td>float</td>
+                                <td>Protein bank proportion</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>score_proteina</code></td>
+                                <td>float</td>
+                                <td>Protein aptitude score</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>log_area</code></td>
+                                <td>float</td>
+                                <td>log1p(area_seeded_ha)</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>clima_num</code></td>
+                                <td>int</td>
+                                <td>0 = warm, 1 = cold</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- INPUT VARIABLES -->
+        <section class="docs-section reveal" id="variables">
+
+            <div class="section-title numbered">
+                <span>2.</span>
+                <h2>User Input Variables</h2>
+            </div>
+
+            <p class="section-lead">
+                Variables provided by the user to generate personalized recommendations.
+            </p>
+
+            <div class="variables-grid">
+
+                <article class="input-diagram-card">
+
+                    <div class="input-orbit">
+
+                        <div class="orbit-center">
+                            <span>◎</span>
+                        </div>
+
+                        <div class="orbit-item top">Humidity</div>
+                        <div class="orbit-item right-top">Temperature</div>
+                        <div class="orbit-item right-bottom">Protein Demand</div>
+                        <div class="orbit-item bottom">Climate</div>
+                        <div class="orbit-item left-bottom">Altitude</div>
+                        <div class="orbit-item left-top">Soil pH</div>
+
+                    </div>
+
+                </article>
+
+                <article class="data-card">
+
+                    <table class="docs-table">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Range / Example</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><code>soil_ph</code></td>
+                                <td>float</td>
+                                <td>Soil pH</td>
+                                <td>3.0 – 9.0</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>humidity</code></td>
+                                <td>float</td>
+                                <td>Relative humidity (%)</td>
+                                <td>0 – 100</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>altitude</code></td>
+                                <td>float</td>
+                                <td>Altitude above sea level</td>
+                                <td>0 – 4,000</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>temperature</code></td>
+                                <td>float</td>
+                                <td>Average temperature</td>
+                                <td>0 – 45</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>producer_area</code></td>
+                                <td>float</td>
+                                <td>Available production area</td>
+                                <td>&gt; 0</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>protein_demand</code></td>
+                                <td>float</td>
+                                <td>Required protein (%)</td>
+                                <td>0 – 100</td>
+                            </tr>
+
+                            <tr>
+                                <td><code>climate</code></td>
+                                <td>str</td>
+                                <td>Climate of the producer</td>
+                                <td>Warm / Cold</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- ARCHITECTURE -->
+        <section class="docs-section reveal" id="architecture">
+
+            <div class="section-title numbered">
+                <span>3.</span>
+                <h2>Architecture Overview</h2>
+            </div>
+
+            <p class="section-lead">
+                The system follows a 4-layer architecture built with Flask.
+            </p>
+
+            <div class="architecture-grid">
+
+                <article class="layer-visual-card">
+
+                    <div class="layer-stack-visual">
+
+                        <div class="layer-block l1">
+                            <strong>Presentation Layer</strong>
+                            <p>HTML, CSS, JS, Jinja Templates</p>
+                        </div>
+
+                        <div class="layer-block l2">
+                            <strong>Service Layer</strong>
+                            <p>Business logic, recommendations, validation</p>
+                        </div>
+
+                        <div class="layer-block l3">
+                            <strong>Pipeline Layer</strong>
+                            <p>CRISP-ML, model training and persistence</p>
+                        </div>
+
+                        <div class="layer-block l4">
+                            <strong>Data Layer</strong>
+                            <p>CSV datasets, configuration and logs</p>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <article class="architecture-flow-card">
+
+                    <h3>Architecture Flow</h3>
+                    <p>Request → Processing → Recommendation → Response</p>
+
+                    <div class="box-flow">
+
+                        <div>User Request</div>
+                        <span>→</span>
+                        <div>Validation & Processing</div>
+                        <span>→</span>
+                        <div>ML Pipeline Execution</div>
+
+                        <div>Response to User</div>
+                        <span>←</span>
+                        <div>Recommendation Generation</div>
+                        <span>←</span>
+                        <div>Best Model Selection</div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- PIPELINES -->
+        <section class="docs-section reveal" id="pipeline">
+
+            <div class="section-title numbered">
+                <span>4.</span>
+                <h2>Pipelines (CRISP-ML)</h2>
+            </div>
+
+            <p class="section-lead">
+                Each machine learning model follows the CRISP-ML methodology with 6 phases.
+            </p>
+
+            <div class="crisp-grid">
+
+                <article class="crisp-card green">
+                    <span>01</span>
+                    <h3>Business Understanding</h3>
+                    <p>Define objectives, context and success criteria.</p>
+                </article>
+
+                <article class="crisp-card cyan">
+                    <span>02</span>
+                    <h3>Data Understanding</h3>
+                    <p>Explore and analyze the data.</p>
+                </article>
+
+                <article class="crisp-card blue">
+                    <span>03</span>
+                    <h3>Data Engineering</h3>
+                    <p>Clean, transform and prepare features.</p>
+                </article>
+
+                <article class="crisp-card purple">
+                    <span>04</span>
+                    <h3>Model Engineering</h3>
+                    <p>Train models and tune hyperparameters.</p>
+                </article>
+
+                <article class="crisp-card pink">
+                    <span>05</span>
+                    <h3>Model Evaluation</h3>
+                    <p>Evaluate performance and compare models.</p>
+                </article>
+
+                <article class="crisp-card amber">
+                    <span>06</span>
+                    <h3>Prediction System</h3>
+                    <p>Deploy the model and generate predictions.</p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- MODELS -->
+        <section class="docs-section reveal" id="models">
+
+            <div class="section-title numbered">
+                <span>5.</span>
+                <h2>ML Models</h2>
+            </div>
+
+            <div class="models-grid">
+
+                <article class="model-doc-card">
+                    <span class="model-badge green">Synthetic</span>
+                    <h3>Logistic Regression</h3>
+                    <p>
+                        Sigmoid curve over a composite score from terrain variables.
+                        Predicts whether a terrain is optimal or not.
+                    </p>
+                </article>
+
+                <article class="model-doc-card">
+                    <span class="model-badge green">Synthetic</span>
+                    <h3>Naive Bayes</h3>
+                    <p>
+                        Gaussian probabilistic classifier using range variables and Bayesian likelihood.
+                    </p>
+                </article>
+
+                <article class="model-doc-card">
+                    <span class="model-badge green">Synthetic</span>
+                    <h3>Random Forest</h3>
+                    <p>
+                        Ensemble of decision trees with feature importance and robust terrain classification.
+                    </p>
+                </article>
+
+                <article class="model-doc-card purple">
+                    <span class="model-badge purple">DANE</span>
+                    <h3>K-Means</h3>
+                    <p>
+                        Groups pasture varieties into clusters and recommends according to closest centroid.
+                    </p>
+                </article>
+
+                <article class="model-doc-card purple">
+                    <span class="model-badge purple">DANE</span>
+                    <h3>KNN</h3>
+                    <p>
+                        Finds the closest real varieties to the user's production profile.
+                    </p>
+                </article>
+
+                <article class="model-doc-card purple">
+                    <span class="model-badge purple">DANE</span>
+                    <h3>Bayes + RF DANE</h3>
+                    <p>
+                        Supervised real-data models that predict variety and evaluate protein suitability.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- ROUTES -->
+        <section class="docs-section reveal" id="routes">
+
+            <div class="section-title numbered">
+                <span>6.</span>
+                <h2>Routes</h2>
+            </div>
+
+            <div class="data-card">
+
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Route</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><code>GET</code></td>
+                            <td><code>/recommendation/Menu</code></td>
+                            <td>Main recommendation menu</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET</code></td>
+                            <td><code>/recommendation/docs</code></td>
+                            <td>Technical documentation page</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET/POST</code></td>
+                            <td><code>/recommendation/regression</code></td>
+                            <td>Forage Logistic Regression module</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET/POST</code></td>
+                            <td><code>/recommendation/clustering</code></td>
+                            <td>DANE K-Means module</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET/POST</code></td>
+                            <td><code>/recommendation/knn</code></td>
+                            <td>DANE KNN module</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET/POST</code></td>
+                            <td><code>/recommendation/random-forest-dane</code></td>
+                            <td>DANE Random Forest module</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET/POST</code></td>
+                            <td><code>/recommendation/bayesian-dane</code></td>
+                            <td>DANE Naive Bayes module</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET</code></td>
+                            <td><code>/metrics/forraje</code></td>
+                            <td>Forage model metrics comparison</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>GET</code></td>
+                            <td><code>/metrics/dane</code></td>
+                            <td>DANE model metrics comparison</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- CONFIG -->
+        <section class="docs-section reveal" id="config">
+
+            <div class="section-title numbered">
+                <span>7.</span>
+                <h2>Configuration</h2>
+            </div>
+
+            <article class="code-card">
+
+<pre><code>class Config:
+    DATA_PATH_FORRAJEO = os.path.join(BASE_DIR, "data", "forrajeo_1000.csv")
+    DATA_PATH_PASTOS   = os.path.join(BASE_DIR, "data", "ena_2019_pastos_ml.csv")
+
+    KMEANS_K          = 4
+    KNN_K             = 5
+    RF_N_ESTIMATORS   = 200
+    RF_RANDOM_STATE   = 42
+
+    PROTEIN_WEIGHTS = {
+        "banco_proteina": 0.50,
+        "corte": 0.30,
+        "pastoreo_rotacional": 0.10,
+        "pastoreo_continuo": 0.10,
+    }</code></pre>
+
+            </article>
+
+        </section>
+
+        <!-- FOOTER LOCAL -->
+        <section class="tech-docs-footer reveal">
+
+            <div>
+                <span>🌿</span>
+                <strong>ForraTech</strong>
+            </div>
+
+            <p>© 2026 All rights reserved.</p>
+
+            <nav>
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Use</a>
+                <span>•</span>
+                <a href="#">Support</a>
+            </nav>
+
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}
+
+{% block page_js %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".docs-nav a");
+    const sections = document.querySelectorAll(".tech-docs-content section[id]");
+
+    links.forEach(link => {
+        link.addEventListener("click", () => {
+            links.forEach(item => item.classList.remove("active"));
+            link.classList.add("active");
+        });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            const id = entry.target.getAttribute("id");
+
+            links.forEach(link => {
+                link.classList.toggle(
+                    "active",
+                    link.getAttribute("href") === "#" + id
+                );
+            });
+        });
+    }, {
+        rootMargin: "-35% 0px -55% 0px"
+    });
+
+    sections.forEach(section => observer.observe(section));
+});
+</script>
+{% endblock %}

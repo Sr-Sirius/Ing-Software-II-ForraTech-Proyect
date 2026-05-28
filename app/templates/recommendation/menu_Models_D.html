@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block body_class %}dane-model-selection-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/menu_models_dane.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="dane-selection-shell">
+
+    <div class="dane-selection-bg"></div>
+
+    <main class="dane-selection-container">
+
+        <!-- HERO -->
+        <section class="dane-selection-hero reveal">
+
+            <div class="hero-copy">
+
+                <div class="breadcrumb">
+                    <a href="{{ url_for('main.home') }}">Analysis</a>
+                    <span>›</span>
+                    <a href="/recommendation/Menu">Predictive Models</a>
+                    <span>›</span>
+                    <strong>Model Selection (Real Dataset - DANE)</strong>
+                </div>
+
+                <h1>
+                    Predictive Models
+                    <span>Model Selection</span>
+                </h1>
+
+                <p>
+                    Select a machine learning model to estimate and predict forage productivity
+                    using the real dataset from DANE. Each model uses different algorithms,
+                    assumptions and recommendation strategies.
+                </p>
+
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="map-grid"></div>
+                <div class="network-line line-1"></div>
+                <div class="network-line line-2"></div>
+                <div class="network-line line-3"></div>
+                <div class="sprout">🌱</div>
+            </div>
+
+            <aside class="hero-stats">
+
+                <article>
+                    <span>▤</span>
+                    <div>
+                        <small>Dataset</small>
+                        <strong>DANE Real Dataset</strong>
+                        <p>Agricultural survey · National level</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>🌾</span>
+                    <div>
+                        <small>Target Variable</small>
+                        <strong>Forage Productivity</strong>
+                        <p>ton/ha/year</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>⌁</span>
+                    <div>
+                        <small>Input Variables</small>
+                        <strong>10 variables</strong>
+                        <p>Soil, climate, and management</p>
+                    </div>
+                </article>
+
+                <article>
+                    <span>◎</span>
+                    <div>
+                        <small>Models Available</small>
+                        <strong>4 models</strong>
+                        <p>Ready for analysis</p>
+                    </div>
+                </article>
+
+            </aside>
+
+        </section>
+
+        <!-- MODELS -->
+        <section class="available-section reveal">
+
+            <div class="section-heading">
+                <h2>Available Models</h2>
+                <p>Choose the model that best fits your objective and data characteristics.</p>
+            </div>
+
+            <div class="models-grid">
+
+                <!-- K-MEANS -->
+                <article class="model-card kmeans">
+
+                    <div class="model-icon">
+                        <span>⌘</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>K-Means</h3>
+
+                        <span class="model-type">Unsupervised Clustering</span>
+
+                        <p>
+                            Groups observations into K clusters based on similarity.
+                            Useful for exploring patterns in the real DANE data.
+                        </p>
+
+                        <ul>
+                            <li>Identifies natural groups</li>
+                            <li>No target variable required</li>
+                            <li>Useful for exploratory analysis</li>
+                        </ul>
+
+                        <a href="/recommendation/KmeansD" class="model-action">
+                            Use K-Means
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+                <!-- KNN -->
+                <article class="model-card knn">
+
+                    <div class="model-icon">
+                        <span>⌁</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>KNN</h3>
+
+                        <span class="model-type">Instance-Based Learning</span>
+
+                        <p>
+                            Predicts productivity based on the most similar observations
+                            or neighbors in the DANE dataset.
+                        </p>
+
+                        <ul>
+                            <li>Simple and intuitive</li>
+                            <li>Works well with local patterns</li>
+                            <li>Sensitive to scaling and noise</li>
+                        </ul>
+
+                        <a href="/recommendation/KNN" class="model-action">
+                            Use KNN
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+                <!-- RANDOM FOREST -->
+                <article class="model-card forest">
+
+                    <div class="model-icon">
+                        <span>♧</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>Random Forest</h3>
+
+                        <span class="model-type">Ensemble Model</span>
+
+                        <p>
+                            Ensemble of decision trees that improves accuracy and stability
+                            by reducing overfitting.
+                        </p>
+
+                        <ul>
+                            <li>High accuracy and robustness</li>
+                            <li>Handles non-linear relationships</li>
+                            <li>Provides feature importance</li>
+                        </ul>
+
+                        <a href="/recommendation/RandomFD" class="model-action">
+                            Use Random Forest
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+                <!-- BAYESIAN -->
+                <article class="model-card bayesian">
+
+                    <div class="model-icon">
+                        <span>♙</span>
+                    </div>
+
+                    <div class="model-content">
+
+                        <h3>Bayesian (Naive Bayes)</h3>
+
+                        <span class="model-type">Probabilistic Model</span>
+
+                        <p>
+                            Applies Bayes’ theorem assuming conditional independence between
+                            variables to estimate forage productivity.
+                        </p>
+
+                        <ul>
+                            <li>Fast training and low computational cost</li>
+                            <li>Works well with limited data</li>
+                            <li>Assumes feature independence</li>
+                        </ul>
+
+                        <a href="/recommendation/DaneBayesian" class="model-action">
+                            Use Naive Bayes
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- HELP -->
+        <section class="selection-help reveal">
+
+            <div class="help-icon">i</div>
+
+            <div>
+                <h3>Not sure which model to choose?</h3>
+                <p>
+                    You can try different models and compare their performance in the results section.
+                </p>
+            </div>
+
+            <a href="/recommendation/Mdane">
+                Compare DANE metrics
+                <span>→</span>
+            </a>
+
+        </section>
+
+        <!-- BACK -->
+        <section class="selection-back reveal">
+            <a href="/recommendation/Menu">← Back to Recommendation Menu</a>
+        </section>
+
+    </main>
+
+</section>
+
+{% endblock %}

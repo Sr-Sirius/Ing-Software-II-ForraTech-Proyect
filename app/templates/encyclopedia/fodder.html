@@ -1,0 +1,489 @@
+{% extends "base.html" %}
+
+{% block body_class %}encyclopedia-fodder-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/encyclopedia_fodder.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="fodder-shell">
+
+    <div class="fodder-bg"></div>
+
+    <div class="fodder-container">
+
+        <!-- TOP -->
+        <header class="fodder-top reveal">
+
+            <div class="breadcrumb">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <span>›</span>
+                <a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a>
+                <span>›</span>
+                <strong>Forage</strong>
+            </div>
+
+            <a href="{{ url_for('encyclopedia.index') }}" class="back-button">
+                ← Back to Encyclopedia
+            </a>
+
+        </header>
+
+        <!-- HERO -->
+        <section class="fodder-hero reveal">
+
+            <div class="hero-main">
+
+                <div class="hero-icon">
+                    🌾
+                </div>
+
+                <div>
+                    <h1>Forage</h1>
+                    <p>
+                        Explore forage species, characteristics, nutrition, and management.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="hero-stats">
+
+                <article>
+                    <span>🌱</span>
+                    <strong>52</strong>
+                    <small>Forage Species</small>
+                </article>
+
+                <article>
+                    <span>🏷️</span>
+                    <strong>8</strong>
+                    <small>Forage Types</small>
+                </article>
+
+                <article>
+                    <span>▤</span>
+                    <strong>112</strong>
+                    <small>Articles</small>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- SPECIES CAROUSEL -->
+        <section class="species-carousel-wrapper reveal">
+
+            <button class="carousel-arrow left" type="button" aria-label="Previous forage species">
+                ‹
+            </button>
+
+            <div class="species-carousel">
+
+                <article class="species-card">
+                    <div class="species-image brachiaria-image"></div>
+                    <div class="species-overlay"></div>
+
+                    <div class="species-content">
+                        <h2>Brachiaria brizantha</h2>
+                        <span class="species-badge tropical">Tropical Grass</span>
+                        <p>High biomass production, drought tolerant and persistent.</p>
+                    </div>
+                </article>
+
+                <article class="species-card">
+                    <div class="species-image panicum-image"></div>
+                    <div class="species-overlay"></div>
+
+                    <div class="species-content">
+                        <h2>Panicum maximum</h2>
+                        <span class="species-badge tropical">Tropical Grass</span>
+                        <p>High yield, excellent palatability and regrowth.</p>
+                    </div>
+                </article>
+
+                <article class="species-card featured">
+                    <div class="species-image cynodon-image"></div>
+                    <div class="species-overlay"></div>
+
+                    <div class="species-content">
+                        <h2>Cynodon nlemfuensis</h2>
+                        <span class="species-badge tropical">Tropical Grass</span>
+                        <p>Good ground cover, tolerance to trampling.</p>
+                        <span class="popular-badge">Most Popular</span>
+                    </div>
+                </article>
+
+                <article class="species-card">
+                    <div class="species-image megathyrsus-image"></div>
+                    <div class="species-overlay"></div>
+
+                    <div class="species-content">
+                        <h2>Megathyrsus maximus</h2>
+                        <span class="species-badge tropical">Tropical Grass</span>
+                        <p>High protein content, excellent for cut and grazing.</p>
+                    </div>
+                </article>
+
+                <article class="species-card">
+                    <div class="species-image medicago-image"></div>
+                    <div class="species-overlay"></div>
+
+                    <div class="species-content">
+                        <h2>Medicago sativa</h2>
+                        <span class="species-badge legume">Legume</span>
+                        <p>High protein, improves soil fertility.</p>
+                    </div>
+                </article>
+
+            </div>
+
+            <button class="carousel-arrow right" type="button" aria-label="Next forage species">
+                ›
+            </button>
+
+            <div class="carousel-dots" aria-hidden="true">
+                <span></span>
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="overview-panel reveal">
+
+            <div class="section-heading">
+                <span>ⓘ</span>
+                <div>
+                    <h2>Forage Overview</h2>
+                    <p>General information about forages.</p>
+                </div>
+            </div>
+
+            <div class="overview-grid">
+
+                <div class="overview-image"></div>
+
+                <div class="overview-text">
+
+                    <p>
+                        Forages are essential for livestock nutrition, offering energy, protein,
+                        vitamins and minerals. They can be grasses, legumes or other plants used
+                        for grazing, hay, silage or green chop.
+                    </p>
+
+                    <ul class="check-list">
+                        <li><strong>Importance:</strong> Main source of nutrients for ruminants.</li>
+                        <li><strong>Adaptability:</strong> Grows in diverse climates and soils.</li>
+                        <li><strong>Forms:</strong> Grazing, hay, silage and green chop.</li>
+                        <li><strong>Sustainability:</strong> Improves soil health and fertility.</li>
+                        <li><strong>Management:</strong> Proper management increases productivity and quality.</li>
+                    </ul>
+
+                </div>
+
+                <aside class="key-facts">
+
+                    <h3>Key Facts</h3>
+
+                    <div class="fact-row">
+                        <span>💧</span>
+                        <div>
+                            <strong>Dry Matter</strong>
+                            <p>20–45% varies by species</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>🛡️</span>
+                        <div>
+                            <strong>Crude Protein</strong>
+                            <p>8–25% varies by species</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>🌿</span>
+                        <div>
+                            <strong>Fiber Content</strong>
+                            <p>25–40% varies by species</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>♻️</span>
+                        <div>
+                            <strong>Digestibility</strong>
+                            <p>50–75% varies by species</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>⏱️</span>
+                        <div>
+                            <strong>Growth Rate</strong>
+                            <p>Fast to moderate depending on species</p>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <span>🌾</span>
+                        <div>
+                            <strong>Utilization</strong>
+                            <p>Grazing, hay, silage and green chop</p>
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+        <!-- INFO CARDS -->
+        <section class="info-card-grid reveal">
+
+            <article class="info-card">
+                <div class="card-title">
+                    <span>▧</span>
+                    <div>
+                        <h2>Forage Types</h2>
+                        <p>Main categories of forages.</p>
+                    </div>
+                </div>
+
+                <div class="use-list">
+
+                    <div class="use-row">
+                        <span>🌾</span>
+                        <div>
+                            <strong>Grasses</strong>
+                            <p>High yield and energy content.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🌺</span>
+                        <div>
+                            <strong>Legumes</strong>
+                            <p>High protein and improve soil fertility.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🌿</span>
+                        <div>
+                            <strong>Grass-Legume Mixes</strong>
+                            <p>Balanced nutrition and better productivity.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🌳</span>
+                        <div>
+                            <strong>Tree Forages</strong>
+                            <p>Leaves and pods with high nutritional value.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>💧</span>
+                        <div>
+                            <strong>Aquatic Forages</strong>
+                            <p>Adapted to wet areas and flooded soils.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+            <article class="info-card">
+                <div class="card-title">
+                    <span>☘️</span>
+                    <div>
+                        <h2>Key Characteristics</h2>
+                        <p>General characteristics of forages.</p>
+                    </div>
+                </div>
+
+                <ul class="check-list compact">
+                    <li>High biomass production.</li>
+                    <li>Adaptability to different environments.</li>
+                    <li>Nutritional quality for livestock.</li>
+                    <li>Palatability and animal acceptance.</li>
+                    <li>Persistence and regrowth capacity.</li>
+                    <li>Contribution to soil conservation.</li>
+                </ul>
+            </article>
+
+            <article class="info-card">
+                <div class="card-title">
+                    <span>🔗</span>
+                    <div>
+                        <h2>Common Uses</h2>
+                        <p>Applications and uses of forages.</p>
+                    </div>
+                </div>
+
+                <div class="use-list">
+
+                    <div class="use-row">
+                        <span>🐄</span>
+                        <div>
+                            <strong>Grazing</strong>
+                            <p>Direct consumption in pastures.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🧺</span>
+                        <div>
+                            <strong>Hay</strong>
+                            <p>Dried forage for later use.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🫙</span>
+                        <div>
+                            <strong>Silage</strong>
+                            <p>Fermented forage for conservation.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🌿</span>
+                        <div>
+                            <strong>Green Chop</strong>
+                            <p>Fresh forage for direct feeding.</p>
+                        </div>
+                    </div>
+
+                    <div class="use-row">
+                        <span>🌱</span>
+                        <div>
+                            <strong>Soil Improvement</strong>
+                            <p>Adds organic matter and nutrients.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+        </section>
+
+        <!-- RELATED ARTICLES -->
+        <section class="articles-panel reveal">
+
+            <div class="section-heading">
+                <span>▧</span>
+                <div>
+                    <h2>Related Articles & Resources</h2>
+                    <p>Learn more about forage management and utilization.</p>
+                </div>
+            </div>
+
+            <div class="article-grid">
+
+                <article class="article-card">
+                    <div class="article-image article-management"></div>
+                    <div class="article-body">
+                        <span class="article-tag blue">Management</span>
+                        <h3>Pasture establishment guide</h3>
+                        <p>Step-by-step guide for establishing productive pastures.</p>
+                        <small>📖 10 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-nutrition"></div>
+                    <div class="article-body">
+                        <span class="article-tag green">Nutrition</span>
+                        <h3>Forage nutrition and quality</h3>
+                        <p>Understanding nutrients and how to evaluate forage quality.</p>
+                        <small>📖 8 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-conservation"></div>
+                    <div class="article-body">
+                        <span class="article-tag lime">Conservation</span>
+                        <h3>Hay and silage production</h3>
+                        <p>Best practices for making high-quality hay and silage.</p>
+                        <small>📖 9 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-sustainability"></div>
+                    <div class="article-body">
+                        <span class="article-tag orange">Sustainability</span>
+                        <h3>Sustainable forage management</h3>
+                        <p>Strategies for sustainable forage production and soil health.</p>
+                        <small>📖 7 min read</small>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-image article-species"></div>
+                    <div class="article-body">
+                        <span class="article-tag green">Species</span>
+                        <h3>Forage species guide</h3>
+                        <p>Detailed information on common forage species.</p>
+                        <small>📖 6 min read</small>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- OPTIONAL DYNAMIC DATA PLACEHOLDER -->
+        {% if data %}
+        <section class="dynamic-data-panel reveal">
+
+            <div class="section-heading">
+                <span>☘️</span>
+                <div>
+                    <h2>Database Records</h2>
+                    <p>Items loaded from the encyclopedia service.</p>
+                </div>
+            </div>
+
+            <div class="dynamic-grid">
+                {% for item in data %}
+                    <article class="dynamic-card">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.description }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+
+        </section>
+        {% endif %}
+
+        <!-- SOURCE NOTICE -->
+        <section class="source-banner reveal">
+
+            <div class="source-icon">◎</div>
+
+            <div>
+                <strong>Information based on scientific sources and agricultural experts.</strong>
+                <p>
+                    Content constantly reviewed and updated to provide accurate and relevant information.
+                </p>
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}
