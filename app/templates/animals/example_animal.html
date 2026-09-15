@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% set show_sidebar = False %}
+{% set show_footer = True %}
+{% set is_goat = animal.species == 'Caprino' %}
+{% set sex_labels = {'Hembra': 'Female', 'Macho': 'Male'} %}
+
+{% block body_class %}example-animal-page{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/example_animal.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="example-animal-shell" id="example-animal">
+    <div class="example-animal-bg" aria-hidden="true"></div>
+    <div class="example-animal-container">
+
+        <!-- TOP BAR -->
+        <header class="ea-top">
+            <nav class="ea-breadcrumb" aria-label="Breadcrumb">
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <span aria-hidden="true">›</span>
+                <strong aria-current="page">Animal registration example</strong>
+            </nav>
+            <a href="{{ url_for('main.home') }}" class="ea-back">← Back to Home</a>
+        </header>
+
+        <!-- HERO -->
+        <section class="ea-hero" aria-labelledby="example-title">
+            <div class="ea-hero-icon" aria-hidden="true">🌱</div>
+            <span class="ea-badge">MY ANIMALS · DEMO</span>
+            <h1 id="example-title">Every animal has a story.<br><span>Start with its record.</span></h1>
+            <p>Explore how to register your sheep and goats.<br>Try the form and see how their individual record will look.</p>
+        </section>
+
+        <!-- REGISTRATION PROCESS -->
+        <ol class="ea-steps" aria-label="Example registration process">
+            <li><span>01</span><div><strong>Choose an animal</strong><small>Sheep or goat</small></div></li>
+            <li><span>02</span><div><strong>Complete its details</strong><small>Try the example form</small></div></li>
+            <li><span>03</span><div><strong>Preview the record</strong><small>See the final layout</small></div></li>
+        </ol>
+
+        <div class="ea-notice" id="demo-notice"><span aria-hidden="true">ⓘ</span><p>This is a demonstration. Your changes stay on this page and are not saved to My Animals.</p></div>
+        <noscript><p class="ea-notice">Enable JavaScript to edit the example and switch animals. The initial record is shown below.</p></noscript>
+
+        <div class="ea-workspace">
+            <!-- EXAMPLE FORM -->
+            <section class="ea-panel" aria-labelledby="form-title">
+                <div class="ea-panel-heading"><span aria-hidden="true">✎</span><div><h2 id="form-title">Try animal registration</h2><p>Example details are already filled in.</p></div></div>
+                <form id="example-animal-form" aria-describedby="demo-notice">
+                    <!-- Enabled only after the demo script attaches its handlers. -->
+                    <fieldset id="example-fields" disabled>
+                        <legend class="ea-sr-only">Animal details</legend>
+                        <div class="ea-field">
+                            <label for="animal-type">Choose an example</label>
+                            <select id="animal-type" name="animal_type">
+                                <option value="oveja" {% if not is_goat %}selected{% endif %}>🐑 Sheep — Luna</option>
+                                <option value="cabra" {% if is_goat %}selected{% endif %}>🐐 Goat — Canela</option>
+                            </select>
+                            <small>Switching examples restores that animal's sample details.</small>
+                        </div>
+                        <div class="ea-form-grid">
+                            <div class="ea-field"><label for="identification">Identification *</label><input id="identification" name="identification" value="{{ animal.identification }}" maxlength="50" required></div>
+                            <div class="ea-field"><label for="name">Animal name</label><input id="name" name="name" value="{{ animal.name }}" maxlength="100"></div>
+                            <div class="ea-field"><label for="species">Species</label><input id="species" name="species" value="{{ 'Goat' if is_goat else 'Sheep' }}" readonly></div>
+                            <div class="ea-field"><label for="breed">Breed</label><input id="breed" name="breed" value="{{ animal.breed }}" maxlength="100"></div>
+                            <div class="ea-field"><label for="sex">Sex *</label><select id="sex" name="sex" required><option value="Hembra" {% if animal.sex == 'Hembra' %}selected{% endif %}>Female</option><option value="Macho" {% if animal.sex == 'Macho' %}selected{% endif %}>Male</option></select></div>
+                            <div class="ea-field"><label for="birth_date">Date of birth</label><input type="date" id="birth_date" name="birth_date" value="{{ animal.birth_date }}"></div>
+                            <div class="ea-field"><label for="weight">Weight (kg)</label><input type="number" id="weight" name="weight" value="{{ animal.weight }}" min="0.01" step="0.01" inputmode="decimal"></div>
+                            <div class="ea-field ea-full"><label for="observations">Observations</label><textarea id="observations" name="observations" rows="4" maxlength="2000">{{ animal.observations }}</textarea></div>
+                        </div>
+                        <p class="ea-help">* Required fields in this demonstration.</p>
+                        <div class="ea-actions"><button type="submit" class="ea-button ea-primary">Preview animal record →</button><button type="button" id="reset-example" class="ea-button ea-secondary">Reset example</button></div>
+                    </fieldset>
+                </form>
+            </section>
+
+            <!-- RESULTING RECORD -->
+            <section class="ea-panel ea-record" aria-labelledby="record-title">
+                <div class="ea-panel-heading"><span aria-hidden="true">▤</span><div><h2 id="record-title" tabindex="-1">Animal record preview</h2><p id="preview-description">This is how an individual record could look.</p></div></div>
+                <div class="ea-animal-portrait"><span id="preview-icon" aria-hidden="true">{{ '🐐' if is_goat else '🐑' }}</span><span class="ea-badge">EXAMPLE RECORD · NOT SAVED</span></div>
+                <div class="ea-record-heading"><div><small id="preview-identification">{{ animal.identification }}</small><h3 id="preview-name">{{ animal.name or 'Unnamed animal' }}</h3></div><span class="ea-badge" id="preview-species">{{ 'Goat' if is_goat else 'Sheep' }}</span></div>
+                <dl class="ea-details">
+                    <div><dt>Breed</dt><dd id="preview-breed">{{ animal.breed or 'Not provided' }}</dd></div>
+                    <div><dt>Sex</dt><dd id="preview-sex">{{ sex_labels.get(animal.sex, animal.sex) }}</dd></div>
+                    <div><dt>Date of birth</dt><dd id="preview-birth_date">{{ animal.birth_date or 'Not provided' }}</dd></div>
+                    <div><dt>Weight</dt><dd id="preview-weight">{{ animal.weight }} kg</dd></div>
+                </dl>
+                <div class="ea-observations"><h4>Observations</h4><p id="preview-observations">{{ animal.observations or 'No observations added.' }}</p></div>
+                <p id="example-status" class="ea-status" role="status" aria-live="polite" aria-atomic="true">Sample record loaded. Nothing has been saved.</p>
+            </section>
+        </div>
+
+        <!-- RELATED KNOWLEDGE -->
+        <section class="ea-resources" aria-label="Learn about your animals">
+            <div><h2>Get to know your animals</h2><p>Explore breeds and management in the ForraTech Encyclopedia.</p></div>
+            <a class="ea-back" href="{{ url_for('encyclopedia.sheep') }}">🐑 Sheep encyclopedia ↗</a>
+            <a class="ea-back" href="{{ url_for('encyclopedia.goats') }}">🐐 Goat encyclopedia ↗</a>
+        </section>
+    </div>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script type="application/json" id="example-animals-data">{{ examples | tojson }}</script>
+<script type="module" src="{{ url_for('static', filename='js/animals/example_animal.js') }}"></script>
+{% endblock %}

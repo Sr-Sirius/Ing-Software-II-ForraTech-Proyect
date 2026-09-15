@@ -11,6 +11,9 @@ def create_app():
     from app.routes.auth_routes import auth
     from app.routes.recommendation_routes import recommendation
     from app.routes.encyclopedia_routes import encyclopedia
+    #example temporal
+    from .routes import example_animal_bp
+    app.register_blueprint(example_animal_bp)    
 
     # registrarlos
     app.register_blueprint(main)

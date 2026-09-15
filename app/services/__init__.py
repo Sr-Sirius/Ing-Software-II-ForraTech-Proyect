@@ -39,6 +39,13 @@ from .encyclopedia_service import (
     get_all_fodder,
 )
 
+# ─────────────────────────────────────────────
+# Ejemplo temporal de registro de animales
+# ─────────────────────────────────────────────
+from .example_animal_service import (
+    get_example_animals,
+    get_example_animal,
+)
 
 __all__ = [
     # Forraje
@@ -60,4 +67,8 @@ __all__ = [
     "get_all_sheep",
     "get_all_goats",
     "get_all_fodder",
+
+    # Ejemplo de animales
+    "get_example_animals",
+    "get_example_animal",
 ]

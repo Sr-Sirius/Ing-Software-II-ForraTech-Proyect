@@ -17,20 +17,42 @@
 
             <div class="dropdown">
 
-                <button class="nav-link
-                    {% if request.endpoint in ['recommendation.recommendationLR', 'encyclopedia.index'] %}active{% endif %}">
+                <button
+                    type="button"
+                    class="nav-link
+                    {% if request.blueprint in [
+                        'recommendation',
+                        'encyclopedia',
+                        'example_animal'
+                    ] %}active{% endif %}"
+                >
                     Features
                     <span>▾</span>
                 </button>
 
                 <div class="dropdown-menu">
-                    <a href="{{ url_for('recommendation.recommendationM') }}">Recommendation</a>
-                    <a href="{{ url_for('encyclopedia.index') }}">Encyclopedia</a>
+
+                    <a href="{{ url_for('recommendation.recommendationM') }}">
+                        Recommendation
+                    </a>
+
+                    <a href="{{ url_for('encyclopedia.index') }}">
+                        Encyclopedia
+                    </a>
+
+                    <!-- TEMPORARY: animal registration demo -->
+                    <a
+                        href="{{ url_for('example_animal.example_animal') }}"
+                        {% if request.endpoint == 'example_animal.example_animal' %}
+                            aria-current="page"
+                        {% endif %}
+                    >
+                        Animal Registration Example
+                    </a>
+
                 </div>
 
             </div>
-
-        </div>
 
         <!-- RIGHT -->
         <div class="nav-right">
