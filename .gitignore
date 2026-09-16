@@ -31,3 +31,6 @@ Thumbs.db
 # Build
 dist/
 build/
+
+# Base de datos local de Flask
+instance/
