@@ -158,3 +158,29 @@ def find_link(tg_message_id):
         (int(tg_message_id),),
     ).fetchone()
     return dict(row) if row else None
+
+
+# ─────────────────────────────────────────────
+# Panel del equipo (responder sin Telegram)
+# ─────────────────────────────────────────────
+def list_sessions(limit=50):
+    rows = get_db().execute(
+        """
+        SELECT s.id, s.name, s.created_at,
+               COUNT(m.id)                      AS total,
+               MAX(m.created_at)                AS last_at,
+               (SELECT sender FROM chat_messages
+                 WHERE session_id = s.id AND sender != 'system'
+                 ORDER BY id DESC LIMIT 1)      AS last_sender,
+               (SELECT text FROM chat_messages
+                 WHERE session_id = s.id AND sender != 'system'
+                 ORDER BY id DESC LIMIT 1)      AS last_text
+        FROM chat_sessions s
+        LEFT JOIN chat_messages m ON m.session_id = s.id
+        GROUP BY s.id
+        ORDER BY last_at DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ).fetchall()
+    return [dict(r) for r in rows]

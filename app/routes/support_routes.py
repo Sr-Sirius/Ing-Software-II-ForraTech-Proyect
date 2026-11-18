@@ -3,6 +3,7 @@
 Panel interno del equipo de soporte (protegido con ADMIN_PASSWORD).
 
   /soporte/login                  → acceso del equipo
+  /soporte/chats                  → conversaciones del chat web (responder)
   /soporte/bandeja                → bandeja del buzón por IMAP
   /soporte/bandeja/<uid>          → lectura de un mensaje (IMAP FETCH)
   /soporte/bandeja/<uid>/estado   → marcar leído / respondido (IMAP STORE)
@@ -17,8 +18,10 @@ import logging
 
 from flask import (
     Blueprint,
+    abort,
     current_app,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -27,7 +30,7 @@ from flask import (
 )
 
 from app.security import check_csrf
-from app.services import mail_service, telegram_service
+from app.services import chat_service, mail_service, telegram_service
 
 log = logging.getLogger(__name__)
 
@@ -189,3 +192,49 @@ def diagnostics():
     return render_template(
         "support/diagnostics.html", results=results, request_info=request_info
     )
+
+
+# ─────────────────────────────────────────────
+# Chats web: el equipo responde desde el navegador
+# (canal alterno cuando Telegram no está configurado)
+# ─────────────────────────────────────────────
+@support.get("/chats")
+@admin_required
+def chats():
+    return render_template("support/chats.html", sessions=chat_service.list_sessions())
+
+
+@support.route("/chats/<sid>", methods=["GET", "POST"])
+@admin_required
+def chat_detail(sid):
+    chat_session = chat_service.get_session(sid)
+    if not chat_session:
+        abort(404)
+    if request.method == "POST":
+        check_csrf()
+        text = chat_service.clean_text(request.form.get("text"), chat_service.MAX_TEXT)
+        author = chat_service.clean_text(request.form.get("author"), 40) or "Soporte"
+        if text:
+            chat_service.add_message(sid, "agent", author, text, channel="panel")
+            session["support_author"] = author
+        if request.headers.get("X-Requested-With") == "fetch":
+            return jsonify(ok=True)
+        return redirect(url_for("support.chat_detail", sid=sid))
+    return render_template(
+        "support/chat_detail.html",
+        chat=chat_session,
+        short_id=chat_service.short_id(sid),
+        author=session.get("support_author", ""),
+    )
+
+
+@support.get("/chats/<sid>/mensajes")
+@admin_required
+def chat_messages(sid):
+    if not chat_service.get_session(sid):
+        abort(404)
+    try:
+        after = int(request.args.get("after", 0))
+    except ValueError:
+        after = 0
+    return jsonify(messages=chat_service.list_messages(sid, after))

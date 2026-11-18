@@ -1,0 +1,30 @@
+{% extends "support/_layout.html" %}
+{% block section_name %}chats web{% endblock %}
+{% block panel %}
+<div class="ct-stack">
+  <div class="ct-section-title" style="margin:0">
+    <h2>Conversaciones del chat web</h2>
+    <p>Se actualiza cada 10 s. Las marcadas en amarillo esperan respuesta.</p>
+  </div>
+  <div class="ct-table-wrap">
+    <table class="ct-table">
+      <thead><tr><th>Estado</th><th>Visitante</th><th>Último mensaje</th><th>Mensajes</th><th></th></tr></thead>
+      <tbody>
+      {% for s in sessions %}
+        <tr class="{{ 'unread' if s.last_sender == 'visitor' }}">
+          <td class="nowrap">{% if s.last_sender == 'visitor' %}<span class="ct-warn">● Por responder</span>{% else %}<span class="ct-ok">✔ Respondido</span>{% endif %}</td>
+          <td>{{ s.name }} <span class="ct-muted">#{{ s.id[:6]|upper }}</span></td>
+          <td>{{ (s.last_text or '')[:90] }}</td>
+          <td>{{ s.total }}</td>
+          <td><a class="ct-btn small" href="{{ url_for('support.chat_detail', sid=s.id) }}">Abrir</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="ct-muted">Aún no hay conversaciones. Abre la burbuja verde del sitio en otra pestaña y escribe un mensaje.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="ct-muted" style="font-size:12px">El disco del plan gratuito de Render es efímero: las conversaciones se borran cuando el servicio se reinicia.</p>
+</div>
+<script>setTimeout(() => location.reload(), 10000);</script>
+{% endblock %}

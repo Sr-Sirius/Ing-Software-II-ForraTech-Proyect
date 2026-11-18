@@ -29,7 +29,6 @@
 .cw-head h2 { margin: 0; font-size: 16px; }
 .cw-head p { margin: 2px 0 0; font-size: 12px; color: var(--cw-muted); display: flex; align-items: center; gap: 6px; }
 .cw-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cw-accent); box-shadow: 0 0 8px var(--cw-accent); }
-.cw[data-telegram="off"] .cw-dot { background: #888; box-shadow: none; }
 .cw-close { border: 0; background: transparent; color: var(--cw-text); font-size: 24px; line-height: 1; cursor: pointer; }
 
 .cw-messages { list-style: none; margin: 0; padding: 14px; flex: 1; overflow-y: auto; display: flex;

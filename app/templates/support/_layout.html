@@ -27,6 +27,7 @@
     {% if session.get('is_support_admin') %}
     {% set ep = request.endpoint %}
     <nav class="ct-admin-nav" aria-label="Secciones del panel">
+      <a href="{{ url_for('support.chats') }}" class="{{ 'active' if ep in ['support.chats', 'support.chat_detail'] }}">💬 Chats web</a>
       <a href="{{ url_for('support.inbox') }}" class="{{ 'active' if ep in ['support.inbox', 'support.message'] }}">📥 Bandeja IMAP</a>
       <a href="{{ url_for('support.pop3') }}" class="{{ 'active' if ep == 'support.pop3' }}">📨 Vista POP3</a>
       <a href="{{ url_for('support.telegram') }}" class="{{ 'active' if ep == 'support.telegram' }}">📱 Telegram</a>

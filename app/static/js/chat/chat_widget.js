@@ -45,7 +45,7 @@ export function initChatWidget() {
         if (msg.sender !== "system") {
             const meta = document.createElement("span");
             meta.className = "cw-meta";
-            const via = msg.channel === "telegram" ? " · vía Telegram" : "";
+            const via = msg.channel === "telegram" ? " · vía Telegram" : msg.channel === "panel" ? " · soporte" : "";
             meta.textContent = `${msg.author}${via} · ${formatTime(msg.created_at)}`;
             li.appendChild(meta);
         }

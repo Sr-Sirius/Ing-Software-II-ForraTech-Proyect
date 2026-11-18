@@ -1,0 +1,63 @@
+{% extends "support/_layout.html" %}
+{% block section_name %}chat #{{ short_id }}{% endblock %}
+{% block panel %}
+<div class="ct-stack" style="max-width:820px">
+  <a href="{{ url_for('support.chats') }}">← Todas las conversaciones</a>
+  <section class="ct-panel">
+    <h2 style="font-size:19px;margin-bottom:4px">{{ chat.name }} <span class="ct-muted">#{{ short_id }}</span></h2>
+    <p class="ct-muted" style="font-size:12px;margin-bottom:14px">Comunicación sincrónica: el visitante ve tu respuesta en ~3 s (polling del navegador); esta vista consulta mensajes nuevos cada 3 s.</p>
+    <ol id="adm-msgs" class="cw-messages" style="list-style:none;padding:0;max-height:430px;overflow-y:auto;display:flex;flex-direction:column;gap:10px"></ol>
+    <form id="adm-form" method="post" class="ct-form" style="margin-top:16px">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="ct-two">
+        <div class="ct-field"><label for="author">Tu nombre (como lo verá el visitante)</label>
+          <input id="author" name="author" maxlength="40" value="{{ author }}" placeholder="Ej.: Brayan · ForraTech" required></div>
+      </div>
+      <div class="ct-field"><label for="text">Respuesta</label>
+        <textarea id="text" name="text" maxlength="1000" style="min-height:90px" required></textarea></div>
+      <div class="ct-actions"><button class="ct-btn primary" type="submit">Enviar respuesta</button>
+        <span class="ct-muted" style="font-size:12px">Enter envía · Shift+Enter nueva línea</span></div>
+    </form>
+  </section>
+</div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/chat_widget.css') }}">
+<script>
+(function () {
+  const list = document.getElementById("adm-msgs");
+  const form = document.getElementById("adm-form");
+  const text = document.getElementById("text");
+  const url = "{{ url_for('support.chat_messages', sid=chat.id) }}";
+  let last = 0;
+  const fmt = (ts) => new Date(ts * 1000).toLocaleTimeString("es-CO", {hour: "2-digit", minute: "2-digit"});
+  function render(m) {
+    const li = document.createElement("li");
+    // En el panel, el visitante va a la izquierda y el equipo a la derecha.
+    li.className = "cw-msg " + (m.sender === "visitor" ? "agent" : m.sender === "agent" ? "visitor" : "system");
+    if (m.sender !== "system") {
+      const meta = document.createElement("span"); meta.className = "cw-meta";
+      meta.textContent = m.author + " · " + m.channel + " · " + fmt(m.created_at); li.appendChild(meta);
+    }
+    const p = document.createElement("p"); p.textContent = m.text; li.appendChild(p);
+    list.appendChild(li);
+  }
+  async function poll() {
+    try {
+      const r = await fetch(url + "?after=" + last, {credentials: "same-origin"});
+      if (!r.ok) return;
+      const d = await r.json();
+      d.messages.forEach((m) => { render(m); last = Math.max(last, m.id); });
+      if (d.messages.length) list.scrollTop = list.scrollHeight;
+    } catch (_) {}
+  }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!text.value.trim()) return;
+    const r = await fetch(form.action || location.href, {method: "POST", body: new FormData(form),
+      headers: {"X-Requested-With": "fetch"}, credentials: "same-origin"});
+    if (r.ok) { text.value = ""; poll(); text.focus(); }
+  });
+  text.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
+  poll(); setInterval(poll, 3000);
+})();
+</script>
+{% endblock %}

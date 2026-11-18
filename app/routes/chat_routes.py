@@ -89,8 +89,8 @@ def post_message():
             )
         else:
             notice = (
-                "Recibimos tu mensaje. El canal en tiempo real no está "
-                "disponible ahora; también puedes escribirnos desde Contacto."
+                "Tu mensaje llegó al panel de soporte del equipo. "
+                "Te responderemos aquí mismo; deja esta ventana abierta."
             )
         chat_service.add_message(chat_session["id"], "system", "ForraTech", notice)
 
