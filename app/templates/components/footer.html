@@ -27,9 +27,11 @@
                 <h3 class="logo">ForraTech 🌱</h3>
 
                 <div class="socials">
-                    <a href="#" class="glow-hover">X</a>
-                    <a href="#" class="glow-hover">FB</a>
-                    <a href="#" class="glow-hover">IG</a>
+                    {% if comms.telegram_bot_url %}
+                    <a href="{{ comms.telegram_bot_url }}" class="glow-hover" target="_blank" rel="noopener" title="Telegram">TG</a>
+                    {% endif %}
+                    <a href="{{ url_for('communications.xmpp') }}" class="glow-hover" title="Sala XMPP">XMPP</a>
+                    <a href="{{ url_for('communications.contact') }}" class="glow-hover" title="Correo de soporte">✉</a>
                 </div>
             </div>
 
@@ -50,8 +52,8 @@
 
                 <ul>
                     <li><h4>Company</h4></li>
-                    <li><a href="#" class="glow-hover">About</a></li>
-                    <li><a href="#" class="glow-hover">Contact</a></li>
+                    <li><a href="{{ url_for('communications.hub') }}" class="glow-hover">Comunicaciones</a></li>
+                    <li><a href="{{ url_for('communications.contact') }}" class="glow-hover">Contact</a></li>
                 </ul>
 
             </nav>

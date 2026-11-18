@@ -1,0 +1,41 @@
+{% extends "support/_layout.html" %}
+{% from "support/_protocol.html" import protocol_log %}
+{% block section_name %}mensaje{% endblock %}
+{% block panel %}
+<div class="ct-stack">
+  <a href="{{ url_for('support.inbox') }}">← Volver a la bandeja</a>
+
+  <article class="ct-panel">
+    <h2 style="font-size:20px;margin-bottom:14px">{{ msg.subject }}</h2>
+    <dl class="ct-kv" style="margin-bottom:16px">
+      <dt>De</dt><dd>{{ msg.from }}</dd>
+      <dt>Responder a</dt><dd>{{ msg.reply_to_addr }}</dd>
+      <dt>Para</dt><dd>{{ msg.to }}</dd>
+      <dt>Fecha</dt><dd>{{ msg.date }}</dd>
+      <dt>Flags IMAP</dt><dd>{{ msg.flags|join(' ') or '(ninguna)' }}</dd>
+    </dl>
+    <div class="ct-body">{{ msg.body }}</div>
+
+    {% set re_subject = msg.subject if msg.subject.lower().startswith('re:') else 'Re: ' ~ msg.subject %}
+    <div class="ct-actions" style="margin-top:18px">
+      <a class="ct-btn primary"
+         href="mailto:{{ msg.reply_to_addr }}?subject={{ re_subject|urlencode }}">✉ Responder desde mi correo</a>
+      {% for action, label in [
+          ('respondido', 'Marcar respondido'),
+          ('pendiente', 'Marcar pendiente'),
+          ('no-leido', 'Marcar no leído'),
+          ('destacar' if not msg.flagged else 'quitar-destacado', 'Destacar ⭐' if not msg.flagged else 'Quitar ⭐')] %}
+      <form method="post" action="{{ url_for('support.message_flags', uid=msg.uid) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="ct-btn small" name="action" value="{{ action }}">{{ label }}</button>
+      </form>
+      {% endfor %}
+    </div>
+    <p class="ct-muted" style="font-size:12px;margin-top:10px">
+      Flujo de gestión: leer (FETCH) → responder desde el cliente de correo → marcar \Answered (STORE).
+    </p>
+  </article>
+
+  {{ protocol_log(msg.log, msg.tls, "Comandos IMAP ejecutados (evidencia)") }}
+</div>
+{% endblock %}

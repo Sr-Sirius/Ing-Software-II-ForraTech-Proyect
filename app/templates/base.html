@@ -12,6 +12,9 @@
     <!-- 🔥 BASE GLOBAL -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
+    <!-- 💬 CHAT WEB DE SOPORTE -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/chat_widget.css') }}">
+
     <!-- 🔥 CSS POR PÁGINA -->
     {% block page_css %}{% endblock %}
 </head>
@@ -52,6 +55,11 @@
     <!-- 🔥 FOOTER GLOBAL -->
     {% if show_footer is not defined or show_footer %}
         {% include "components/footer.html" %}
+    {% endif %}
+
+    <!-- 💬 CHAT WEB DE SOPORTE (sincrónico: JavaScript ↔ Flask ↔ Telegram) -->
+    {% if not hide_chat_widget %}
+        {% include "components/chat_widget.html" %}
     {% endif %}
 
     <!-- 🔥 JS GLOBAL (MODULAR) -->

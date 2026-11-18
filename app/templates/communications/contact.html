@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% set show_sidebar = False %}
+{% set show_footer = True %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/communications.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="ct-shell">
+  <div class="ct-narrow">
+
+    <header class="ct-top">
+      <nav class="ct-breadcrumb" aria-label="Ruta">
+        <a href="{{ url_for('main.home') }}">Inicio</a><span aria-hidden="true">›</span>
+        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">›</span>
+        <strong aria-current="page">Contacto</strong>
+      </nav>
+    </header>
+
+    <section class="ct-hero" style="padding-bottom:24px">
+      <span class="ct-badge">Mensajería asincrónica · correo</span>
+      <h1>Escríbenos <span>sin afán</span></h1>
+      <p>Tu mensaje queda guardado en el buzón de soporte y te respondemos por correo. No necesitas
+        estar conectado cuando respondamos. ¿Lo necesitas ya? Usa el chat o Telegram.</p>
+    </section>
+
+    <form class="ct-panel ct-form" method="post" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="ct-hp" aria-hidden="true">
+        <label for="website">No llenar</label>
+        <input id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="ct-two">
+        <div class="ct-field">
+          <label for="name">Nombre</label>
+          <input id="name" name="name" required maxlength="80" autocomplete="name" value="{{ form.name }}">
+        </div>
+        <div class="ct-field">
+          <label for="email">Correo para responderte</label>
+          <input id="email" name="email" type="email" required maxlength="120" autocomplete="email" value="{{ form.email }}">
+        </div>
+      </div>
+      <div class="ct-field">
+        <label for="subject">Asunto</label>
+        <input id="subject" name="subject" required maxlength="120" value="{{ form.subject }}"
+               placeholder="Ej.: ¿Qué forraje sembrar en suelo ácido?">
+      </div>
+      <div class="ct-field">
+        <label for="message">Mensaje</label>
+        <textarea id="message" name="message" required maxlength="4000">{{ form.message }}</textarea>
+      </div>
+      <div class="ct-actions">
+        <button class="ct-btn primary" type="submit">Enviar al buzón de soporte</button>
+        {% if comms.support_email %}
+        <span class="ct-muted">o escribe directo a <a href="mailto:{{ comms.support_email }}">{{ comms.support_email }}</a></span>
+        {% endif %}
+      </div>
+      <p class="ct-muted" style="font-size:12px">
+        Cómo viaja: navegador → HTTPS → Flask → <strong>IMAP APPEND</strong> por TLS (puerto 993) →
+        bandeja de entrada del buzón de soporte.
+      </p>
+    </form>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "support/_layout.html" %}
+{% from "support/_protocol.html" import protocol_log %}
+{% block section_name %}vista POP3{% endblock %}
+{% block panel %}
+<div class="ct-stack">
+  <div class="ct-notice"><span aria-hidden="true">ⓘ</span>
+    <p>POP3 está pensado para <strong>descargar</strong> el correo a un solo equipo: no maneja carpetas ni
+      flags en el servidor. IMAP, en cambio, <strong>sincroniza</strong> el buzón y mantiene el estado
+      (leído, respondido) para todo el equipo. Por eso la gestión diaria se hace por IMAP y esta vista
+      sirve para comparar ambos protocolos. En Gmail hay que activar POP en Configuración → Reenvío y correo POP/IMAP.</p>
+  </div>
+
+  {% if error %}
+  <div class="ct-notice error"><span aria-hidden="true">⚠</span><p>No se pudo consultar por POP3: {{ error }}</p></div>
+  {% endif %}
+
+  {% if data %}
+  <section class="ct-panel">
+    <dl class="ct-kv">
+      <dt>STAT</dt><dd>{{ data.count }} mensajes · {{ (data.size / 1024)|round(1) }} KB</dd>
+      <dt>LIST (últimos)</dt><dd>{{ data.listing|join(' · ') or '—' }}</dd>
+    </dl>
+  </section>
+  <div class="ct-table-wrap">
+    <table class="ct-table">
+      <thead><tr><th>#</th><th>De</th><th>Asunto</th><th>Fecha</th></tr></thead>
+      <tbody>
+      {% for m in data.messages %}
+        <tr><td>{{ m.number }}</td><td>{{ m.from }}</td><td>{{ m.subject }}</td><td class="nowrap">{{ m.date[:25] }}</td></tr>
+      {% else %}
+        <tr><td colspan="4" class="ct-muted">Sin mensajes disponibles para POP3.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ protocol_log(data.log, data.tls, "Comandos POP3 ejecutados (evidencia)") }}
+  {% endif %}
+</div>
+{% endblock %}

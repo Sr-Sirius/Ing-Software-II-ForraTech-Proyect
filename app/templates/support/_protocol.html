@@ -1,0 +1,14 @@
+{# Bitácora de comandos de protocolo + datos TLS de la conexión #}
+{% macro protocol_log(log, tls, title) %}
+<section class="ct-panel">
+  <h3 style="margin-bottom:10px">{{ title }}</h3>
+  {% if tls %}
+  <dl class="ct-kv" style="margin-bottom:12px">
+    <dt>TLS</dt><dd class="ct-ok">{{ tls.version }} · {{ tls.cipher }}</dd>
+    <dt>Certificado del servidor</dt><dd>{{ tls.issuer }} · vence {{ tls.valid_until }}</dd>
+  </dl>
+  {% endif %}
+  <pre class="ct-log">{% for line in log %}<b>C:</b> {{ line }}
+{% endfor %}</pre>
+</section>
+{% endmacro %}

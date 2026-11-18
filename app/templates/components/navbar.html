@@ -23,7 +23,8 @@
                     {% if request.blueprint in [
                         'recommendation',
                         'encyclopedia',
-                        'example_animal'
+                        'example_animal',
+                        'communications'
                     ] %}active{% endif %}"
                 >
                     Features
@@ -48,6 +49,11 @@
                         {% endif %}
                     >
                         Animal Registration Example
+                    </a>
+
+                    <!-- Proyecto final Comunicación de Datos -->
+                    <a href="{{ url_for('communications.hub') }}">
+                        Comunicaciones · Soporte
                     </a>
 
                 </div>

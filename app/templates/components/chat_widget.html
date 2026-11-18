@@ -1,0 +1,42 @@
+{# Chat web de soporte (comunicación sincrónica: JavaScript ↔ Flask ↔ Telegram) #}
+<div class="cw" id="chat-widget"
+     data-api="{{ url_for('chat.get_messages') }}"
+     data-telegram="{{ 'on' if comms.telegram_enabled else 'off' }}">
+
+  <button type="button" class="cw-launcher" id="cw-launcher"
+          aria-expanded="false" aria-controls="cw-panel" title="Chat de soporte">
+    <span class="cw-launcher-icon" aria-hidden="true">💬</span>
+    <span class="cw-sr">Abrir chat de soporte</span>
+    <span class="cw-unread" id="cw-unread" hidden>0</span>
+  </button>
+
+  <section class="cw-panel" id="cw-panel" hidden aria-labelledby="cw-title">
+    <header class="cw-head">
+      <div>
+        <h2 id="cw-title">Soporte ForraTech</h2>
+        <p id="cw-status"><span class="cw-dot" aria-hidden="true"></span>
+          {{ 'Conectado con el equipo vía Telegram' if comms.telegram_enabled else 'Equipo fuera de línea' }}</p>
+      </div>
+      <button type="button" class="cw-close" id="cw-close" aria-label="Cerrar chat">×</button>
+    </header>
+
+    <ol class="cw-messages" id="cw-messages" aria-live="polite">
+      <li class="cw-msg system">
+        <p>¡Hola! 👋 Escríbenos tu duda sobre forrajes, ovinos o caprinos. Un integrante del
+          equipo te responde aquí mismo.</p>
+      </li>
+    </ol>
+
+    <form class="cw-form" id="cw-form" autocomplete="off">
+      <input class="cw-name" id="cw-name" name="name" maxlength="60" placeholder="Tu nombre" aria-label="Tu nombre">
+      <div class="cw-row">
+        <textarea id="cw-text" name="text" rows="1" maxlength="1000" placeholder="Escribe un mensaje…" aria-label="Mensaje" required></textarea>
+        <button type="submit" class="cw-send" aria-label="Enviar">➤</button>
+      </div>
+      <p class="cw-foot">
+        Cifrado con TLS · <a href="{{ url_for('communications.hub') }}">otros canales</a>
+        {% if comms.telegram_bot_url %} · <a href="{{ comms.telegram_bot_url }}" target="_blank" rel="noopener">Telegram</a>{% endif %}
+      </p>
+    </form>
+  </section>
+</div>

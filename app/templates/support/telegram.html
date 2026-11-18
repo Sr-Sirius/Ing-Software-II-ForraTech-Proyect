@@ -1,0 +1,49 @@
+{% extends "support/_layout.html" %}
+{% block section_name %}Telegram{% endblock %}
+{% block panel %}
+<div class="ct-stack">
+  {% if not comms.telegram_enabled %}
+  <div class="ct-notice error"><span aria-hidden="true">⚠</span><p>Falta TELEGRAM_BOT_TOKEN en las variables de entorno.</p></div>
+  {% endif %}
+  {% if error %}
+  <div class="ct-notice error"><span aria-hidden="true">⚠</span><p>{{ error }}</p></div>
+  {% endif %}
+
+  <div class="ct-grid">
+    <section class="ct-panel">
+      <h3 style="margin-bottom:12px">Bot</h3>
+      <dl class="ct-kv">
+        <dt>Usuario</dt><dd>{{ '@' ~ bot.username if bot else '—' }}</dd>
+        <dt>Nombre</dt><dd>{{ bot.first_name if bot else '—' }}</dd>
+        <dt>Grupo del equipo</dt>
+        <dd class="{{ 'ct-ok' if team_chat_id else 'ct-warn' }}">{{ team_chat_id or 'Falta TELEGRAM_TEAM_CHAT_ID (usa /id en el grupo)' }}</dd>
+        <dt>Secreto del webhook</dt>
+        <dd class="{{ 'ct-ok' if has_secret else 'ct-warn' }}">{{ 'Configurado' if has_secret else 'Falta TELEGRAM_WEBHOOK_SECRET' }}</dd>
+      </dl>
+    </section>
+    <section class="ct-panel">
+      <h3 style="margin-bottom:12px">Webhook</h3>
+      <dl class="ct-kv">
+        <dt>URL esperada</dt><dd>{{ webhook_url }}</dd>
+        <dt>URL registrada</dt>
+        <dd class="{{ 'ct-ok' if info and info.url == webhook_url else 'ct-warn' }}">{{ info.url if info and info.url else 'Ninguna' }}</dd>
+        <dt>Pendientes</dt><dd>{{ info.pending_update_count if info else '—' }}</dd>
+        {% if info and info.last_error_message %}
+        <dt>Último error</dt><dd class="ct-bad">{{ info.last_error_message }}</dd>
+        {% endif %}
+      </dl>
+      <form method="post" style="margin-top:16px">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="ct-btn primary" type="submit" {{ 'disabled' if not (comms.telegram_enabled and has_secret) }}>
+          Registrar / actualizar webhook</button>
+      </form>
+    </section>
+  </div>
+
+  <section class="ct-panel">
+    <h3 style="margin-bottom:8px">Cómo responder</h3>
+    <p>En el grupo de Telegram, usa <strong>Responder</strong> sobre el mensaje que publicó el bot. La respuesta
+      llega al chat web del visitante (en unos 3 segundos) o al chat privado del productor en Telegram.</p>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% set show_sidebar = False %}
+{% set show_footer = True %}
+{% set hide_chat_widget = True %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/communications.css') }}">
+<link rel="stylesheet" href="https://cdn.conversejs.org/14.0.0/dist/converse.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="ct-shell">
+  <div class="ct-container">
+
+    <header class="ct-top">
+      <nav class="ct-breadcrumb" aria-label="Ruta">
+        <a href="{{ url_for('main.home') }}">Inicio</a><span aria-hidden="true">›</span>
+        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">›</span>
+        <strong aria-current="page">Sala XMPP</strong>
+      </nav>
+    </header>
+
+    <section class="ct-hero" style="padding-bottom:24px">
+      <span class="ct-badge">Mensajería sincrónica · XMPP</span>
+      <h1>Sala de soporte <span>XMPP</span></h1>
+      <p>XMPP (Extensible Messaging and Presence Protocol) es un estándar abierto (RFC 6120/6121)
+        para mensajería instantánea y presencia. Este cliente web (Converse.js) se conecta al servidor
+        público <strong>{{ comms.xmpp_domain }}</strong> a través de BOSH (XMPP sobre HTTPS).</p>
+    </section>
+
+    <div class="ct-grid" style="margin-bottom:20px">
+      <div class="ct-panel">
+        <h3 style="margin-bottom:10px">Cómo entrar</h3>
+        <ol class="ct-muted" style="padding-left:18px">
+          <li>Si no tienes cuenta XMPP, usa <em>Crear cuenta</em> en el panel de abajo
+            (servidor <code>{{ comms.xmpp_domain }}</code>).</li>
+          <li>Inicia sesión con tu usuario; la sala <code>{{ comms.xmpp_room }}</code> se abre sola.</li>
+          <li>En el celular puedes usar Conversations (Android), Monal (iOS) o Gajim (PC) con la misma cuenta.</li>
+        </ol>
+      </div>
+      <div class="ct-panel">
+        <h3 style="margin-bottom:10px">Datos técnicos</h3>
+        <dl class="ct-kv">
+          <dt>Servidor</dt><dd>{{ comms.xmpp_domain }}</dd>
+          <dt>Sala (MUC)</dt><dd>{{ comms.xmpp_room }}</dd>
+          <dt>Transporte web</dt><dd>BOSH · {{ comms.xmpp_bosh_url }}</dd>
+          <dt>Cifrado</dt><dd>TLS en el transporte; OMEMO opcional entre clientes</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="ct-xmpp-frame">
+      <converse-root></converse-root>
+    </div>
+    <p class="ct-muted" style="margin-top:12px;font-size:12px">
+      Si el panel no carga, revisa que tu red permita conexiones a {{ comms.xmpp_domain }}.
+      Alternativa: entra con cualquier app XMPP a la sala indicada arriba.
+    </p>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script type="module" src="https://cdn.conversejs.org/14.0.0/dist/converse.min.js"></script>
+<script type="module">
+  converse.initialize({
+    view_mode: "embedded",
+    i18n: "es",
+    bosh_service_url: {{ comms.xmpp_bosh_url | tojson }},
+    discover_connection_methods: false,
+    default_domain: {{ comms.xmpp_domain | tojson }},
+    registration_domain: {{ comms.xmpp_domain | tojson }},
+    allow_registration: true,
+    auto_join_rooms: [{{ comms.xmpp_room | tojson }}],
+    show_controlbox_by_default: true,
+    auto_reconnect: true,
+    persistent_store: "sessionStorage",
+    theme: "dracula"
+  });
+</script>
+{% endblock %}

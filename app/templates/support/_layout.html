@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% set show_sidebar = False %}
+{% set show_footer = False %}
+{% set hide_chat_widget = True %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/communications.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="ct-shell">
+  <div class="ct-container">
+    <header class="ct-top">
+      <nav class="ct-breadcrumb" aria-label="Ruta">
+        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">›</span>
+        <strong aria-current="page">Panel de soporte · {% block section_name %}{% endblock %}</strong>
+      </nav>
+      {% if session.get('is_support_admin') %}
+      <form method="post" action="{{ url_for('support.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="ct-btn small" type="submit">Cerrar sesión</button>
+      </form>
+      {% endif %}
+    </header>
+
+    {% if session.get('is_support_admin') %}
+    {% set ep = request.endpoint %}
+    <nav class="ct-admin-nav" aria-label="Secciones del panel">
+      <a href="{{ url_for('support.inbox') }}" class="{{ 'active' if ep in ['support.inbox', 'support.message'] }}">📥 Bandeja IMAP</a>
+      <a href="{{ url_for('support.pop3') }}" class="{{ 'active' if ep == 'support.pop3' }}">📨 Vista POP3</a>
+      <a href="{{ url_for('support.telegram') }}" class="{{ 'active' if ep == 'support.telegram' }}">📱 Telegram</a>
+      <a href="{{ url_for('support.diagnostics') }}" class="{{ 'active' if ep == 'support.diagnostics' }}">🩺 Diagnóstico de puertos</a>
+    </nav>
+    {% endif %}
+
+    {% block panel %}{% endblock %}
+  </div>
+</section>
+{% endblock %}

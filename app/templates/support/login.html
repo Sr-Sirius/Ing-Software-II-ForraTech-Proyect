@@ -1,0 +1,18 @@
+{% extends "support/_layout.html" %}
+{% block section_name %}acceso{% endblock %}
+{% block panel %}
+<div class="ct-narrow" style="max-width:440px;margin-top:40px">
+  <form class="ct-panel ct-form" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <h2 style="font-size:20px">Acceso del equipo</h2>
+    {% if not configured %}
+    <div class="ct-notice error">El panel está deshabilitado: falta la variable de entorno ADMIN_PASSWORD.</div>
+    {% endif %}
+    <div class="ct-field">
+      <label for="password">Contraseña del panel</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="ct-btn primary" type="submit" {{ 'disabled' if not configured }}>Entrar</button>
+  </form>
+</div>
+{% endblock %}

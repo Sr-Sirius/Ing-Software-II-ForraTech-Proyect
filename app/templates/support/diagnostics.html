@@ -1,0 +1,32 @@
+{% extends "support/_layout.html" %}
+{% block section_name %}diagnóstico{% endblock %}
+{% block panel %}
+<div class="ct-stack">
+  <div class="ct-notice"><span aria-hidden="true">ⓘ</span>
+    <p>Pruebas de conexión TCP hechas <strong>desde el servidor</strong>. En el plan gratuito de Render
+      se espera que los puertos SMTP (25, 465, 587) fallen y que IMAP (993), POP3 (995) y HTTPS (443) funcionen.</p>
+  </div>
+  <div class="ct-table-wrap">
+    <table class="ct-table">
+      <thead><tr><th>Servicio</th><th>Destino</th><th>Resultado</th><th>Tiempo</th><th>Detalle</th></tr></thead>
+      <tbody>
+      {% for r in results %}
+        <tr>
+          <td>{{ r.label }}</td>
+          <td class="nowrap">{{ r.host }}:{{ r.port }}</td>
+          <td class="nowrap {{ 'ct-ok' if r.ok else 'ct-bad' }}">{{ '✔ Abierto' if r.ok else '✖ Bloqueado / sin respuesta' }}</td>
+          <td class="nowrap">{{ r.ms }} ms</td>
+          <td>{{ r.detail }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <section class="ct-panel">
+    <h3 style="margin-bottom:12px">Petición actual</h3>
+    <dl class="ct-kv">
+      {% for k, v in request_info.items() %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}
+    </dl>
+  </section>
+</div>
+{% endblock %}

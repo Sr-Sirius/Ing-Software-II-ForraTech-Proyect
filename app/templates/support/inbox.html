@@ -1,0 +1,53 @@
+{% extends "support/_layout.html" %}
+{% from "support/_protocol.html" import protocol_log %}
+{% block section_name %}bandeja IMAP{% endblock %}
+{% block panel %}
+<div class="ct-stack">
+  {% if error %}
+  <div class="ct-notice error"><span aria-hidden="true">⚠</span><p>No se pudo consultar el buzón por IMAP: {{ error }}</p></div>
+  {% endif %}
+
+  {% if data %}
+  <div class="ct-section-title" style="margin:0">
+    <h2>Bandeja de entrada · {{ comms.support_email }}</h2>
+    <p>{{ data.total }} mensajes en INBOX · se muestran los últimos {{ data.messages|length }}</p>
+  </div>
+
+  <div class="ct-table-wrap">
+    <table class="ct-table">
+      <thead><tr><th>Estado</th><th>De</th><th>Asunto</th><th>Fecha</th><th>Tamaño</th><th></th></tr></thead>
+      <tbody>
+      {% for m in data.messages %}
+        <tr class="{{ '' if m.seen else 'unread' }}">
+          <td class="nowrap">
+            {% if m.answered %}<span class="ct-ok">✔ Respondido</span>
+            {% elif m.seen %}<span class="ct-muted">Leído</span>
+            {% else %}<span class="ct-warn">● Nuevo</span>{% endif %}
+            {% if m.flagged %} ⭐{% endif %}
+          </td>
+          <td>{{ m.from }}</td>
+          <td><a href="{{ url_for('support.message', uid=m.uid) }}">{{ m.subject }}</a></td>
+          <td class="nowrap">{{ m.date[:25] }}</td>
+          <td class="nowrap">{{ (m.size / 1024)|round(1) }} KB</td>
+          <td class="nowrap">
+            {% if not m.answered %}
+            <form method="post" action="{{ url_for('support.message_flags', uid=m.uid) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="back" value="inbox">
+              <button class="ct-btn small" name="action" value="{{ 'no-leido' if m.seen else 'leido' }}">
+                {{ 'Marcar no leído' if m.seen else 'Marcar leído' }}</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="ct-muted">La bandeja está vacía.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {{ protocol_log(data.log, data.tls, "Comandos IMAP ejecutados (evidencia)") }}
+  {% endif %}
+</div>
+{% endblock %}

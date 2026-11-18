@@ -34,3 +34,9 @@ build/
 
 # Base de datos local de Flask
 instance/
+# Certificados y claves privadas locales (scripts/generar_certificado_local.sh)
+certs/
+*.key
+*.pem
+*.csr
+*.srl

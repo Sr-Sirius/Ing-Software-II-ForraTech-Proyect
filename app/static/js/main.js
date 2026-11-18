@@ -5,6 +5,8 @@ import { initReveal } from "./core/reveal.js";
 import { initNavbar } from "./layout/navbar.js";
 import { initSidebar } from "./layout/sidebar.js";
 
+import { initChatWidget } from "./chat/chat_widget.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initFlash();
@@ -13,5 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initNavbar();
     initSidebar();
+
+    initChatWidget();
 
 });
