@@ -1,16 +1,16 @@
 /* =========================
    CHAT WEB DE SOPORTE
 ========================= */
-.cw { --cw-bg: #0f2219; --cw-line: #315040; --cw-text: #f0f6ef; --cw-muted: #a9bdb0; --cw-accent: #b9ed8b;
+.cw { --cw-bg: #0b1222; --cw-line: rgba(255, 255, 255, 0.12); --cw-text: #f8fafc; --cw-muted: rgba(226, 232, 240, 0.72); --cw-accent: #4ade80;
     position: fixed; right: 22px; bottom: 22px; z-index: 1500; font-family: inherit; color: var(--cw-text); }
 .cw *, .cw *::before, .cw *::after { box-sizing: border-box; }
 .cw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 .cw-launcher { position: relative; width: 60px; height: 60px; border-radius: 50%; border: 0; cursor: pointer;
-    background: var(--primary, #4CAF50); box-shadow: 0 10px 30px rgba(76, 175, 80, .45);
+    background: #22c55e; color: #03140a; box-shadow: 0 10px 30px rgba(34, 197, 94, .4);
     display: grid; place-items: center; transition: transform .2s ease; }
 .cw-launcher:hover { transform: translateY(-2px) scale(1.04); }
-.cw-launcher-icon { font-size: 26px; line-height: 1; }
+.cw-launcher-icon { width: 28px; height: 28px; }
 .cw.is-open .cw-launcher { display: none; }
 .cw-unread[hidden] { display: none; }
 .cw-unread { position: absolute; top: -3px; right: -3px; min-width: 22px; height: 22px; padding: 0 6px;
@@ -25,7 +25,7 @@
 @keyframes cw-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 .cw-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
-    padding: 14px 16px; background: #163024; border-bottom: 1px solid var(--cw-line); }
+    padding: 14px 16px; background: linear-gradient(135deg, rgba(34, 197, 94, .16), rgba(15, 23, 42, .9)); border-bottom: 1px solid var(--cw-line); }
 .cw-head h2 { margin: 0; font-size: 16px; }
 .cw-head p { margin: 2px 0 0; font-size: 12px; color: var(--cw-muted); display: flex; align-items: center; gap: 6px; }
 .cw-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cw-accent); box-shadow: 0 0 8px var(--cw-accent); }
@@ -36,21 +36,22 @@
 .cw-msg { max-width: 85%; padding: 9px 12px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
 .cw-msg p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .cw-meta { display: block; font-size: 11px; color: var(--cw-muted); margin-bottom: 2px; }
-.cw-msg.visitor { align-self: flex-end; background: #2f6b3c; border-bottom-right-radius: 4px; }
+.cw-msg.visitor { align-self: flex-end; background: #166534; border-bottom-right-radius: 4px; }
 .cw-msg.visitor .cw-meta { color: #cfe8c4; }
-.cw-msg.agent { align-self: flex-start; background: #1f3a2d; border: 1px solid var(--cw-line); border-bottom-left-radius: 4px; }
+.cw-msg.agent { align-self: flex-start; background: #111a2e; border: 1px solid var(--cw-line); border-bottom-left-radius: 4px; }
 .cw-msg.system { align-self: center; max-width: 95%; background: transparent; border: 1px dashed var(--cw-line);
     color: var(--cw-muted); font-size: 12.5px; text-align: center; }
 
 .cw-form { padding: 10px 12px 8px; border-top: 1px solid var(--cw-line); display: grid; gap: 8px; }
 .cw-form.is-sending { opacity: .6; }
 .cw-name, .cw-form textarea { width: 100%; border-radius: 10px; border: 1px solid var(--cw-line);
-    background: #0a1811; color: var(--cw-text); font: inherit; font-size: 14px; padding: 9px 11px; color-scheme: dark; }
+    background: #050a18; color: var(--cw-text); font: inherit; font-size: 14px; padding: 9px 11px; color-scheme: dark; }
 .cw-name[hidden] { display: none; }
 .cw-row { display: flex; gap: 8px; align-items: flex-end; }
 .cw-form textarea { resize: none; min-height: 42px; max-height: 120px; }
 .cw-send { flex: none; width: 42px; height: 42px; border-radius: 50%; border: 0; cursor: pointer;
-    background: var(--cw-accent); color: #162711; font-size: 17px; }
+    background: #22c55e; color: #03140a; display: grid; place-items: center; }
+.cw-send svg { width: 20px; height: 20px; }
 .cw-foot { margin: 0; font-size: 11px; color: var(--cw-muted); text-align: center; }
 .cw-foot a { color: var(--cw-accent); }
 .cw :focus-visible { outline: 2px solid var(--cw-accent); outline-offset: 2px; }

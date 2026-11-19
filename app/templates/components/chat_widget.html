@@ -5,7 +5,7 @@
 
   <button type="button" class="cw-launcher" id="cw-launcher"
           aria-expanded="false" aria-controls="cw-panel" title="Chat de soporte">
-    <span class="cw-launcher-icon" aria-hidden="true">💬</span>
+    <svg class="cw-launcher-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v10h-9l-6 4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 10.5h7M8.5 13h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     <span class="cw-sr">Abrir chat de soporte</span>
     <span class="cw-unread" id="cw-unread" hidden>0</span>
   </button>
@@ -22,7 +22,7 @@
 
     <ol class="cw-messages" id="cw-messages" aria-live="polite">
       <li class="cw-msg system">
-        <p>¡Hola! 👋 Escríbenos tu duda sobre forrajes, ovinos o caprinos. Un integrante del
+        <p>¡Hola! Escríbenos tu duda sobre forrajes, ovinos o caprinos. Un integrante del
           equipo te responde aquí mismo.</p>
       </li>
     </ol>
@@ -31,7 +31,7 @@
       <input class="cw-name" id="cw-name" name="name" maxlength="60" placeholder="Tu nombre" aria-label="Tu nombre">
       <div class="cw-row">
         <textarea id="cw-text" name="text" rows="1" maxlength="1000" placeholder="Escribe un mensaje…" aria-label="Mensaje" required></textarea>
-        <button type="submit" class="cw-send" aria-label="Enviar">➤</button>
+        <button type="submit" class="cw-send" aria-label="Enviar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 4 3.5 11l6 2 2 6.5 3-4 4.5 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9.5 13 8-6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       </div>
       <p class="cw-foot">
         Cifrado con TLS · <a href="{{ url_for('communications.hub') }}">otros canales</a>

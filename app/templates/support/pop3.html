@@ -11,7 +11,7 @@
   </div>
 
   {% if error %}
-  <div class="ct-notice error"><span aria-hidden="true">⚠</span><p>No se pudo consultar por POP3: {{ error }}</p></div>
+  <div class="ct-notice error"><svg class="ct-i" aria-hidden="true" style="color:var(--ct-bad)"><use href="#i-shield"></use></svg><p>No se pudo consultar por POP3: {{ error }}</p></div>
   {% endif %}
 
   {% if data %}

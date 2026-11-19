@@ -14,7 +14,7 @@
         <tr>
           <td>{{ r.label }}</td>
           <td class="nowrap">{{ r.host }}:{{ r.port }}</td>
-          <td class="nowrap {{ 'ct-ok' if r.ok else 'ct-bad' }}">{{ '✔ Abierto' if r.ok else '✖ Bloqueado / sin respuesta' }}</td>
+          <td class="nowrap {{ 'ct-ok' if r.ok else 'ct-bad' }}"><i class="ct-dot {{ '' if r.ok else 'warn' }}" style="{{ '' if r.ok else 'background:var(--ct-bad)' }}"></i>{{ 'Abierto' if r.ok else 'Bloqueado / sin respuesta' }}</td>
           <td class="nowrap">{{ r.ms }} ms</td>
           <td>{{ r.detail }}</td>
         </tr>

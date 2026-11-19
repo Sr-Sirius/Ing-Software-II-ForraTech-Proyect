@@ -3,125 +3,224 @@
 {% set show_sidebar = False %}
 {% set show_footer = True %}
 
+{% block body_class %}ct-page{% endblock %}
+
 {% block page_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/communications.css') }}">
 {% endblock %}
 
 {% block content %}
+{% include "components/ct_icons.html" %}
 <section class="ct-shell">
   <div class="ct-container">
 
     <header class="ct-top">
       <nav class="ct-breadcrumb" aria-label="Ruta">
-        <a href="{{ url_for('main.home') }}">Inicio</a><span aria-hidden="true">›</span>
+        <a href="{{ url_for('main.home') }}">Inicio</a><span aria-hidden="true">/</span>
         <strong aria-current="page">Centro de comunicaciones</strong>
       </nav>
-      <a href="{{ url_for('support.login') }}">Acceso del equipo de soporte →</a>
+      <a href="{{ url_for('support.login') }}">Acceso del equipo de soporte <svg class="ct-i" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
     </header>
 
-    <section class="ct-hero">
-      <span class="ct-badge">Comunicación de datos · ForraTech</span>
-      <h1>Hablemos con el productor<br><span>por el canal que tenga a la mano.</span></h1>
-      <p>ForraTech atiende a pequeños productores ovinos y caprinos de Sabana Centro, donde la
-        conectividad rural es irregular. Por eso ofrecemos canales en tiempo real (sincrónicos) y
-        un canal por correo (asincrónico) que no exige estar conectado al mismo tiempo.</p>
-    </section>
-
-    <!-- ───────── SINCRÓNICA ───────── -->
-    <div class="ct-section-title">
-      <h2>Comunicación sincrónica</h2>
-      <p>Emisor y receptor conectados al mismo tiempo; respuesta en segundos.</p>
-    </div>
-    <div class="ct-grid">
-      <article class="ct-card">
-        <div class="ct-card-icon" aria-hidden="true">💬</div>
-        <h3>Chat web (JavaScript + Flask)</h3>
-        <p>La burbuja verde de la esquina inferior derecha. El navegador envía tu mensaje a Flask con
-          <code>fetch()</code> y consulta las respuestas cada 3 segundos (polling HTTP sobre TLS).</p>
-        <div class="ct-tags"><span class="ct-tag">HTTPS</span><span class="ct-tag">JSON</span><span class="ct-tag">Polling</span></div>
-        <div class="ct-actions"><button type="button" class="ct-btn primary" data-open-chat>Abrir chat</button></div>
-      </article>
-
-      <article class="ct-card">
-        <div class="ct-card-icon" aria-hidden="true">📱</div>
-        <h3>Integración móvil · Telegram</h3>
-        <p>Cada mensaje del chat web llega al grupo de soporte del equipo en Telegram, y la respuesta
-          vuelve a tu pantalla. También puedes escribirle directamente al bot desde el celular.</p>
-        <div class="ct-tags"><span class="ct-tag">Bot API</span><span class="ct-tag">Webhook HTTPS</span>
-          {% if not comms.telegram_enabled %}<span class="ct-tag warn">Pendiente de configurar</span>{% endif %}</div>
-        <div class="ct-actions">
-          {% if comms.telegram_bot_url %}
-          <a class="ct-btn primary" href="{{ comms.telegram_bot_url }}" target="_blank" rel="noopener">Abrir @{{ comms.telegram_bot_username }}</a>
-          {% else %}
-          <span class="ct-muted">El enlace al bot aparecerá cuando se configure.</span>
-          {% endif %}
+    <!-- ───────── HERO ───────── -->
+    <div class="ct-board">
+      <section class="ct-hero-grid">
+        <div class="ct-hero-left">
+          <div class="ct-hero-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-chat"></use></svg></div>
+          <div>
+            <span class="ct-pill">Comunicación de datos · ForraTech</span>
+            <h1 class="ct-title">Canales de <span>soporte</span></h1>
+            <p class="ct-kicker">Sincrónico · Asincrónico · TLS 1.3</p>
+            <p class="ct-lead">ForraTech atiende a pequeños productores ovinos y caprinos de Sabana Centro, donde la
+              conectividad rural es irregular. Por eso ofrecemos canales en tiempo real y un canal por correo que
+              no exige estar conectado al mismo tiempo.</p>
+          </div>
         </div>
-      </article>
 
-      <article class="ct-card">
-        <div class="ct-card-icon" aria-hidden="true">🗨️</div>
-        <h3>Sala XMPP (Jabber)</h3>
-        <p>Protocolo abierto de mensajería instantánea. Usamos el cliente web Converse.js y una sala
-          pública: <code>{{ comms.xmpp_room }}</code>. También se entra con apps XMPP del celular.</p>
-        <div class="ct-tags"><span class="ct-tag">XMPP</span><span class="ct-tag">BOSH sobre HTTPS</span><span class="ct-tag">MUC</span></div>
-        <div class="ct-actions"><a class="ct-btn primary" href="{{ url_for('communications.xmpp') }}">Entrar a la sala</a></div>
-      </article>
-    </div>
-
-    <!-- ───────── ASINCRÓNICA ───────── -->
-    <div class="ct-section-title">
-      <h2>Comunicación asincrónica</h2>
-      <p>El mensaje se guarda en un buzón y se responde después.</p>
-    </div>
-    <div class="ct-grid">
-      <article class="ct-card">
-        <div class="ct-card-icon" aria-hidden="true">📧</div>
-        <h3>Correo de soporte · IMAP / POP3</h3>
-        <p>El formulario de contacto deposita tu mensaje en el buzón de soporte con <strong>IMAP APPEND</strong>
-          (puerto 993, TLS). El equipo lo gestiona desde su bandeja con IMAP (leído, respondido, destacado)
-          y también puede consultarla por <strong>POP3</strong> (puerto 995, TLS).</p>
-        <div class="ct-tags"><span class="ct-tag">IMAP 993</span><span class="ct-tag">POP3 995</span><span class="ct-tag">TLS implícito</span></div>
-        <div class="ct-actions">
-          <a class="ct-btn primary" href="{{ url_for('communications.contact') }}">Escribir al soporte</a>
-          {% if comms.support_email %}<a class="ct-btn" href="mailto:{{ comms.support_email }}">{{ comms.support_email }}</a>{% endif %}
+        <div class="ct-status" aria-label="Estado de los canales">
+          <div class="ct-status-card">
+            <div class="ct-status-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-bolt"></use></svg></div>
+            <div><span>Chat web</span><strong>En línea</strong><p><i class="ct-dot"></i>Respuesta en segundos</p></div>
+          </div>
+          <div class="ct-status-card {{ '' if comms.telegram_enabled else 'is-warn' }}">
+            <div class="ct-status-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-telegram"></use></svg></div>
+            <div><span>Telegram</span>
+              {% if comms.telegram_enabled %}<strong>Bot activo</strong><p><i class="ct-dot"></i>Grupo del equipo conectado</p>
+              {% else %}<strong>Pendiente</strong><p><i class="ct-dot warn"></i>Faltan las credenciales del bot</p>{% endif %}
+            </div>
+          </div>
+          <div class="ct-status-card {{ '' if is_secure else 'is-warn' }}">
+            <div class="ct-status-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-lock"></use></svg></div>
+            <div><span>Esta conexión</span>
+              <strong>{{ 'HTTPS cifrado' if is_secure else 'HTTP sin cifrar' }}</strong>
+              <p>{{ 'Certificado verificado en vivo abajo' if is_secure else 'Entorno local de pruebas' }}</p>
+            </div>
+          </div>
         </div>
-      </article>
+      </section>
+    </div>
 
-      <article class="ct-card">
-        <div class="ct-card-icon" aria-hidden="true">🧭</div>
-        <h3>¿Por qué no SMTP desde el servidor?</h3>
-        <p>El plan gratuito de Render bloquea la salida por los puertos SMTP 25, 465 y 587. Por eso el
-          servidor no envía correos: los deposita en el buzón con IMAP y el equipo responde desde su
-          cliente de correo. La prueba de puertos queda en el panel de diagnóstico.</p>
-        <div class="ct-tags"><span class="ct-tag warn">SMTP bloqueado</span><span class="ct-tag">IMAP permitido</span></div>
-      </article>
+    <!-- ───────── RECORRIDO ───────── -->
+    <div class="ct-board">
+      <div class="ct-heading">
+        <div>
+          <span class="ct-eyebrow">Arquitectura</span>
+          <h2>Recorrido de un <span>mensaje</span></h2>
+        </div>
+        <p>Todo pasa por la misma aplicación Flask en Render. Desde ahí cada canal usa su propio protocolo:
+          tres sincrónicos (emisor y receptor conectados a la vez) y uno asincrónico (se guarda y se responde después).</p>
+      </div>
+
+      <div class="ct-route" role="img" aria-label="El productor envía por HTTPS a Flask en Render, que reparte a chat web, Telegram, XMPP y correo IMAP">
+        <div class="ct-node">
+          <svg class="ct-i" aria-hidden="true"><use href="#i-user"></use></svg>
+          <strong>Productor</strong><small>navegador o celular</small>
+        </div>
+        <div class="ct-wire"><em>TLS 443</em></div>
+        <div class="ct-node core">
+          <svg class="ct-i" aria-hidden="true"><use href="#i-server"></use></svg>
+          <strong>ForraTech · Flask</strong><small>Render · Gunicorn</small>
+        </div>
+        <div class="ct-wire"><em>enruta</em></div>
+        <div class="ct-lanes">
+          <div class="ct-lane">
+            <svg class="ct-i" aria-hidden="true"><use href="#i-chat"></use></svg>
+            <div><strong>Chat web</strong><small>fetch() + polling cada 3 s</small></div>
+            <span class="ct-mode">Sincrónico</span>
+          </div>
+          <div class="ct-lane">
+            <svg class="ct-i" aria-hidden="true"><use href="#i-telegram"></use></svg>
+            <div><strong>Telegram</strong><small>Bot API · webhook HTTPS</small></div>
+            <span class="ct-mode">Sincrónico</span>
+          </div>
+          <div class="ct-lane">
+            <svg class="ct-i" aria-hidden="true"><use href="#i-xmpp"></use></svg>
+            <div><strong>Sala XMPP</strong><small>BOSH sobre HTTPS · MUC</small></div>
+            <span class="ct-mode">Sincrónico</span>
+          </div>
+          <div class="ct-lane">
+            <svg class="ct-i" aria-hidden="true"><use href="#i-mail"></use></svg>
+            <div><strong>Correo de soporte</strong><small>IMAP APPEND 993 · POP3 995</small></div>
+            <span class="ct-mode async">Asincrónico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── CANALES ───────── -->
+    <div class="ct-board">
+      <div class="ct-heading">
+        <div>
+          <span class="ct-eyebrow">Canales</span>
+          <h2>Elige cómo <span>hablarnos</span></h2>
+        </div>
+      </div>
+
+      <div class="ct-channels">
+        <article class="ct-channel feature">
+          <span class="ct-channel-num">01</span>
+          <div class="ct-channel-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-chat"></use></svg></div>
+          <h3>Chat web</h3>
+          <p>La burbuja verde de la esquina inferior derecha. El navegador envía tu mensaje a Flask con
+            <code>fetch()</code> y consulta las respuestas cada 3 segundos (polling HTTP sobre TLS). Un integrante
+            del equipo responde desde el panel de soporte o desde Telegram.</p>
+          <div class="ct-preview" aria-hidden="true">
+            <p class="ct-bubble in"><small>Productor · 09:14</small>¿Qué forraje siembro en un suelo ácido de ladera?</p>
+            <p class="ct-bubble out"><small>Equipo ForraTech · vía Telegram · 09:15</small>Para pH bajo, Brachiaria tolera bien la acidez. ¿A qué altitud está tu finca?</p>
+          </div>
+          <div class="ct-tags"><span class="ct-tag">HTTPS</span><span class="ct-tag">JSON</span><span class="ct-tag">Polling 3 s</span></div>
+          <div class="ct-actions"><button type="button" class="ct-btn primary" data-open-chat>Abrir chat
+            <svg class="ct-i" aria-hidden="true"><use href="#i-arrow"></use></svg></button></div>
+        </article>
+
+        <div class="ct-channels-side">
+          <article class="ct-channel">
+            <span class="ct-channel-num">02</span>
+            <div class="ct-channel-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-telegram"></use></svg></div>
+            <h3>Telegram</h3>
+            <p>Cada mensaje del chat web llega al grupo de soporte del equipo y la respuesta vuelve a tu pantalla.
+              También puedes escribirle al bot desde el celular.</p>
+            <div class="ct-tags"><span class="ct-tag">Bot API</span><span class="ct-tag">Webhook HTTPS</span>
+              {% if not comms.telegram_enabled %}<span class="ct-tag warn">Pendiente de configurar</span>{% endif %}</div>
+            <div class="ct-actions">
+              {% if comms.telegram_bot_url %}
+              <a class="ct-btn primary" href="{{ comms.telegram_bot_url }}" target="_blank" rel="noopener">Abrir @{{ comms.telegram_bot_username }}</a>
+              {% else %}
+              <span class="ct-muted">El enlace al bot aparecerá cuando se configure.</span>
+              {% endif %}
+            </div>
+          </article>
+
+          <article class="ct-channel">
+            <span class="ct-channel-num">03</span>
+            <div class="ct-channel-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-xmpp"></use></svg></div>
+            <h3>Sala XMPP</h3>
+            <p>Protocolo abierto de mensajería instantánea. Cliente web Converse.js y sala pública
+              <code>{{ comms.xmpp_room }}</code>; también funciona con apps XMPP del celular.</p>
+            <div class="ct-tags"><span class="ct-tag">XMPP</span><span class="ct-tag">BOSH</span><span class="ct-tag">MUC</span></div>
+            <div class="ct-actions"><a class="ct-btn" href="{{ url_for('communications.xmpp') }}">Entrar a la sala
+              <svg class="ct-i" aria-hidden="true"><use href="#i-arrow"></use></svg></a></div>
+          </article>
+        </div>
+
+        <article class="ct-channel photo">
+          <span class="ct-channel-num">04</span>
+          <div class="ct-channel-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-mail"></use></svg></div>
+          <h3>Correo de soporte</h3>
+          <p>El formulario deposita tu mensaje en el buzón con <strong>IMAP APPEND</strong> (puerto 993, TLS). El
+            equipo lo gestiona con IMAP (leído, respondido, destacado) y también puede consultarlo por
+            <strong>POP3</strong> (puerto 995, TLS). No necesitas estar conectado cuando respondamos.</p>
+          <div class="ct-tags"><span class="ct-tag">IMAP 993</span><span class="ct-tag">POP3 995</span><span class="ct-tag">TLS implícito</span></div>
+          <div class="ct-actions">
+            <a class="ct-btn primary" href="{{ url_for('communications.contact') }}">Escribir al soporte</a>
+            {% if comms.support_email %}<a class="ct-btn" href="mailto:{{ comms.support_email }}">{{ comms.support_email }}</a>{% endif %}
+          </div>
+        </article>
+
+        <article class="ct-channel note">
+          <div class="ct-channel-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-shield"></use></svg></div>
+          <h3>¿Por qué no SMTP desde el servidor?</h3>
+          <p>El plan gratuito de Render bloquea la salida por los puertos SMTP. Por eso el servidor no envía
+            correos: los deposita en el buzón con IMAP y el equipo responde desde su cliente de correo. La prueba
+            de puertos queda en el panel de diagnóstico.</p>
+          <div class="ct-ports" aria-label="Puertos">
+            <span class="ct-port off">SMTP 25</span><span class="ct-port off">465</span><span class="ct-port off">587</span>
+            <span class="ct-port on">IMAP 993</span><span class="ct-port on">POP3 995</span><span class="ct-port on">HTTPS 443</span>
+          </div>
+        </article>
+      </div>
     </div>
 
     <!-- ───────── SEGURIDAD ───────── -->
-    <div class="ct-section-title">
-      <h2>Seguridad de esta conexión</h2>
-      <p>Datos leídos en vivo del certificado que presenta el servidor.</p>
-    </div>
-    <div class="ct-grid">
-      <section class="ct-panel" aria-labelledby="tls-title">
-        <h3 id="tls-title" style="margin-bottom:14px">Certificado TLS</h3>
-        <dl class="ct-kv" id="tls-data">
-          <dt>Estado</dt><dd class="ct-muted">Consultando…</dd>
-        </dl>
-      </section>
-      <section class="ct-panel" aria-labelledby="req-title">
-        <h3 id="req-title" style="margin-bottom:14px">Tu petición</h3>
-        <dl class="ct-kv">
-          <dt>Esquema</dt>
-          <dd class="{{ 'ct-ok' if is_secure else 'ct-warn' }}">{{ 'HTTPS 🔒' if is_secure else 'HTTP (sin cifrar)' }}</dd>
-          <dt>X-Forwarded-Proto</dt><dd>{{ forwarded_proto }}</dd>
-          <dt>HSTS</dt><dd>{{ 'max-age=' ~ hsts ~ '; includeSubDomains' if (is_secure and hsts) else 'Solo se envía sobre HTTPS en producción' }}</dd>
-          <dt>Cabeceras</dt><dd>CSP, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy</dd>
-        </dl>
-        <div class="ct-flow" aria-label="Recorrido de la petición">
-          <span>Navegador</span><i>→ TLS 443 →</i><span>Render (proxy)</span><i>→ HTTP interno →</i><span>Gunicorn</span><i>→</i><span>Flask</span>
+    <div class="ct-board">
+      <div class="ct-heading">
+        <div>
+          <span class="ct-eyebrow">Seguridad</span>
+          <h2>Cifrado de esta <span>conexión</span></h2>
         </div>
-      </section>
+        <p>Datos leídos en vivo del certificado que presenta el servidor y de las cabeceras de tu petición.</p>
+      </div>
+      <div class="ct-grid">
+        <section class="ct-panel" aria-labelledby="tls-title">
+          <h3 id="tls-title" style="margin-bottom:16px"><svg class="ct-i" aria-hidden="true"><use href="#i-shield"></use></svg>Certificado TLS</h3>
+          <dl class="ct-kv" id="tls-data">
+            <dt>Estado</dt><dd class="ct-muted">Consultando…</dd>
+          </dl>
+        </section>
+        <section class="ct-panel" aria-labelledby="req-title">
+          <h3 id="req-title" style="margin-bottom:16px"><svg class="ct-i" aria-hidden="true"><use href="#i-lock"></use></svg>Tu petición</h3>
+          <dl class="ct-kv">
+            <dt>Esquema</dt>
+            <dd class="{{ 'ct-ok' if is_secure else 'ct-warn' }}">{{ 'HTTPS (cifrado)' if is_secure else 'HTTP (sin cifrar)' }}</dd>
+            <dt>X-Forwarded-Proto</dt><dd>{{ forwarded_proto }}</dd>
+            <dt>HSTS</dt><dd>{{ 'max-age=' ~ hsts ~ '; includeSubDomains' if (is_secure and hsts) else 'Solo se envía sobre HTTPS en producción' }}</dd>
+            <dt>Cabeceras</dt><dd>CSP, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy</dd>
+          </dl>
+          <div class="ct-flow" aria-label="Recorrido de la petición">
+            <span>Navegador</span><i>→ TLS 443 →</i><span>Render (proxy)</span><i>→ HTTP interno →</i><span>Gunicorn</span><i>→</i><span>Flask</span>
+          </div>
+        </section>
+      </div>
     </div>
 
   </div>

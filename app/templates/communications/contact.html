@@ -7,26 +7,53 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/communications.css') }}">
 {% endblock %}
 
+{% block body_class %}ct-page{% endblock %}
+
 {% block content %}
+{% include "components/ct_icons.html" %}
 <section class="ct-shell">
-  <div class="ct-narrow">
+  <div class="ct-container">
 
     <header class="ct-top">
       <nav class="ct-breadcrumb" aria-label="Ruta">
-        <a href="{{ url_for('main.home') }}">Inicio</a><span aria-hidden="true">›</span>
-        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">›</span>
+        <a href="{{ url_for('main.home') }}">Inicio</a><span aria-hidden="true">/</span>
+        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">/</span>
         <strong aria-current="page">Contacto</strong>
       </nav>
     </header>
 
-    <section class="ct-hero" style="padding-bottom:24px">
-      <span class="ct-badge">Mensajería asincrónica · correo</span>
-      <h1>Escríbenos <span>sin afán</span></h1>
-      <p>Tu mensaje queda guardado en el buzón de soporte y te respondemos por correo. No necesitas
-        estar conectado cuando respondamos. ¿Lo necesitas ya? Usa el chat o Telegram.</p>
-    </section>
+    <div class="ct-board">
+      <section class="ct-hero-grid" style="margin-bottom:34px">
+        <div class="ct-hero-left">
+          <div class="ct-hero-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-mail"></use></svg></div>
+          <div>
+            <span class="ct-pill">Mensajería asincrónica · correo</span>
+            <h1 class="ct-title small">Escríbenos <span>sin afán</span></h1>
+            <p class="ct-lead">Tu mensaje queda guardado en el buzón de soporte y te respondemos por correo. No necesitas
+              estar conectado cuando respondamos. ¿Lo necesitas ya? Usa el chat o Telegram.</p>
+          </div>
+        </div>
+        <div class="ct-status">
+          <div class="ct-status-card">
+            <div class="ct-status-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-inbox"></use></svg></div>
+            <div><span>Destino</span><strong>Buzón de soporte</strong><p>IMAP APPEND · puerto 993 · TLS</p></div>
+          </div>
+          <div class="ct-status-card">
+            <div class="ct-status-icon" aria-hidden="true"><svg class="ct-i"><use href="#i-clock"></use></svg></div>
+            <div><span>Respuesta</span><strong>Por correo</strong><p>Sin conexión simultánea</p></div>
+          </div>
+        </div>
+      </section>
 
-    <form class="ct-panel ct-form" method="post" novalidate>
+      <div class="ct-contact">
+        <aside class="ct-photo">
+          <span class="ct-eyebrow">Cómo viaja tu mensaje</span>
+          <h2>Del campo al buzón, cifrado de punta a punta.</h2>
+          <div class="ct-flow" aria-label="Recorrido del mensaje">
+            <span>Navegador</span><i>→ HTTPS →</i><span>Flask</span><i>→ IMAP 993 →</i><span>Buzón</span>
+          </div>
+        </aside>
+        <form class="ct-panel ct-form" method="post" novalidate>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="ct-hp" aria-hidden="true">
         <label for="website">No llenar</label>
@@ -58,11 +85,9 @@
         <span class="ct-muted">o escribe directo a <a href="mailto:{{ comms.support_email }}">{{ comms.support_email }}</a></span>
         {% endif %}
       </div>
-      <p class="ct-muted" style="font-size:12px">
-        Cómo viaja: navegador → HTTPS → Flask → <strong>IMAP APPEND</strong> por TLS (puerto 993) →
-        bandeja de entrada del buzón de soporte.
-      </p>
     </form>
+      </div>
+    </div>
 
   </div>
 </section>

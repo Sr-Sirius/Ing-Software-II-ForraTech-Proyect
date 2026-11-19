@@ -4,16 +4,19 @@
 {% set show_footer = False %}
 {% set hide_chat_widget = True %}
 
+{% block body_class %}ct-page{% endblock %}
+
 {% block page_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/communications.css') }}">
 {% endblock %}
 
 {% block content %}
+{% include "components/ct_icons.html" %}
 <section class="ct-shell">
   <div class="ct-container">
     <header class="ct-top">
       <nav class="ct-breadcrumb" aria-label="Ruta">
-        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">›</span>
+        <a href="{{ url_for('communications.hub') }}">Comunicaciones</a><span aria-hidden="true">/</span>
         <strong aria-current="page">Panel de soporte · {% block section_name %}{% endblock %}</strong>
       </nav>
       {% if session.get('is_support_admin') %}
@@ -27,11 +30,11 @@
     {% if session.get('is_support_admin') %}
     {% set ep = request.endpoint %}
     <nav class="ct-admin-nav" aria-label="Secciones del panel">
-      <a href="{{ url_for('support.chats') }}" class="{{ 'active' if ep in ['support.chats', 'support.chat_detail'] }}">💬 Chats web</a>
-      <a href="{{ url_for('support.inbox') }}" class="{{ 'active' if ep in ['support.inbox', 'support.message'] }}">📥 Bandeja IMAP</a>
-      <a href="{{ url_for('support.pop3') }}" class="{{ 'active' if ep == 'support.pop3' }}">📨 Vista POP3</a>
-      <a href="{{ url_for('support.telegram') }}" class="{{ 'active' if ep == 'support.telegram' }}">📱 Telegram</a>
-      <a href="{{ url_for('support.diagnostics') }}" class="{{ 'active' if ep == 'support.diagnostics' }}">🩺 Diagnóstico de puertos</a>
+      <a href="{{ url_for('support.chats') }}" class="{{ 'active' if ep in ['support.chats', 'support.chat_detail'] }}"><svg class="ct-i" aria-hidden="true"><use href="#i-chat"></use></svg>Chats web</a>
+      <a href="{{ url_for('support.inbox') }}" class="{{ 'active' if ep in ['support.inbox', 'support.message'] }}"><svg class="ct-i" aria-hidden="true"><use href="#i-inbox"></use></svg>Bandeja IMAP</a>
+      <a href="{{ url_for('support.pop3') }}" class="{{ 'active' if ep == 'support.pop3' }}"><svg class="ct-i" aria-hidden="true"><use href="#i-download"></use></svg>Vista POP3</a>
+      <a href="{{ url_for('support.telegram') }}" class="{{ 'active' if ep == 'support.telegram' }}"><svg class="ct-i" aria-hidden="true"><use href="#i-telegram"></use></svg>Telegram</a>
+      <a href="{{ url_for('support.diagnostics') }}" class="{{ 'active' if ep == 'support.diagnostics' }}"><svg class="ct-i" aria-hidden="true"><use href="#i-pulse"></use></svg>Diagnóstico de puertos</a>
     </nav>
     {% endif %}
 

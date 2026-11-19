@@ -1,10 +1,16 @@
 {% extends "support/_layout.html" %}
 {% block section_name %}acceso{% endblock %}
 {% block panel %}
-<div class="ct-narrow" style="max-width:440px;margin-top:40px">
+<div class="ct-login">
+  <aside class="ct-photo">
+    <span class="ct-eyebrow">Panel de soporte</span>
+    <h2>Responde a los productores desde un solo lugar.</h2>
+    <p>Chats web, bandeja IMAP, vista POP3, Telegram y diagnóstico de puertos.</p>
+  </aside>
   <form class="ct-panel ct-form" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <h2 style="font-size:20px">Acceso del equipo</h2>
+    <span class="ct-pill">Solo integrantes del equipo</span>
+    <h2 style="font-size:1.8rem;letter-spacing:-.04em">Acceso del equipo</h2>
     {% if not configured %}
     <div class="ct-notice error">El panel está deshabilitado: falta la variable de entorno ADMIN_PASSWORD.</div>
     {% endif %}

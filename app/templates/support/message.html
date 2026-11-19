@@ -19,12 +19,12 @@
     {% set re_subject = msg.subject if msg.subject.lower().startswith('re:') else 'Re: ' ~ msg.subject %}
     <div class="ct-actions" style="margin-top:18px">
       <a class="ct-btn primary"
-         href="mailto:{{ msg.reply_to_addr }}?subject={{ re_subject|urlencode }}">✉ Responder desde mi correo</a>
+         href="mailto:{{ msg.reply_to_addr }}?subject={{ re_subject|urlencode }}"><svg class="ct-i" aria-hidden="true"><use href="#i-reply"></use></svg>Responder desde mi correo</a>
       {% for action, label in [
           ('respondido', 'Marcar respondido'),
           ('pendiente', 'Marcar pendiente'),
           ('no-leido', 'Marcar no leído'),
-          ('destacar' if not msg.flagged else 'quitar-destacado', 'Destacar ⭐' if not msg.flagged else 'Quitar ⭐')] %}
+          ('destacar' if not msg.flagged else 'quitar-destacado', 'Destacar' if not msg.flagged else 'Quitar destacado')] %}
       <form method="post" action="{{ url_for('support.message_flags', uid=msg.uid) }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button class="ct-btn small" name="action" value="{{ action }}">{{ label }}</button>

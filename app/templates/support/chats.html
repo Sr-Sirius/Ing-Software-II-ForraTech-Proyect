@@ -12,7 +12,7 @@
       <tbody>
       {% for s in sessions %}
         <tr class="{{ 'unread' if s.last_sender == 'visitor' }}">
-          <td class="nowrap">{% if s.last_sender == 'visitor' %}<span class="ct-warn">● Por responder</span>{% else %}<span class="ct-ok">✔ Respondido</span>{% endif %}</td>
+          <td class="nowrap">{% if s.last_sender == 'visitor' %}<span class="ct-warn"><i class="ct-dot warn"></i>Por responder</span>{% else %}<span class="ct-ok"><i class="ct-dot"></i>Respondido</span>{% endif %}</td>
           <td>{{ s.name }} <span class="ct-muted">#{{ s.id[:6]|upper }}</span></td>
           <td>{{ (s.last_text or '')[:90] }}</td>
           <td>{{ s.total }}</td>
